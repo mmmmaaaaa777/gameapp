@@ -1,6 +1,15 @@
 import * as THREE from "three";
 
 function disposeMaterial(material: THREE.Material): void {
+  const materialWithTextures = material as THREE.Material & {
+    map?: THREE.Texture | null;
+    alphaMap?: THREE.Texture | null;
+    emissiveMap?: THREE.Texture | null;
+  };
+
+  materialWithTextures.map?.dispose();
+  materialWithTextures.alphaMap?.dispose();
+  materialWithTextures.emissiveMap?.dispose();
   material.dispose();
 }
 

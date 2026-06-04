@@ -1,12 +1,13 @@
 import type { BattleResult } from "../types/game";
 
 interface ResultScreenProps {
+  bossName?: string;
   result: BattleResult;
   onRetry: () => void;
-  onBackToTitle: () => void;
+  onHome: () => void;
 }
 
-export function ResultScreen({ result, onRetry, onBackToTitle }: ResultScreenProps) {
+export function ResultScreen({ bossName, result, onRetry, onHome }: ResultScreenProps) {
   const isClear = result.kind === "CLEAR";
 
   return (
@@ -14,6 +15,7 @@ export function ResultScreen({ result, onRetry, onBackToTitle }: ResultScreenPro
       <section className="result-panel" aria-labelledby="result-title">
         <p className="eyebrow">{isClear ? "討伐完了" : "戦闘不能"}</p>
         <h1 id="result-title">{result.kind}</h1>
+        {bossName ? <p className="result-boss-name">対象: {bossName}</p> : null}
 
         <dl className="result-stats">
           <div>
@@ -32,10 +34,10 @@ export function ResultScreen({ result, onRetry, onBackToTitle }: ResultScreenPro
 
         <div className="result-actions">
           <button className="primary-button" type="button" onClick={onRetry}>
-            再挑戦
+            同じボスに再挑戦
           </button>
-          <button className="secondary-button" type="button" onClick={onBackToTitle}>
-            タイトルへ戻る
+          <button className="secondary-button" type="button" onClick={onHome}>
+            ホームへ戻る
           </button>
         </div>
       </section>

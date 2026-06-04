@@ -2,4 +2,9 @@ node_modules/
 dist/
 .vite-dev-server.*.log
 verification-screenshots/
+verification-v1.1/
+verification-fbx/
+verification-v2.0/
+verification-v2.1/
+verification-v2.2/
 *.tsbuildinfo

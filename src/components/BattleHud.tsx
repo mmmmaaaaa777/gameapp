@@ -54,6 +54,12 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
     <div
       className="battle-hud"
       data-ui-control="true"
+      style={
+        {
+          "--active-attribute-color": activeAttribute.cssColor,
+          "--active-attribute-accent": activeAttribute.cssAccent,
+        } as CSSProperties
+      }
       onPointerDown={stopControlEvent}
       onPointerMove={stopControlEvent}
       onPointerUp={stopControlEvent}
@@ -67,8 +73,18 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
         <span>時間 {snapshot.elapsedSeconds.toFixed(1)}秒</span>
         <span>与 {snapshot.dealtDamage}</span>
         <span>被 {snapshot.takenDamage}</span>
-        <span className="active-attribute" style={{ borderColor: activeAttribute.cssColor }}>
-          {activeAttribute.label} {activeAttribute.description}
+        <span
+          className="active-attribute"
+          style={
+            {
+              "--attribute-color": activeAttribute.cssColor,
+              "--attribute-accent": activeAttribute.cssAccent,
+            } as CSSProperties
+          }
+        >
+          <i aria-hidden="true" />
+          <strong>{activeAttribute.label}</strong>
+          {activeAttribute.description}
         </span>
       </div>
 

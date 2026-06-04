@@ -99,6 +99,7 @@ interface BattleRuntime {
   dodgeCooldownMs: number;
   dodgeInvulnerableMs: number;
   dodge: DodgeRuntime | null;
+  playerAttackMs: number;
   elapsedMs: number;
   dealtDamage: number;
   takenDamage: number;
@@ -134,6 +135,7 @@ function createInitialRuntime(): BattleRuntime {
     dodgeCooldownMs: 0,
     dodgeInvulnerableMs: 0,
     dodge: null,
+    playerAttackMs: 0,
     elapsedMs: 0,
     dealtDamage: 0,
     takenDamage: 0,
@@ -172,6 +174,9 @@ function makeSceneSnapshot(runtime: BattleRuntime): SceneSnapshot {
     bossHpRatio: runtime.bossHp / BOSS_MAX_HP,
     activeAttribute: runtime.activeAttribute,
     isDodging: runtime.dodgeInvulnerableMs > 0,
+    playerAttackPulse: clamp(runtime.playerAttackMs / 360, 0, 1),
+    playerMoveIntensity:
+      runtime.dodge || Math.hypot(runtime.movement.x, runtime.movement.z) > 0.01 ? 1 : 0,
     bossHurt: runtime.bossHurtMs > 0,
     shockwaveWarning: runtime.shockwaveWarning
       ? {
@@ -234,6 +239,7 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
         x: runtime.bossPosition.x - runtime.playerPosition.x,
         z: runtime.bossPosition.z - runtime.playerPosition.z,
       });
+      runtime.playerAttackMs = Math.max(runtime.playerAttackMs, 230 + effectScale * 90);
       runtime.playerAngle = angleFromDirection(directionToBoss);
       sceneRef.current?.spawnAttackFlash(
         runtime.activeAttribute,
@@ -375,6 +381,7 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
       runtime.attackCooldownMs = Math.max(0, runtime.attackCooldownMs - deltaMs);
       runtime.dodgeCooldownMs = Math.max(0, runtime.dodgeCooldownMs - deltaMs);
       runtime.dodgeInvulnerableMs = Math.max(0, runtime.dodgeInvulnerableMs - deltaMs);
+      runtime.playerAttackMs = Math.max(0, runtime.playerAttackMs - deltaMs);
       runtime.cooldowns = tickCooldowns(runtime.cooldowns, deltaMs);
       runtime.bossHurtMs = Math.max(0, runtime.bossHurtMs - deltaMs);
 

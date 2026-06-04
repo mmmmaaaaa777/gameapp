@@ -87,3 +87,59 @@ PowerShellで `System.Drawing.Bitmap` を作成する際、`Resolve-Path` の戻
 ### 対処方法
 
 `(Resolve-Path $file).Path` で文字列パスを渡すように修正し、スクリーンショットのピクセル確認を再実行した。
+
+## その他エラー: v1.1検証スクリプトのdocument参照
+
+### 発生内容
+
+CLEAR到達確認のNodeスクリプトで、ブラウザ内の `document` をNode側トップレベルから参照して `ReferenceError: document is not defined` が発生した。
+
+### 原因
+
+Playwrightの外側で実行されるNode.js環境にはDOMが存在しないため。
+
+### 対処方法
+
+DOM参照は `page.evaluate()` の中に移し、リザルト画面の確認と再挑戦ボタン操作をブラウザコンテキストまたはCSSセレクタ経由で行うようにした。
+
+## その他エラー: 外部画像参照検索時のrg正規表現
+
+### 発生内容
+
+外部画像やCanvasテクスチャ参照の有無を `rg` で検索する際、PowerShell上の引用符と正規表現が噛み合わず `regex parse error: unclosed group` が発生した。
+
+### 原因
+
+`createElement(\"canvas\")` を含む複合正規表現を1本の文字列として渡したため、括弧とクォートの解釈が崩れた。
+
+### 対処方法
+
+`rg -e ...` で検索パターンを個別に渡す形へ変更して再実行した。
+
+## その他エラー: FBXモデル読み込み後の非表示
+
+### 発生内容
+
+`public/models/characterMedium.fbx` は `FBXLoader` で読み込めていたが、ブラウザ検証スクリーンショット上ではモデル本体が表示されず、向き表示用のマーカーだけが見えていた。
+
+### 原因
+
+FBX内の元マテリアルが `transparent: true` かつ `opacity: 0` で読み込まれており、メッシュ自体は存在していても透明な状態だった。
+
+### 対処方法
+
+FBX読み込み後にメッシュを走査し、元マテリアルをdisposeしてから軽量な `MeshStandardMaterial` に置き換えた。再検証ではFBXモデル本体と、FBXが無い場合の簡易人型フォールバックの両方を確認した。
+
+## その他エラー: run.fbx再生時のTポーズ表示
+
+### 発生内容
+
+`idle.fbx` と `jump.fbx` は動くが、移動中に `run.fbx` を再生するとTポーズに近い表示になった。
+
+### 原因
+
+`run.fbx` には複数の `AnimationClip` があり、先頭clipが短い `Root|0.Targeting Pose` だった。実際の走りclipは2本目の `Root|Run` だったが、実装が先頭clipだけを採用していた。
+
+### 対処方法
+
+読み込んだFBXの `animations` について、track数、duration、キャラクター骨名との対応を確認し、対象名を含む有効clipを優先して採用するようにした。run clipが空または不採用の場合は、idleを維持しながらモデル全体の上下揺れ、前傾、足元リングで移動感を補うようにした。

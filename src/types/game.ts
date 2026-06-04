@@ -1,4 +1,12 @@
-export type AppScreen = "title" | "battle" | "result";
+export type AppScreen =
+  | "home"
+  | "bossSelect"
+  | "sortiePrep"
+  | "battle"
+  | "result"
+  | "formation"
+  | "equipment"
+  | "settings";
 
 export type ResultKind = "CLEAR" | "FAILED";
 
@@ -76,6 +84,8 @@ export interface SceneSnapshot {
   bossHpRatio: number;
   activeAttribute: AttributeId;
   isDodging: boolean;
+  playerAttackPulse: number;
+  playerMoveIntensity: number;
   bossHurt: boolean;
   shockwaveWarning?: {
     radius: number;
