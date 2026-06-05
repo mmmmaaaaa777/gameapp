@@ -1282,6 +1282,1270 @@ dl {
   color: #fff4ce;
 }
 
+/* Retro handheld fantasy lobby theme */
+.menu-screen {
+  --guild-blue: #1f4d74;
+  --guild-blue-dark: #132c45;
+  --guild-blue-light: #5f9dc8;
+  --parchment: #d8c08a;
+  --parchment-light: #f4e5bd;
+  --parchment-dark: #8a6d38;
+  --old-gold: #b9873b;
+  --old-gold-light: #e0b565;
+  --ink: #261d14;
+  --stone: #3a342e;
+  --stone-dark: #181714;
+  --panel-shadow: rgba(31, 19, 8, 0.48);
+  color: var(--parchment-light);
+  background:
+    linear-gradient(90deg, rgba(14, 18, 22, 0.9) 0 10%, transparent 22% 78%, rgba(14, 18, 22, 0.9) 90%),
+    radial-gradient(ellipse at 50% 20%, rgba(102, 152, 187, 0.36), transparent 35%),
+    linear-gradient(180deg, #27313a 0%, #1a1b1b 58%, #0d0c0a 100%);
+}
+
+.menu-screen::before {
+  inset: auto -16% -16% -16%;
+  height: 42dvh;
+  background:
+    repeating-conic-gradient(from 8deg, rgba(96, 157, 200, 0.18) 0deg 1.4deg, transparent 1.4deg 14deg),
+    radial-gradient(ellipse at center, transparent 0 38%, rgba(96, 157, 200, 0.35) 39% 40%, transparent 41% 56%, rgba(224, 181, 101, 0.26) 57% 58%, transparent 59%);
+  opacity: 0.78;
+  transform: perspective(460px) rotateX(62deg);
+}
+
+.menu-screen::after {
+  background:
+    linear-gradient(90deg, rgba(9, 8, 7, 0.48), transparent 20% 80%, rgba(9, 8, 7, 0.54)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 54px);
+  opacity: 0.62;
+}
+
+.game-header,
+.lobby-topbar,
+.lobby-stage,
+.lobby-loadout,
+.quest-banner-list,
+.dock-panel,
+.target-plate,
+.slot-panel,
+.deck-feature,
+.skill-card-wheel,
+.material-chip-panel,
+.game-toast,
+.fixed-action-row,
+.bottom-menu,
+.help-command-grid,
+.coming-soon-panel {
+  max-width: 430px;
+}
+
+.game-header {
+  padding: 8px 10px;
+  border: 2px solid var(--old-gold);
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.13), transparent 28%),
+    linear-gradient(180deg, #26394d, #132537);
+  box-shadow:
+    inset 0 0 0 2px rgba(29, 20, 10, 0.52),
+    0 4px 0 rgba(43, 27, 8, 0.72),
+    0 14px 26px var(--panel-shadow);
+}
+
+.game-header p,
+.game-logo-kicker,
+.deck-feature small,
+.target-plate small,
+.skill-slot small,
+.gear-slot small,
+.quest-copy small,
+.coming-soon-panel span,
+.mini-status span {
+  color: var(--old-gold-light);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.65);
+}
+
+.game-header h1,
+.lobby-stage h1,
+.target-plate h2,
+.deck-feature h2,
+.slot-panel h2,
+.quest-copy strong,
+.help-command strong {
+  color: var(--parchment-light);
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.58),
+    0 0 12px rgba(244, 229, 189, 0.18);
+}
+
+.icon-home-button,
+.player-chip,
+.currency-chip,
+.bottom-menu,
+.dock-panel,
+.target-plate,
+.slot-panel,
+.deck-feature,
+.coming-soon-panel {
+  border: 2px solid var(--old-gold);
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.13), transparent 32%),
+    linear-gradient(180deg, #23384f, #15263a 58%, #0f1c2c);
+  box-shadow:
+    inset 0 0 0 2px rgba(40, 27, 13, 0.46),
+    0 4px 0 rgba(52, 35, 13, 0.7),
+    0 14px 24px var(--panel-shadow);
+}
+
+.icon-home-button {
+  border-radius: 6px;
+  color: var(--parchment-light);
+}
+
+.lobby-topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(94px, 0.8fr);
+}
+
+.player-chip {
+  position: relative;
+  gap: 9px;
+  min-height: 54px;
+  padding: 7px 10px 7px 58px;
+  border-radius: 7px;
+}
+
+.player-chip::before {
+  position: absolute;
+  left: 8px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--old-gold-light);
+  border-radius: 50%;
+  content: "";
+  background:
+    radial-gradient(circle at 50% 36%, #e7c793 0 18%, transparent 19%),
+    radial-gradient(circle at 42% 48%, #2b1e16 0 5%, transparent 6%),
+    radial-gradient(circle at 58% 48%, #2b1e16 0 5%, transparent 6%),
+    linear-gradient(180deg, #4a3724 0 38%, #d7a470 39% 66%, #183a57 67%);
+  box-shadow: inset 0 0 0 2px rgba(28, 17, 8, 0.42);
+}
+
+.player-chip span {
+  min-width: auto;
+  min-height: auto;
+  border-radius: 0;
+  background: transparent;
+  color: var(--parchment-light);
+  font-size: 0.95rem;
+}
+
+.player-chip strong {
+  font-size: 0.9rem;
+}
+
+.currency-chip {
+  justify-content: center;
+  min-height: 54px;
+  border-radius: 7px;
+  color: var(--parchment-light);
+}
+
+.currency-chip::before {
+  width: 20px;
+  height: 20px;
+  margin-right: 7px;
+  border: 2px solid #6d4614;
+  border-radius: 50%;
+  content: "";
+  background:
+    radial-gradient(circle at 36% 30%, #fff0a8, #d49a2f 50%, #75501b);
+}
+
+.lobby-stage {
+  min-height: 436px;
+  padding: 14px 14px 12px;
+  border: 3px solid var(--old-gold);
+  border-radius: 7px;
+  background:
+    linear-gradient(90deg, rgba(18, 19, 18, 0.68) 0 17%, transparent 30% 70%, rgba(18, 19, 18, 0.68) 83%),
+    radial-gradient(ellipse at 50% 35%, #77a9cc 0 17%, transparent 18%),
+    linear-gradient(180deg, #27241f 0 16%, #3a342e 17% 52%, #1f1d18 53% 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(38, 25, 10, 0.68),
+    0 5px 0 rgba(51, 35, 13, 0.82),
+    0 20px 34px var(--panel-shadow);
+}
+
+.lobby-stage::before {
+  inset: auto 22px 88px;
+  height: 150px;
+  border: 2px solid rgba(151, 203, 240, 0.56);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 5deg, rgba(151, 203, 240, 0.32) 0deg 2deg, transparent 2deg 16deg),
+    radial-gradient(ellipse at center, transparent 0 28%, rgba(151, 203, 240, 0.42) 29% 31%, transparent 32% 55%, rgba(224, 181, 101, 0.28) 56% 58%, transparent 59%);
+  box-shadow:
+    0 0 22px rgba(95, 157, 200, 0.32),
+    inset 0 0 24px rgba(95, 157, 200, 0.22);
+  opacity: 0.92;
+  transform: perspective(360px) rotateX(66deg);
+}
+
+.lobby-stage::after {
+  position: absolute;
+  inset: auto 0 0;
+  height: 116px;
+  pointer-events: none;
+  content: "";
+  background:
+    repeating-linear-gradient(22deg, rgba(255, 255, 255, 0.055) 0 2px, transparent 2px 30px),
+    linear-gradient(180deg, transparent, rgba(12, 10, 8, 0.7));
+}
+
+.guild-arch {
+  position: absolute;
+  inset: 46px 10px 86px;
+  pointer-events: none;
+}
+
+.guild-arch::before {
+  position: absolute;
+  inset: 0 42px auto;
+  height: 190px;
+  border: 22px solid rgba(25, 24, 21, 0.72);
+  border-bottom: 0;
+  border-radius: 120px 120px 0 0;
+  content: "";
+  box-shadow:
+    inset 0 0 0 3px rgba(190, 143, 67, 0.24),
+    0 0 0 1px rgba(224, 181, 101, 0.18);
+}
+
+.guild-arch::after {
+  position: absolute;
+  inset: 152px 30px auto;
+  height: 74px;
+  content: "";
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(86, 130, 162, 0.62), transparent 68%),
+    linear-gradient(180deg, rgba(74, 64, 48, 0.72), rgba(28, 24, 18, 0.52));
+}
+
+.guild-banner {
+  position: absolute;
+  top: 48px;
+  width: 34px;
+  height: 118px;
+  border: 2px solid rgba(190, 143, 67, 0.62);
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.13), transparent 42%),
+    linear-gradient(180deg, #1f4d74, #18344f);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.36);
+}
+
+.guild-banner::after {
+  position: absolute;
+  inset: 34px 8px auto;
+  height: 42px;
+  border-top: 2px solid rgba(224, 181, 101, 0.72);
+  border-bottom: 2px solid rgba(224, 181, 101, 0.72);
+  content: "";
+}
+
+.guild-banner.left {
+  left: 16px;
+}
+
+.guild-banner.right {
+  right: 16px;
+}
+
+.guild-board {
+  position: absolute;
+  right: 12px;
+  bottom: 46px;
+  width: 58px;
+  height: 70px;
+  border: 2px solid #5d3d1c;
+  background:
+    repeating-linear-gradient(0deg, rgba(70, 43, 16, 0.32) 0 2px, transparent 2px 13px),
+    linear-gradient(180deg, #caa76b, #8f6a35);
+}
+
+.guild-lantern {
+  position: absolute;
+  left: 18px;
+  bottom: 42px;
+  width: 30px;
+  height: 44px;
+  border: 2px solid #6a451e;
+  border-radius: 12px 12px 8px 8px;
+  background:
+    radial-gradient(circle at 50% 58%, #fff0a8, #d98c25 48%, transparent 50%),
+    linear-gradient(180deg, #2f2318, #17130f);
+  box-shadow: 0 0 18px rgba(224, 181, 101, 0.38);
+}
+
+.game-logo-kicker,
+.lobby-stage h1 {
+  position: relative;
+  z-index: 2;
+}
+
+.game-logo-kicker {
+  color: var(--old-gold-light);
+}
+
+.lobby-stage h1 {
+  max-width: 180px;
+  font-size: 2.1rem;
+}
+
+.hero-avatar {
+  z-index: 2;
+  height: 260px;
+  margin-top: 0;
+}
+
+.avatar-aura {
+  bottom: 30px;
+  width: 190px;
+  height: 190px;
+  border-color: rgba(151, 203, 240, 0.42);
+  background:
+    radial-gradient(circle, rgba(95, 157, 200, 0.18), transparent 58%),
+    conic-gradient(from 0deg, transparent 0deg 38deg, rgba(224, 181, 101, 0.52) 39deg 42deg, transparent 43deg 74deg);
+  filter: drop-shadow(0 0 22px rgba(95, 157, 200, 0.34));
+}
+
+.avatar-head {
+  position: absolute;
+  top: 44px;
+  z-index: 4;
+  width: 54px;
+  height: 58px;
+  border: 2px solid #53351b;
+  border-radius: 45% 45% 42% 42%;
+  background:
+    radial-gradient(circle at 38% 48%, #1c2533 0 4%, transparent 5%),
+    radial-gradient(circle at 62% 48%, #1c2533 0 4%, transparent 5%),
+    linear-gradient(180deg, #563b22 0 22%, #e0b17a 23% 100%);
+  box-shadow: 0 3px 0 rgba(42, 25, 10, 0.48);
+}
+
+.avatar-cape {
+  position: absolute;
+  top: 92px;
+  z-index: 1;
+  width: 108px;
+  height: 150px;
+  border: 2px solid rgba(190, 143, 67, 0.58);
+  border-radius: 52% 48% 26% 26%;
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.16), transparent 28%),
+    linear-gradient(180deg, #245a83, #102f4a);
+  transform: translateX(20px) rotate(8deg);
+}
+
+.avatar-body {
+  z-index: 3;
+  width: 82px;
+  height: 142px;
+  margin-top: 62px;
+  padding-top: 32px;
+  border: 2px solid #70491f;
+  border-radius: 20px 20px 16px 16px;
+  background:
+    linear-gradient(90deg, transparent 0 36%, #264969 37% 63%, transparent 64%),
+    radial-gradient(circle at 50% 28%, #f4e5bd 0 12%, transparent 13%),
+    linear-gradient(180deg, #efe0b7 0 40%, #2b4361 41% 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    0 14px 18px rgba(0, 0, 0, 0.34);
+}
+
+.avatar-body span {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #70491f;
+  background: var(--old-gold-light);
+  color: var(--ink);
+}
+
+.avatar-blade {
+  z-index: 5;
+  right: calc(50% + 28px);
+  bottom: 34px;
+  width: 12px;
+  height: 132px;
+  border: 1px solid rgba(31, 47, 63, 0.5);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, #f7fbff, #9db6c7 62%, #5b3f1a 63% 78%, #2b1a0b 79%);
+  transform: rotate(38deg);
+  box-shadow: 0 0 14px rgba(151, 203, 240, 0.32);
+}
+
+.build-ribbon {
+  z-index: 3;
+  margin-top: -8px;
+}
+
+.build-ribbon span,
+.mini-status,
+.target-tags span,
+.menu-attribute-pill,
+.subslot-row span,
+.material-chip,
+.game-toast,
+.skill-slot,
+.gear-slot,
+.skill-card-wheel button,
+.help-command {
+  border: 2px solid rgba(137, 95, 45, 0.86);
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 222, 0.4), transparent 32%),
+    linear-gradient(180deg, #dfc78f, #b89458);
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 0 1px rgba(84, 54, 20, 0.26),
+    0 3px 0 rgba(54, 36, 14, 0.58);
+}
+
+.menu-attribute-pill {
+  color: var(--parchment-light);
+  background:
+    radial-gradient(circle at 50% 22%, var(--attribute-accent), transparent 62%),
+    linear-gradient(180deg, var(--attribute-color), #17120d);
+}
+
+.mini-status strong,
+.skill-slot strong,
+.gear-slot strong,
+.skill-card-wheel button,
+.subslot-row span,
+.material-chip,
+.game-toast,
+.help-command strong,
+.coming-soon-panel strong {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+.lobby-loadout {
+  gap: 8px;
+}
+
+.game-cta {
+  position: relative;
+  min-height: 72px;
+  border: 3px solid var(--old-gold);
+  border-radius: 7px;
+  background:
+    linear-gradient(135deg, rgba(255, 249, 218, 0.52), transparent 26%),
+    linear-gradient(180deg, #315e86 0%, #1e4d74 56%, #163755 100%);
+  color: var(--parchment-light);
+  font-size: 1.28rem;
+  box-shadow:
+    inset 0 0 0 3px rgba(19, 39, 59, 0.72),
+    0 5px 0 rgba(73, 46, 14, 0.9),
+    0 20px 30px var(--panel-shadow);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.58);
+}
+
+.game-cta::before,
+.game-cta::after {
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--old-gold-light);
+  content: "";
+  background: var(--guild-blue);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.game-cta::before {
+  left: -9px;
+}
+
+.game-cta::after {
+  right: -9px;
+}
+
+.challenge-button {
+  width: min(100%, 390px);
+  margin-top: -6px;
+  font-size: clamp(1.8rem, 9vw, 2.8rem);
+}
+
+.challenge-button span {
+  font-size: 0.72rem;
+}
+
+.bottom-menu {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  min-height: 88px;
+  padding: 8px;
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(244, 229, 189, 0.08), transparent 42%),
+    linear-gradient(180deg, #2b2116, #12100d);
+}
+
+.bottom-menu button {
+  min-height: 68px;
+  border: 2px solid #8a6d38;
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, rgba(255, 250, 222, 0.38), transparent 28%),
+    linear-gradient(180deg, #d7be85, #a6844a);
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 48, 18, 0.34),
+    0 3px 0 rgba(50, 33, 12, 0.62);
+}
+
+.bottom-menu button.active {
+  border-color: var(--old-gold-light);
+  background:
+    linear-gradient(135deg, rgba(255, 250, 222, 0.28), transparent 28%),
+    linear-gradient(180deg, #315e86, #1d4a70);
+  color: var(--parchment-light);
+}
+
+.bottom-menu button span,
+.bottom-menu button.active span,
+.skill-card-wheel button span,
+.slot-icon,
+.material-chip i {
+  border: 2px solid rgba(88, 59, 24, 0.58);
+  background:
+    radial-gradient(circle at 36% 30%, #fff0a8, var(--old-gold-light) 48%, #75501b);
+  color: var(--ink);
+}
+
+.quest-banner {
+  border: 2px solid var(--old-gold);
+  border-radius: 7px;
+  background:
+    linear-gradient(90deg, rgba(31, 77, 116, 0.96), rgba(24, 43, 60, 0.92)),
+    radial-gradient(circle at 86% 50%, rgba(224, 181, 101, 0.2), transparent 42%);
+  box-shadow:
+    inset 0 0 0 2px rgba(31, 20, 8, 0.36),
+    0 4px 0 rgba(61, 39, 13, 0.66);
+}
+
+.quest-banner.selected {
+  border-color: var(--old-gold-light);
+  box-shadow:
+    inset 0 0 0 2px rgba(244, 229, 189, 0.16),
+    0 4px 0 rgba(61, 39, 13, 0.66),
+    0 0 20px rgba(224, 181, 101, 0.22);
+}
+
+.difficulty-row button {
+  border: 2px solid #8a6d38;
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, #dfc78f, #ad874a);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.difficulty-row button.selected {
+  background:
+    linear-gradient(180deg, #315e86, #1d4a70);
+  color: var(--parchment-light);
+}
+
+.skill-slot.main,
+.skill-card-wheel button.selected {
+  border-color: var(--old-gold-light);
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.24), transparent 30%),
+    linear-gradient(180deg, #315e86, #1d4a70);
+}
+
+.skill-slot.main strong,
+.skill-card-wheel button.selected,
+.skill-card-wheel button.selected small,
+.skill-card-wheel button.selected strong {
+  color: var(--parchment-light);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.deck-feature {
+  background:
+    linear-gradient(135deg, rgba(244, 229, 189, 0.16), transparent 28%),
+    linear-gradient(180deg, #315e86, #173c5d);
+}
+
+.skill-card-wheel button small,
+.help-command span {
+  color: #1f4d74;
+}
+
+.deck-feature p,
+.coming-soon-panel strong {
+  color: var(--parchment-light);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.coming-soon-panel {
+  border-style: solid;
+}
+
+/* Extra stone grain and old handheld UI wear. */
+.menu-screen {
+  background:
+    linear-gradient(146deg, transparent 0 37%, rgba(242, 221, 162, 0.09) 37% 38%, transparent 38%),
+    linear-gradient(72deg, transparent 0 68%, rgba(9, 8, 7, 0.34) 68% 69%, transparent 69%),
+    radial-gradient(circle at 19% 18%, rgba(244, 229, 189, 0.13), transparent 2.8%),
+    radial-gradient(circle at 82% 22%, rgba(244, 229, 189, 0.1), transparent 2.5%),
+    radial-gradient(circle at 58% 61%, rgba(10, 8, 6, 0.22), transparent 3%),
+    repeating-linear-gradient(0deg, transparent 0 40px, rgba(6, 5, 4, 0.72) 40px 45px),
+    repeating-linear-gradient(90deg, transparent 0 58px, rgba(6, 5, 4, 0.55) 58px 63px),
+    linear-gradient(90deg, rgba(14, 18, 22, 0.9) 0 10%, transparent 22% 78%, rgba(14, 18, 22, 0.9) 90%),
+    radial-gradient(ellipse at 50% 20%, rgba(102, 152, 187, 0.36), transparent 35%),
+    linear-gradient(180deg, #3a3a35 0%, #25231e 58%, #11100d 100%);
+}
+
+.menu-screen::after {
+  background:
+    linear-gradient(117deg, transparent 0 34%, rgba(255, 244, 199, 0.045) 34% 34.6%, transparent 35%),
+    linear-gradient(61deg, transparent 0 68%, rgba(10, 9, 8, 0.22) 68% 68.7%, transparent 69%),
+    radial-gradient(circle at 12% 28%, rgba(255, 255, 255, 0.07), transparent 1.2%),
+    radial-gradient(circle at 74% 42%, rgba(255, 255, 255, 0.045), transparent 1.1%),
+    radial-gradient(circle at 37% 76%, rgba(0, 0, 0, 0.18), transparent 1.8%),
+    linear-gradient(90deg, rgba(9, 8, 7, 0.48), transparent 20% 80%, rgba(9, 8, 7, 0.54)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 54px);
+}
+
+.lobby-stage {
+  background:
+    linear-gradient(126deg, transparent 0 44%, rgba(242, 221, 162, 0.1) 44% 45%, transparent 45%),
+    linear-gradient(52deg, transparent 0 62%, rgba(8, 7, 6, 0.34) 62% 63%, transparent 63%),
+    radial-gradient(circle at 16% 67%, rgba(255, 226, 144, 0.16), transparent 4.5%),
+    radial-gradient(circle at 82% 72%, rgba(8, 7, 6, 0.56), transparent 5%),
+    linear-gradient(90deg, rgba(18, 19, 18, 0.76) 0 17%, transparent 30% 70%, rgba(18, 19, 18, 0.76) 83%),
+    radial-gradient(ellipse at 50% 35%, #77a9cc 0 17%, transparent 18%),
+    repeating-linear-gradient(0deg, transparent 0 36px, rgba(5, 4, 3, 0.72) 36px 41px),
+    repeating-linear-gradient(90deg, transparent 0 52px, rgba(5, 4, 3, 0.62) 52px 57px),
+    linear-gradient(180deg, #3b372f 0 16%, #4f473c 17% 52%, #27231c 53% 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(38, 25, 10, 0.78),
+    inset 0 0 80px rgba(0, 0, 0, 0.28),
+    0 5px 0 rgba(51, 35, 13, 0.82),
+    0 20px 34px var(--panel-shadow);
+}
+
+.lobby-stage::after {
+  height: 150px;
+  background:
+    linear-gradient(135deg, transparent 0 44%, rgba(245, 225, 170, 0.18) 44% 45.5%, transparent 45.5%),
+    linear-gradient(28deg, transparent 0 57%, rgba(10, 8, 6, 0.46) 57% 58.5%, transparent 58.5%),
+    repeating-linear-gradient(22deg, rgba(255, 255, 255, 0.09) 0 2px, transparent 2px 34px),
+    repeating-linear-gradient(0deg, rgba(7, 6, 5, 0.58) 0 4px, transparent 4px 36px),
+    repeating-linear-gradient(90deg, rgba(7, 6, 5, 0.42) 0 4px, transparent 4px 68px),
+    linear-gradient(180deg, transparent, rgba(12, 10, 8, 0.78));
+}
+
+.guild-arch::before {
+  background:
+    radial-gradient(circle at 20% 28%, rgba(244, 229, 189, 0.14), transparent 3.4%),
+    radial-gradient(circle at 76% 46%, rgba(244, 229, 189, 0.1), transparent 2.8%),
+    repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(0deg, rgba(6, 5, 4, 0.48) 0 4px, transparent 4px 36px),
+    repeating-linear-gradient(90deg, rgba(6, 5, 4, 0.38) 0 4px, transparent 4px 44px),
+    linear-gradient(180deg, rgba(72, 66, 58, 0.96), rgba(28, 25, 21, 0.96));
+}
+
+.guild-arch::after {
+  background:
+    repeating-linear-gradient(90deg, rgba(12, 10, 8, 0.35) 0 2px, transparent 2px 38px),
+    radial-gradient(ellipse at 50% 100%, rgba(86, 130, 162, 0.62), transparent 68%),
+    linear-gradient(180deg, rgba(74, 64, 48, 0.72), rgba(28, 24, 18, 0.52));
+}
+
+.game-header,
+.icon-home-button,
+.player-chip,
+.currency-chip,
+.bottom-menu,
+.dock-panel,
+.target-plate,
+.slot-panel,
+.deck-feature,
+.coming-soon-panel,
+.quest-banner {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(244, 229, 189, 0.08), transparent 4%),
+    radial-gradient(circle at 78% 62%, rgba(0, 0, 0, 0.18), transparent 5%),
+    linear-gradient(135deg, rgba(244, 229, 189, 0.13), transparent 32%),
+    linear-gradient(180deg, #23384f, #15263a 58%, #0f1c2c);
+}
+
+.bottom-menu {
+  background:
+    radial-gradient(circle at 22% 18%, rgba(244, 229, 189, 0.07), transparent 5%),
+    radial-gradient(circle at 78% 68%, rgba(0, 0, 0, 0.18), transparent 6%),
+    linear-gradient(180deg, rgba(244, 229, 189, 0.08), transparent 42%),
+    repeating-linear-gradient(90deg, transparent 0 82px, rgba(177, 125, 54, 0.18) 82px 84px),
+    linear-gradient(180deg, #2b2116, #12100d);
+}
+
+.build-ribbon span,
+.mini-status,
+.subslot-row span,
+.material-chip,
+.game-toast,
+.skill-slot,
+.gear-slot,
+.skill-card-wheel button,
+.help-command,
+.difficulty-row button {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.22), transparent 7%),
+    radial-gradient(circle at 88% 74%, rgba(92, 61, 24, 0.18), transparent 8%),
+    linear-gradient(135deg, rgba(255, 250, 222, 0.4), transparent 32%),
+    linear-gradient(180deg, #dfc78f, #b89458);
+}
+
+.game-cta {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.16), transparent 5%),
+    linear-gradient(135deg, rgba(255, 249, 218, 0.52), transparent 26%),
+    linear-gradient(180deg, #315e86 0%, #1e4d74 56%, #163755 100%);
+}
+
+/* Reference-image composition pass: warm stone guild lobby. */
+.lobby-screen {
+  gap: 8px;
+  padding:
+    calc(10px + env(safe-area-inset-top)) 10px
+    calc(8px + env(safe-area-inset-bottom));
+  background:
+    linear-gradient(90deg, rgba(12, 10, 8, 0.92), transparent 14% 86%, rgba(12, 10, 8, 0.92)),
+    radial-gradient(ellipse at 50% 27%, rgba(95, 133, 158, 0.32), transparent 25%),
+    repeating-linear-gradient(0deg, transparent 0 42px, rgba(8, 7, 6, 0.7) 42px 47px),
+    repeating-linear-gradient(90deg, transparent 0 60px, rgba(8, 7, 6, 0.58) 60px 65px),
+    linear-gradient(180deg, #302922 0%, #1c1712 72%, #090806 100%);
+}
+
+.lobby-screen::before {
+  inset: auto -18% -11%;
+  height: 34dvh;
+  background:
+    repeating-conic-gradient(from 7deg, rgba(137, 170, 196, 0.26) 0deg 1.4deg, transparent 1.4deg 13deg),
+    radial-gradient(ellipse at center, transparent 0 34%, rgba(143, 187, 226, 0.46) 35% 37%, transparent 38% 58%, rgba(205, 157, 83, 0.32) 59% 61%, transparent 62%);
+  opacity: 0.9;
+}
+
+.lobby-screen::after {
+  background:
+    radial-gradient(circle at 18% 36%, rgba(219, 174, 97, 0.12), transparent 1.6%),
+    radial-gradient(circle at 74% 28%, rgba(255, 235, 180, 0.08), transparent 1.4%),
+    linear-gradient(105deg, transparent 0 30%, rgba(244, 218, 154, 0.055) 30% 31%, transparent 31%),
+    linear-gradient(70deg, transparent 0 64%, rgba(8, 7, 6, 0.28) 64% 65%, transparent 65%);
+  opacity: 0.95;
+}
+
+.lobby-screen .lobby-topbar,
+.lobby-screen .lobby-stage,
+.lobby-screen .challenge-button,
+.lobby-screen .bottom-menu {
+  max-width: 420px;
+}
+
+.lobby-screen .lobby-topbar {
+  grid-template-columns: minmax(0, 1fr) 92px 42px;
+  gap: 7px;
+}
+
+.lobby-screen .player-chip,
+.lobby-screen .currency-chip,
+.mail-chip {
+  min-height: 56px;
+  border: 3px solid #8f6432;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(239, 205, 139, 0.16), transparent 28%),
+    linear-gradient(180deg, #24282d 0%, #18191d 68%, #0f1013);
+  box-shadow:
+    inset 0 0 0 2px rgba(63, 39, 16, 0.78),
+    inset 0 12px 18px rgba(255, 255, 255, 0.035),
+    0 4px 0 rgba(43, 27, 10, 0.88),
+    0 12px 18px rgba(0, 0, 0, 0.42);
+}
+
+.lobby-screen .player-chip {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  padding: 6px 8px 6px 58px;
+}
+
+.lobby-screen .player-chip::before {
+  left: 7px;
+  width: 42px;
+  height: 42px;
+  border-color: #c79950;
+  background:
+    radial-gradient(circle at 50% 36%, #e9bc82 0 17%, transparent 18%),
+    radial-gradient(circle at 41% 48%, #16243a 0 4%, transparent 5%),
+    radial-gradient(circle at 59% 48%, #16243a 0 4%, transparent 5%),
+    radial-gradient(circle at 50% 28%, #5b351d 0 24%, transparent 25%),
+    linear-gradient(180deg, #302014 0 39%, #d99e68 40% 62%, #1d4165 63% 100%);
+}
+
+.lobby-screen .player-chip span {
+  display: block;
+  order: 2;
+  width: 100%;
+  color: #efe0b9;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.lobby-screen .player-chip strong {
+  display: block;
+  order: 1;
+  width: 100%;
+  color: #f3e5bd;
+  overflow: hidden;
+  font-size: 0.8rem;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lobby-screen .currency-chip {
+  color: #d8bd83;
+  font-size: 0.9rem;
+}
+
+.mail-chip {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-width: 42px;
+}
+
+.mail-chip span {
+  width: 30px;
+  height: 25px;
+  border: 2px solid #7d5530;
+  border-radius: 3px;
+  background:
+    linear-gradient(145deg, transparent 0 48%, rgba(95, 60, 31, 0.65) 49% 52%, transparent 53%),
+    linear-gradient(35deg, transparent 0 48%, rgba(95, 60, 31, 0.55) 49% 52%, transparent 53%),
+    linear-gradient(180deg, #ead7ae, #b59663);
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 218, 0.25);
+}
+
+.mail-chip strong {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #f0d0a2;
+  border-radius: 50%;
+  background: #b43b2d;
+  color: #fff3df;
+  font-size: 0.84rem;
+  line-height: 1;
+}
+
+.lobby-screen .lobby-stage {
+  min-height: 440px;
+  border-color: #7d552e;
+  background:
+    radial-gradient(ellipse at 50% 26%, rgba(118, 161, 197, 0.9) 0 14%, transparent 14.5%),
+    linear-gradient(90deg, rgba(22, 17, 13, 0.88) 0 22%, transparent 32% 68%, rgba(22, 17, 13, 0.9) 78%),
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(7, 6, 5, 0.76) 39px 44px),
+    repeating-linear-gradient(90deg, transparent 0 54px, rgba(7, 6, 5, 0.64) 54px 59px),
+    linear-gradient(180deg, #3a3028 0%, #332a22 48%, #211b15 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(36, 22, 9, 0.88),
+    inset 0 -100px 90px rgba(11, 9, 7, 0.74),
+    0 4px 0 rgba(47, 30, 12, 0.9),
+    0 16px 28px rgba(0, 0, 0, 0.48);
+}
+
+.lobby-screen .lobby-stage::before {
+  inset: auto 26px 34px;
+  height: 154px;
+  border-color: rgba(183, 219, 255, 0.72);
+  background:
+    repeating-conic-gradient(from 4deg, rgba(204, 232, 255, 0.58) 0deg 1.8deg, transparent 1.8deg 11deg),
+    radial-gradient(ellipse at center, transparent 0 24%, rgba(197, 229, 255, 0.82) 25% 27%, transparent 28% 43%, rgba(197, 229, 255, 0.68) 44% 46%, transparent 47% 58%, rgba(255, 243, 202, 0.42) 59% 61%, transparent 62%);
+  box-shadow:
+    0 0 36px rgba(104, 170, 225, 0.5),
+    inset 0 0 28px rgba(157, 211, 255, 0.36);
+}
+
+.lobby-screen .lobby-stage::after {
+  height: 152px;
+  background:
+    repeating-linear-gradient(28deg, rgba(255, 241, 192, 0.1) 0 2px, transparent 2px 38px),
+    repeating-linear-gradient(0deg, rgba(7, 6, 5, 0.62) 0 4px, transparent 4px 38px),
+    repeating-linear-gradient(90deg, rgba(7, 6, 5, 0.48) 0 4px, transparent 4px 72px),
+    linear-gradient(180deg, transparent, rgba(12, 10, 8, 0.86));
+}
+
+.lobby-screen .guild-arch {
+  inset: 18px 4px 62px;
+}
+
+.lobby-screen .guild-arch::before {
+  inset: 0 54px auto;
+  height: 208px;
+  border-width: 24px;
+  border-color: rgba(50, 42, 34, 0.94);
+  border-radius: 128px 128px 0 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(7, 6, 5, 0.54) 0 4px, transparent 4px 38px),
+    repeating-linear-gradient(90deg, rgba(7, 6, 5, 0.45) 0 4px, transparent 4px 46px),
+    linear-gradient(180deg, #51463a, #2a241d);
+  box-shadow:
+    inset 0 0 0 3px rgba(164, 116, 58, 0.32),
+    0 0 0 1px rgba(237, 205, 140, 0.22),
+    0 18px 22px rgba(0, 0, 0, 0.3);
+}
+
+.lobby-screen .guild-arch::after {
+  inset: 136px 30px auto;
+  height: 112px;
+  background:
+    linear-gradient(180deg, rgba(103, 158, 204, 0.72), rgba(81, 123, 158, 0.48) 56%, rgba(52, 47, 38, 0.62) 57%),
+    repeating-linear-gradient(90deg, rgba(38, 53, 68, 0.42) 0 2px, transparent 2px 42px);
+}
+
+.guild-skyline {
+  position: absolute;
+  left: 113px;
+  right: 113px;
+  top: 106px;
+  height: 82px;
+  background:
+    linear-gradient(90deg, transparent 0 8%, #2c4051 8% 18%, transparent 18% 34%, #263b4f 34% 46%, transparent 46% 62%, #30485c 62% 76%, transparent 76%),
+    linear-gradient(180deg, transparent 0 34%, rgba(255, 255, 255, 0.5) 35% 38%, transparent 39% 44%, rgba(255, 255, 255, 0.38) 45% 48%, transparent 49%);
+  clip-path: polygon(0 100%, 8% 100%, 12% 28%, 17% 100%, 31% 100%, 37% 0, 44% 100%, 62% 100%, 68% 12%, 76% 100%, 100% 100%);
+  opacity: 0.82;
+}
+
+.lobby-screen .guild-banner {
+  top: 72px;
+  width: 40px;
+  height: 126px;
+  border-color: rgba(154, 103, 50, 0.82);
+  background:
+    linear-gradient(135deg, rgba(235, 200, 132, 0.12), transparent 36%),
+    linear-gradient(180deg, #1c3c61, #182e4b);
+}
+
+.lobby-screen .guild-banner.left {
+  left: 22px;
+}
+
+.lobby-screen .guild-banner.right {
+  right: 22px;
+}
+
+.guild-crate,
+.guild-shield {
+  position: absolute;
+  bottom: 28px;
+  border: 2px solid #5f3e20;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+.guild-crate {
+  right: 15px;
+  width: 52px;
+  height: 48px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 15px, rgba(74, 44, 19, 0.42) 15px 18px),
+    linear-gradient(90deg, transparent 0 45%, rgba(74, 44, 19, 0.55) 45% 50%, transparent 50%),
+    linear-gradient(180deg, #a67c45, #6e4824);
+}
+
+.guild-shield {
+  right: 76px;
+  width: 40px;
+  height: 52px;
+  border-color: #9e7238;
+  border-radius: 20px 20px 26px 26px;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(239, 218, 160, 0.72), transparent 13%),
+    linear-gradient(90deg, #16385e 0 50%, #d7c395 51% 100%);
+  transform: rotate(-10deg);
+}
+
+.lobby-screen .guild-board {
+  top: 88px;
+  right: 16px;
+  bottom: auto;
+  width: 58px;
+  height: 74px;
+  opacity: 0.88;
+}
+
+.lobby-screen .guild-lantern {
+  left: 18px;
+  bottom: 28px;
+}
+
+.lobby-screen .hero-avatar {
+  height: 304px;
+  margin-top: 30px;
+}
+
+.lobby-screen .avatar-aura {
+  bottom: 0;
+  width: 202px;
+  height: 202px;
+  border-color: rgba(191, 225, 255, 0.68);
+}
+
+.lobby-screen .avatar-head {
+  top: 35px;
+  width: 58px;
+  height: 62px;
+}
+
+.lobby-screen .avatar-cape {
+  top: 92px;
+  width: 120px;
+  height: 170px;
+  background:
+    linear-gradient(135deg, rgba(239, 205, 139, 0.2), transparent 30%),
+    linear-gradient(180deg, #254d71, #122b45);
+}
+
+.lobby-screen .avatar-body {
+  width: 90px;
+  height: 160px;
+  margin-top: 76px;
+  background:
+    linear-gradient(90deg, transparent 0 34%, #233f61 35% 64%, transparent 65%),
+    radial-gradient(circle at 50% 25%, #ead8ae 0 10%, transparent 11%),
+    linear-gradient(180deg, #e8d5af 0 42%, #2a3851 43% 100%);
+}
+
+.lobby-screen .avatar-blade {
+  right: calc(50% + 34px);
+  bottom: 24px;
+  height: 148px;
+}
+
+.lobby-screen .lobby-loadout {
+  position: absolute;
+  z-index: 3;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lobby-screen .challenge-button {
+  min-height: 86px;
+  margin-top: -7px;
+  border-width: 4px;
+  border-color: #a16e33;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 246, 210, 0.16), transparent 31%),
+    linear-gradient(135deg, rgba(255, 244, 199, 0.28), transparent 30%),
+    linear-gradient(180deg, #244d73 0%, #17395c 72%, #102940);
+  color: #efe1bc;
+  font-size: clamp(2.45rem, 12vw, 3.6rem);
+  letter-spacing: 0;
+  text-shadow:
+    0 3px 0 rgba(40, 26, 11, 0.85),
+    0 0 10px rgba(255, 239, 193, 0.18);
+  box-shadow:
+    inset 0 0 0 3px rgba(36, 24, 11, 0.72),
+    inset 0 0 0 7px rgba(203, 151, 73, 0.42),
+    0 5px 0 rgba(54, 34, 13, 0.96),
+    0 18px 24px rgba(0, 0, 0, 0.5);
+}
+
+.lobby-screen .challenge-button::before,
+.lobby-screen .challenge-button::after {
+  width: 26px;
+  height: 26px;
+  border-color: #dda75a;
+  background: #254d73;
+}
+
+.lobby-screen .challenge-button span {
+  color: #e7d5ad;
+  font-size: 0.78rem;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.78);
+}
+
+.lobby-screen .bottom-menu {
+  min-height: 80px;
+  border-color: #7f5527;
+  background:
+    linear-gradient(180deg, rgba(241, 212, 145, 0.08), transparent 40%),
+    linear-gradient(180deg, #25180f, #0d0b08);
+}
+
+.lobby-screen .bottom-menu button {
+  min-height: 62px;
+  border-width: 3px;
+  border-color: #8a6334;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 248, 218, 0.22), transparent 34%),
+    linear-gradient(180deg, #d2b77a, #9c7843);
+  color: #23170e;
+  font-size: 0.84rem;
+}
+
+.lobby-screen .bottom-menu button.active {
+  border-color: #c8954d;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 248, 218, 0.18), transparent 34%),
+    linear-gradient(180deg, #244d73, #163a5c);
+  color: #ead9b2;
+}
+
+.lobby-screen .bottom-menu button span {
+  width: 27px;
+  height: 27px;
+  font-size: 0.9rem;
+}
+
+/* Stone slab navigation: keep the gold frame, make the inside feel carved from gray stone. */
+.bottom-menu,
+.lobby-screen .bottom-menu {
+  position: sticky;
+  overflow: hidden;
+  border-color: #7f5527;
+  background:
+    linear-gradient(180deg, rgba(228, 189, 111, 0.08), transparent 40%),
+    radial-gradient(circle at 14% 28%, rgba(76, 93, 63, 0.2), transparent 18%),
+    linear-gradient(180deg, #24190f, #0e0b08);
+}
+
+.bottom-menu::before,
+.bottom-menu::after {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  content: "";
+}
+
+.bottom-menu::before {
+  inset: 5px 10px auto;
+  height: 16px;
+  background:
+    radial-gradient(ellipse at 9% 58%, rgba(82, 126, 58, 0.86) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 25% 42%, rgba(94, 138, 66, 0.78) 0 7%, transparent 8%),
+    radial-gradient(ellipse at 72% 56%, rgba(70, 111, 55, 0.78) 0 7%, transparent 8%),
+    radial-gradient(ellipse at 90% 44%, rgba(96, 139, 70, 0.82) 0 8%, transparent 9%),
+    linear-gradient(105deg, transparent 0 7%, rgba(43, 81, 38, 0.78) 7% 8%, transparent 8% 22%, rgba(55, 94, 43, 0.76) 22% 23%, transparent 23% 68%, rgba(46, 83, 39, 0.74) 68% 69%, transparent 69%);
+  opacity: 0.58;
+}
+
+.bottom-menu::after {
+  inset: auto 18px 7px;
+  height: 12px;
+  background:
+    radial-gradient(ellipse at 13% 42%, rgba(79, 122, 57, 0.7) 0 9%, transparent 10%),
+    radial-gradient(ellipse at 82% 58%, rgba(91, 132, 65, 0.68) 0 8%, transparent 9%),
+    linear-gradient(83deg, transparent 0 11%, rgba(39, 78, 36, 0.62) 11% 12%, transparent 12% 78%, rgba(42, 80, 38, 0.6) 78% 79%, transparent 79%);
+  opacity: 0.46;
+}
+
+.bottom-menu button,
+.lobby-screen .bottom-menu button {
+  position: relative;
+  overflow: hidden;
+  border-color: #8a6334;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(235, 230, 205, 0.16), transparent 8%),
+    radial-gradient(circle at 82% 76%, rgba(12, 12, 10, 0.25), transparent 10%),
+    linear-gradient(122deg, transparent 0 44%, rgba(12, 12, 10, 0.24) 44% 45%, transparent 45%),
+    linear-gradient(64deg, transparent 0 62%, rgba(224, 216, 188, 0.11) 62% 63%, transparent 63%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 18px),
+    linear-gradient(180deg, #77786f 0%, #5d5f58 52%, #3b3d38 100%);
+  color: #efe2c1;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.78),
+    0 0 5px rgba(15, 12, 8, 0.4);
+  box-shadow:
+    inset 0 0 0 1px rgba(225, 210, 160, 0.12),
+    inset 0 -10px 18px rgba(0, 0, 0, 0.23),
+    0 3px 0 rgba(50, 33, 12, 0.62);
+}
+
+.bottom-menu button::before,
+.lobby-screen .bottom-menu button::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(ellipse at 14% 20%, rgba(75, 122, 56, 0.62) 0 5%, transparent 6%),
+    radial-gradient(ellipse at 88% 72%, rgba(88, 132, 64, 0.5) 0 5%, transparent 6%),
+    linear-gradient(138deg, transparent 0 20%, rgba(45, 84, 40, 0.55) 20% 21.5%, transparent 22%),
+    linear-gradient(48deg, transparent 0 74%, rgba(39, 75, 35, 0.48) 74% 75.2%, transparent 76%);
+  opacity: 0.5;
+}
+
+.bottom-menu button::after,
+.lobby-screen .bottom-menu button::after {
+  position: absolute;
+  inset: 6px 8px;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(26deg, transparent 0 36%, rgba(16, 15, 13, 0.32) 36% 37%, transparent 37%),
+    linear-gradient(156deg, transparent 0 71%, rgba(234, 224, 186, 0.1) 71% 72%, transparent 72%);
+  opacity: 0.72;
+}
+
+.bottom-menu button.active,
+.lobby-screen .bottom-menu button.active {
+  border-color: #c8954d;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(184, 210, 221, 0.18), transparent 28%),
+    radial-gradient(circle at 18% 24%, rgba(236, 230, 205, 0.18), transparent 8%),
+    linear-gradient(122deg, transparent 0 44%, rgba(10, 12, 13, 0.26) 44% 45%, transparent 45%),
+    linear-gradient(180deg, #737b78 0%, #566263 52%, #343b3d 100%);
+  color: #fff1c7;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 232, 165, 0.25),
+    inset 0 0 16px rgba(60, 118, 143, 0.28),
+    0 3px 0 rgba(50, 33, 12, 0.62),
+    0 0 12px rgba(200, 149, 77, 0.24);
+}
+
+.bottom-menu button.active::before,
+.lobby-screen .bottom-menu button.active::before {
+  opacity: 0.62;
+}
+
+.bottom-menu button span,
+.lobby-screen .bottom-menu button span {
+  position: relative;
+  z-index: 1;
+}
+
 .battle-screen,
 .battle-stage {
   width: 100%;

@@ -15,10 +15,12 @@ import {
 } from "../game/menu";
 import type { AttributeId } from "../types/game";
 
+type NavScreen = "home" | "formation" | "equipment" | "settings";
+
 interface HomeScreenProps {
   mainSkill: MainSkillOption;
   onChallenge: () => void;
-  onNavigate: (screen: "home" | "formation" | "equipment" | "settings") => void;
+  onNavigate: (screen: NavScreen) => void;
 }
 
 interface BossSelectScreenProps {
@@ -40,14 +42,17 @@ interface FormationScreenProps {
   mainSkill: MainSkillOption;
   onSave: (skill: MainSkillOption) => void;
   onHome: () => void;
+  onNavigate: (screen: NavScreen) => void;
 }
 
 interface EquipmentScreenProps {
   onHome: () => void;
+  onNavigate: (screen: NavScreen) => void;
 }
 
 interface SettingsScreenProps {
   onHome: () => void;
+  onNavigate: (screen: NavScreen) => void;
 }
 
 const NAV_ITEMS = [
@@ -102,8 +107,8 @@ function BottomMenu({
   active,
   onNavigate,
 }: {
-  active: "home" | "formation" | "equipment" | "settings";
-  onNavigate: (screen: "home" | "formation" | "equipment" | "settings") => void;
+  active?: NavScreen;
+  onNavigate: (screen: NavScreen) => void;
 }) {
   return (
     <nav className="bottom-menu" aria-label="下部メニュー">
@@ -126,9 +131,11 @@ function HeroAvatar({ label = "煌" }: { label?: string }) {
   return (
     <div className="hero-avatar" aria-label="プレイヤーキャラ">
       <div className="avatar-aura" />
+      <div className="avatar-head" />
       <div className="avatar-body">
         <span>{label}</span>
       </div>
+      <div className="avatar-cape" />
       <div className="avatar-blade" />
     </div>
   );
@@ -174,16 +181,23 @@ export function HomeScreen({ mainSkill, onChallenge, onNavigate }: HomeScreenPro
           <strong>ゲストプレイヤー</strong>
         </div>
         <div className="currency-chip">コイン 0</div>
+        <div className="mail-chip" aria-label="お知らせ">
+          <span aria-hidden="true" />
+          <strong>3</strong>
+        </div>
       </div>
 
       <section className="lobby-stage" aria-label="ホーム">
-        <p className="game-logo-kicker">DARK FANTASY RAID</p>
-        <h1>gameapp</h1>
-        <HeroAvatar />
-        <div className="build-ribbon">
-          <span>現在属性 <AttributePill attributeId="light" /></span>
-          <span>主要 {mainSkill.name}</span>
+        <div className="guild-arch" aria-hidden="true">
+          <span className="guild-skyline" />
+          <span className="guild-banner left" />
+          <span className="guild-banner right" />
+          <span className="guild-board" />
+          <span className="guild-lantern" />
+          <span className="guild-crate" />
+          <span className="guild-shield" />
         </div>
+        <HeroAvatar />
       </section>
 
       <section className="lobby-loadout" aria-label="現在ビルド">
@@ -203,7 +217,7 @@ export function HomeScreen({ mainSkill, onChallenge, onNavigate }: HomeScreenPro
 
       <button className="primary-button challenge-button game-cta" type="button" onClick={onChallenge}>
         <span>RAID START</span>
-        ボスに挑戦
+        出撃
       </button>
 
       <BottomMenu active="home" onNavigate={onNavigate} />
@@ -265,7 +279,12 @@ export function BossSelectScreen({
   );
 }
 
-export function SortiePrepScreen({ selection, mainSkill, onBack, onStart }: SortiePrepScreenProps) {
+export function SortiePrepScreen({
+  selection,
+  mainSkill,
+  onBack,
+  onStart,
+}: SortiePrepScreenProps) {
   return (
     <main className="screen menu-screen loadout-screen">
       <ScreenHeader title="出撃準備" eyebrow="LOADOUT" />
@@ -304,7 +323,7 @@ export function SortiePrepScreen({ selection, mainSkill, onBack, onStart }: Sort
   );
 }
 
-export function FormationScreen({ mainSkill, onSave, onHome }: FormationScreenProps) {
+export function FormationScreen({ mainSkill, onSave, onHome, onNavigate }: FormationScreenProps) {
   const [selectedSkill, setSelectedSkill] = useState(mainSkill);
   const [notice, setNotice] = useState("スキル選択中");
 
@@ -359,11 +378,13 @@ export function FormationScreen({ mainSkill, onSave, onHome }: FormationScreenPr
           保存
         </button>
       </div>
+
+      <BottomMenu active="formation" onNavigate={onNavigate} />
     </main>
   );
 }
 
-export function EquipmentScreen({ onHome }: EquipmentScreenProps) {
+export function EquipmentScreen({ onHome, onNavigate }: EquipmentScreenProps) {
   const [notice, setNotice] = useState("クラフト素材は仮表示です");
 
   const showDemoNotice = () => {
@@ -398,11 +419,13 @@ export function EquipmentScreen({ onHome }: EquipmentScreenProps) {
           強化
         </button>
       </div>
+
+      <BottomMenu active="equipment" onNavigate={onNavigate} />
     </main>
   );
 }
 
-export function SettingsScreen({ onHome }: SettingsScreenProps) {
+export function SettingsScreen({ onHome, onNavigate }: SettingsScreenProps) {
   return (
     <main className="screen menu-screen option-screen">
       <ScreenHeader title="設定" eyebrow="OPTIONS" onHome={onHome} />
@@ -440,6 +463,8 @@ export function SettingsScreen({ onHome }: SettingsScreenProps) {
           ホームへ戻る
         </button>
       </div>
+
+      <BottomMenu active="settings" onNavigate={onNavigate} />
     </main>
   );
 }

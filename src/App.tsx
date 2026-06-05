@@ -73,16 +73,27 @@ export default function App() {
         mainSkill={mainSkill}
         onSave={setMainSkill}
         onHome={goHome}
+        onNavigate={(nextScreen) => setScreen(nextScreen)}
       />
     );
   }
 
   if (screen === "equipment") {
-    return <EquipmentScreen onHome={goHome} />;
+    return (
+      <EquipmentScreen
+        onHome={goHome}
+        onNavigate={(nextScreen) => setScreen(nextScreen)}
+      />
+    );
   }
 
   if (screen === "settings") {
-    return <SettingsScreen onHome={goHome} />;
+    return (
+      <SettingsScreen
+        onHome={goHome}
+        onNavigate={(nextScreen) => setScreen(nextScreen)}
+      />
+    );
   }
 
   if (screen === "battle") {

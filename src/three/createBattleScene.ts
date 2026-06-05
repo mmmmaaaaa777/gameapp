@@ -252,12 +252,98 @@ function makeSkyDome(): THREE.Mesh {
   return new THREE.Mesh(new THREE.SphereGeometry(42, 24, 14), material);
 }
 
+function createStoneFloorTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 512;
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  context.fillStyle = "#3b3d35";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (let y = 0; y < canvas.height; y += 62) {
+    const rowOffset = y % 124 === 0 ? 0 : 46;
+
+    for (let x = -rowOffset; x < canvas.width; x += 92) {
+      const shade = 56 + Math.abs((x * 13 + y * 9) % 32);
+      const width = 86 + ((x + y) % 13);
+      const height = 56 + ((x * 3 + y) % 9);
+
+      context.fillStyle = `rgb(${shade + 9}, ${shade + 7}, ${shade})`;
+      context.fillRect(x + 3, y + 3, width, height);
+
+      context.strokeStyle = "rgba(6, 5, 4, 0.72)";
+      context.lineWidth = 5;
+      context.strokeRect(x + 3, y + 3, width, height);
+
+      context.strokeStyle = "rgba(236, 211, 158, 0.16)";
+      context.lineWidth = 2;
+      context.beginPath();
+      context.moveTo(x + 7, y + 8);
+      context.lineTo(x + width - 6, y + 7 + ((x + y) % 8));
+      context.stroke();
+
+      context.strokeStyle = "rgba(13, 11, 9, 0.28)";
+      context.lineWidth = 2;
+      context.beginPath();
+      context.moveTo(x + 16 + ((x + y) % 18), y + 18);
+      context.lineTo(x + 35 + ((x + y) % 12), y + 28 + ((x + y) % 10));
+      context.lineTo(x + 55 + ((x + y) % 8), y + 36 + ((x + y) % 12));
+      context.stroke();
+    }
+  }
+
+  for (let i = 0; i < 420; i += 1) {
+    const x = (i * 47 + 19) % canvas.width;
+    const y = (i * 89 + 31) % canvas.height;
+    const size = 1 + (i % 4);
+    const alpha = 0.07 + (i % 5) * 0.02;
+    context.fillStyle = i % 3 === 0
+      ? `rgba(245, 225, 170, ${alpha})`
+      : `rgba(14, 12, 9, ${alpha + 0.04})`;
+    context.fillRect(x, y, size, size);
+  }
+
+  for (let i = 0; i < 22; i += 1) {
+    const startX = (i * 37 + 28) % canvas.width;
+    const startY = (i * 53 + 21) % canvas.height;
+    context.strokeStyle = "rgba(8, 7, 6, 0.55)";
+    context.lineWidth = 3;
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(startX + 20 + (i % 4) * 7, startY + 8 + (i % 3) * 8);
+    context.lineTo(startX + 38 + (i % 2) * 12, startY + 22 + (i % 5));
+    context.stroke();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(2.05, 2.05);
+  texture.needsUpdate = true;
+
+  return texture;
+}
+
 function makeArena(): ArenaModel {
   const group = new THREE.Group();
   const runeGroup = new THREE.Group();
+  const floorTexture = createStoneFloorTexture();
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x8a8d80,
+    map: floorTexture,
+    roughness: 0.98,
+    metalness: 0,
+    emissive: 0x040504,
+  });
   const floor = new THREE.Mesh(
     new THREE.CircleGeometry(FIELD_RADIUS, 96),
-    makeStandardMaterial(0x1d241e, 0.94, 0.02, 0x050705),
+    floorMaterial,
   );
   floor.rotation.x = -Math.PI / 2;
   group.add(floor);
@@ -265,6 +351,18 @@ function makeArena(): ArenaModel {
   const pulseMaterial = makeGlowMaterial(0xffd66e, 0.28);
   const ringMaterial = makeGlowMaterial(0xd5b46e, 0.42);
   const dimLineMaterial = makeGlowMaterial(0x75805c, 0.3);
+  const crackMaterial = new THREE.MeshBasicMaterial({
+    color: 0x090806,
+    transparent: true,
+    opacity: 0.52,
+    depthWrite: false,
+  });
+  const groutMaterial = new THREE.MeshBasicMaterial({
+    color: 0x11100d,
+    transparent: true,
+    opacity: 0.44,
+    depthWrite: false,
+  });
   const stoneMaterial = makeStandardMaterial(0x33342f, 0.88, 0.02);
   const darkStoneMaterial = makeStandardMaterial(0x24251f, 0.9, 0.02);
   const crystalMaterial = makeStandardMaterial(0x285f58, 0.45, 0.05, 0x0b3a35);
@@ -299,6 +397,37 @@ function makeArena(): ArenaModel {
     marker.position.set(Math.cos(angle) * 4.8, 0.045, Math.sin(angle) * 4.8);
     marker.rotation.y = -angle;
     runeGroup.add(marker);
+  }
+
+  for (let i = -3; i <= 3; i += 1) {
+    const offset = i * 1.86;
+    const length = Math.sqrt(Math.max(FIELD_RADIUS * FIELD_RADIUS - offset * offset, 0)) * 1.84;
+    const horizontal = new THREE.Mesh(
+      new THREE.BoxGeometry(length, 0.012, 0.045),
+      groutMaterial,
+    );
+    horizontal.position.set(0, 0.018, offset);
+    group.add(horizontal);
+
+    const vertical = new THREE.Mesh(
+      new THREE.BoxGeometry(length, 0.012, 0.045),
+      groutMaterial,
+    );
+    vertical.position.set(offset, 0.019, 0);
+    vertical.rotation.y = Math.PI / 2;
+    group.add(vertical);
+  }
+
+  for (let i = 0; i < 10; i += 1) {
+    const angle = (i / 10) * Math.PI * 2 + 0.18;
+    const distance = 1.3 + (i % 5) * 1.14;
+    const crack = new THREE.Mesh(
+      new THREE.BoxGeometry(0.72 + (i % 3) * 0.22, 0.01, 0.018),
+      crackMaterial,
+    );
+    crack.position.set(Math.cos(angle) * distance, 0.022, Math.sin(angle) * distance);
+    crack.rotation.y = angle + (i % 4) * 0.32;
+    group.add(crack);
   }
 
   const outerTorus = new THREE.Mesh(
