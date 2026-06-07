@@ -120,7 +120,7 @@ function BottomMenu({
           onClick={() => onNavigate(screen)}
         >
           <span aria-hidden="true">{icon}</span>
-          {label}
+          <strong>{label}</strong>
         </button>
       ))}
     </nav>
