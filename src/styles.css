@@ -3151,3 +3151,24 @@ dl {
     display: none;
   }
 }
+
+.menu-screen.has-bottom-menu {
+  padding-bottom: calc(112px + env(safe-area-inset-bottom));
+}
+
+.menu-screen.has-bottom-menu .bottom-menu,
+.lobby-screen.has-bottom-menu .bottom-menu {
+  position: fixed;
+  left: 50%;
+  right: auto;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  z-index: 40;
+  width: min(calc(100vw - 20px), 430px);
+  max-width: calc(100vw - 20px);
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.lobby-screen.has-bottom-menu .bottom-menu {
+  width: min(calc(100vw - 20px), 420px);
+}

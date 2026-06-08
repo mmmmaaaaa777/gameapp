@@ -72,7 +72,6 @@ export default function App() {
       <FormationScreen
         mainSkill={mainSkill}
         onSave={setMainSkill}
-        onHome={goHome}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
       />
     );
@@ -81,7 +80,6 @@ export default function App() {
   if (screen === "equipment") {
     return (
       <EquipmentScreen
-        onHome={goHome}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
       />
     );

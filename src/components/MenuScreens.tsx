@@ -41,12 +41,10 @@ interface SortiePrepScreenProps {
 interface FormationScreenProps {
   mainSkill: MainSkillOption;
   onSave: (skill: MainSkillOption) => void;
-  onHome: () => void;
   onNavigate: (screen: NavScreen) => void;
 }
 
 interface EquipmentScreenProps {
-  onHome: () => void;
   onNavigate: (screen: NavScreen) => void;
 }
 
@@ -174,7 +172,7 @@ function SkillSlots({ mainSkill }: { mainSkill: MainSkillOption }) {
 
 export function HomeScreen({ mainSkill, onChallenge, onNavigate }: HomeScreenProps) {
   return (
-    <main className="screen menu-screen lobby-screen">
+    <main className="screen menu-screen lobby-screen has-bottom-menu">
       <div className="lobby-topbar">
         <div className="player-chip">
           <span>Lv.1</span>
@@ -323,13 +321,13 @@ export function SortiePrepScreen({
   );
 }
 
-export function FormationScreen({ mainSkill, onSave, onHome, onNavigate }: FormationScreenProps) {
+export function FormationScreen({ mainSkill, onSave, onNavigate }: FormationScreenProps) {
   const [selectedSkill, setSelectedSkill] = useState(mainSkill);
   const [notice, setNotice] = useState("スキル選択中");
 
   return (
-    <main className="screen menu-screen deck-screen">
-      <ScreenHeader title="編成" eyebrow="SKILL DECK" onHome={onHome} />
+    <main className="screen menu-screen deck-screen has-bottom-menu">
+      <ScreenHeader title="編成" eyebrow="SKILL DECK" />
 
       <section className="deck-feature">
         <small>SELECTED</small>
@@ -384,7 +382,7 @@ export function FormationScreen({ mainSkill, onSave, onHome, onNavigate }: Forma
   );
 }
 
-export function EquipmentScreen({ onHome, onNavigate }: EquipmentScreenProps) {
+export function EquipmentScreen({ onNavigate }: EquipmentScreenProps) {
   const [notice, setNotice] = useState("クラフト素材は仮表示です");
 
   const showDemoNotice = () => {
@@ -392,8 +390,8 @@ export function EquipmentScreen({ onHome, onNavigate }: EquipmentScreenProps) {
   };
 
   return (
-    <main className="screen menu-screen forge-screen">
-      <ScreenHeader title="装備" eyebrow="FORGE" onHome={onHome} />
+    <main className="screen menu-screen forge-screen has-bottom-menu">
+      <ScreenHeader title="装備" eyebrow="FORGE" />
 
       <section className="slot-panel forge-slots">
         <h2>EQUIPMENT SLOT</h2>
@@ -427,8 +425,8 @@ export function EquipmentScreen({ onHome, onNavigate }: EquipmentScreenProps) {
 
 export function SettingsScreen({ onHome, onNavigate }: SettingsScreenProps) {
   return (
-    <main className="screen menu-screen option-screen">
-      <ScreenHeader title="設定" eyebrow="OPTIONS" onHome={onHome} />
+    <main className="screen menu-screen option-screen has-bottom-menu">
+      <ScreenHeader title="設定" eyebrow="OPTIONS" />
 
       <section className="help-command-grid" aria-label="操作説明">
         {[
