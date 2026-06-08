@@ -8,7 +8,11 @@ import type {
 
 export const FIELD_RADIUS = 8;
 export const PLAYER_MAX_HP = 100;
-export const BOSS_MAX_HP = 300;
+export const PLAYER_BASE_ATTACK = 10;
+export const PLAYER_BASE_DEFENSE = 5;
+export const PLAYER_CRITICAL_RATE = 0.05;
+export const PLAYER_CRITICAL_MULTIPLIER = 1.5;
+export const BOSS_MAX_HP = 3000;
 export const PLAYER_SPEED_UNITS_PER_SEC = 4.2;
 export const ATTACK_RANGE = 3.5;
 export const ATTACK_DAMAGE = 10;
@@ -20,10 +24,13 @@ export const DODGE_INVULNERABLE_MS = 360;
 export const SHOCKWAVE_INTERVAL_MS = 3500;
 export const SHOCKWAVE_WARNING_MS = 850;
 export const SHOCKWAVE_RANGE = 3.05;
-export const SHOCKWAVE_DAMAGE = 12;
+export const BOSS_SCRATCH_ATTACK_POWER = 15;
+export const BOSS_GROUND_BURST_ATTACK_POWER = 20;
+export const BOSS_CHARGE_ATTACK_POWER = 25;
+export const SHOCKWAVE_DAMAGE = BOSS_GROUND_BURST_ATTACK_POWER;
 export const BEAM_INTERVAL_MS = 5200;
 export const BEAM_WARNING_MS = 750;
-export const BEAM_DAMAGE = 8;
+export const BEAM_DAMAGE = BOSS_CHARGE_ATTACK_POWER;
 export const BEAM_WIDTH = 0.72;
 export const UI_SYNC_INTERVAL_MS = 80;
 

@@ -9,12 +9,51 @@ import {
   SortiePrepScreen,
 } from "./components/MenuScreens";
 import { ResultScreen } from "./components/ResultScreen";
+import {
+  calculateEquipmentBonus,
+  canCraftEquipment,
+  canUpgradeEquipment,
+  consumeEquipmentCost,
+  consumeEquipmentUpgradeCost,
+  createEmptyEquippedEquipment,
+  createEmptyEquipmentLevels,
+  createEmptyOwnedEquipment,
+  equipEquipment,
+  EQUIPMENT_BY_ID,
+  getEquipmentLevel,
+  loadEquippedEquipment,
+  loadEquipmentLevels,
+  loadOwnedEquipment,
+  getCraftableEquipmentIds,
+  getUpgradeableEquipmentIds,
+  saveEquippedEquipment,
+  saveEquipmentLevels,
+  saveOwnedEquipment,
+  upgradeEquipmentLevel,
+} from "./game/equipment";
+import { createRetryBattleSelection } from "./game/difficulty";
+import {
+  addRewardToInventory,
+  createEmptyInventory,
+  loadPlayerInventory,
+  savePlayerInventory,
+} from "./game/inventory";
 import { BOSS_OPTIONS, MAIN_SKILLS, type BossDifficulty } from "./game/menu";
-import type { AppScreen, BattleResult } from "./types/game";
+import { generateBattleReward } from "./game/rewards";
+import type { AppScreen, BattleResult, BattleReward, EquipmentId } from "./types/game";
+
+interface RewardedBattleResult {
+  battle: BattleResult;
+  reward: BattleReward;
+}
 
 export default function App() {
   const [screen, setScreen] = useState<AppScreen>("home");
-  const [result, setResult] = useState<BattleResult | null>(null);
+  const [result, setResult] = useState<RewardedBattleResult | null>(null);
+  const [inventory, setInventory] = useState(loadPlayerInventory);
+  const [ownedEquipment, setOwnedEquipment] = useState(loadOwnedEquipment);
+  const [equippedEquipment, setEquippedEquipment] = useState(loadEquippedEquipment);
+  const [equipmentLevels, setEquipmentLevels] = useState(loadEquipmentLevels);
   const [selectedBoss, setSelectedBoss] = useState(BOSS_OPTIONS[0]);
   const [difficulty, setDifficulty] = useState<BossDifficulty>("Normal");
   const [mainSkill, setMainSkill] = useState(MAIN_SKILLS[0]);
@@ -23,6 +62,14 @@ export default function App() {
     boss: selectedBoss,
     difficulty,
   };
+  const craftableEquipmentCount = getCraftableEquipmentIds(inventory, ownedEquipment).length;
+  const upgradeableEquipmentCount = getUpgradeableEquipmentIds(
+    inventory,
+    ownedEquipment,
+    equipmentLevels,
+  ).length;
+  const equipmentNoticeCount = craftableEquipmentCount + upgradeableEquipmentCount;
+  const equipmentBonus = calculateEquipmentBonus(equippedEquipment, equipmentLevels);
 
   const startBattle = () => {
     setResult(null);
@@ -30,13 +77,96 @@ export default function App() {
     setScreen("battle");
   };
 
+  const retryBattle = () => {
+    const retrySelection = createRetryBattleSelection(bossSelection);
+    setSelectedBoss(retrySelection.boss);
+    setDifficulty(retrySelection.difficulty);
+    startBattle();
+  };
+
   const goHome = () => {
     setScreen("home");
+  };
+
+  const resetInventory = () => {
+    const emptyInventory = createEmptyInventory();
+    const emptyOwnedEquipment = createEmptyOwnedEquipment();
+    const emptyEquippedEquipment = createEmptyEquippedEquipment();
+    const emptyEquipmentLevels = createEmptyEquipmentLevels();
+    savePlayerInventory(emptyInventory);
+    saveOwnedEquipment(emptyOwnedEquipment);
+    saveEquippedEquipment(emptyEquippedEquipment);
+    saveEquipmentLevels(emptyEquipmentLevels);
+    setInventory(emptyInventory);
+    setOwnedEquipment(emptyOwnedEquipment);
+    setEquippedEquipment(emptyEquippedEquipment);
+    setEquipmentLevels(emptyEquipmentLevels);
+  };
+
+  const craftEquipment = (equipmentId: EquipmentId): boolean => {
+    const equipment = EQUIPMENT_BY_ID[equipmentId];
+
+    if (ownedEquipment[equipmentId] || !canCraftEquipment(inventory, equipment)) {
+      return false;
+    }
+
+    const nextInventory = consumeEquipmentCost(inventory, equipment);
+    const nextOwnedEquipment = {
+      ...ownedEquipment,
+      [equipmentId]: true,
+    };
+    const nextEquipmentLevels = {
+      ...equipmentLevels,
+      [equipmentId]: 1,
+    };
+
+    savePlayerInventory(nextInventory);
+    saveOwnedEquipment(nextOwnedEquipment);
+    saveEquipmentLevels(nextEquipmentLevels);
+    setInventory(nextInventory);
+    setOwnedEquipment(nextOwnedEquipment);
+    setEquipmentLevels(nextEquipmentLevels);
+
+    return true;
+  };
+
+  const equipOwnedEquipment = (equipmentId: EquipmentId): boolean => {
+    if (!ownedEquipment[equipmentId]) {
+      return false;
+    }
+
+    const nextEquippedEquipment = equipEquipment(equippedEquipment, equipmentId);
+    saveEquippedEquipment(nextEquippedEquipment);
+    setEquippedEquipment(nextEquippedEquipment);
+
+    return true;
+  };
+
+  const upgradeOwnedEquipment = (equipmentId: EquipmentId): boolean => {
+    const equipment = EQUIPMENT_BY_ID[equipmentId];
+
+    if (!canUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipment)) {
+      return false;
+    }
+
+    const currentLevel = getEquipmentLevel(equipmentLevels, equipmentId);
+    const nextInventory = consumeEquipmentUpgradeCost(inventory, currentLevel);
+    const nextEquipmentLevels = upgradeEquipmentLevel(equipmentLevels, equipmentId);
+
+    savePlayerInventory(nextInventory);
+    saveEquipmentLevels(nextEquipmentLevels);
+    setInventory(nextInventory);
+    setEquipmentLevels(nextEquipmentLevels);
+
+    return true;
   };
 
   if (screen === "home") {
     return (
       <HomeScreen
+        equipmentNoticeCount={equipmentNoticeCount}
+        equippedEquipment={equippedEquipment}
+        inventory={inventory}
         mainSkill={mainSkill}
         onChallenge={() => setScreen("bossSelect")}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
@@ -59,6 +189,9 @@ export default function App() {
   if (screen === "sortiePrep") {
     return (
       <SortiePrepScreen
+        equipmentBonus={equipmentBonus}
+        equipmentLevels={equipmentLevels}
+        equippedEquipment={equippedEquipment}
         mainSkill={mainSkill}
         selection={bossSelection}
         onBack={() => setScreen("bossSelect")}
@@ -70,6 +203,7 @@ export default function App() {
   if (screen === "formation") {
     return (
       <FormationScreen
+        equipmentNoticeCount={equipmentNoticeCount}
         mainSkill={mainSkill}
         onSave={setMainSkill}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
@@ -80,6 +214,16 @@ export default function App() {
   if (screen === "equipment") {
     return (
       <EquipmentScreen
+        craftableEquipmentCount={craftableEquipmentCount}
+        equipmentLevels={equipmentLevels}
+        equipmentNoticeCount={equipmentNoticeCount}
+        equippedEquipment={equippedEquipment}
+        inventory={inventory}
+        ownedEquipment={ownedEquipment}
+        upgradeableEquipmentCount={upgradeableEquipmentCount}
+        onCraftEquipment={craftEquipment}
+        onEquipEquipment={equipOwnedEquipment}
+        onUpgradeEquipment={upgradeOwnedEquipment}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
       />
     );
@@ -88,8 +232,14 @@ export default function App() {
   if (screen === "settings") {
     return (
       <SettingsScreen
+        equipmentLevels={equipmentLevels}
+        equipmentNoticeCount={equipmentNoticeCount}
+        equippedEquipment={equippedEquipment}
+        inventory={inventory}
+        ownedEquipment={ownedEquipment}
         onHome={goHome}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
+        onResetInventory={resetInventory}
       />
     );
   }
@@ -97,9 +247,20 @@ export default function App() {
   if (screen === "battle") {
     return (
       <BattleScreen
+        equipmentBonus={equipmentBonus}
         key={runId}
+        selection={bossSelection}
         onComplete={(nextResult) => {
-          setResult(nextResult);
+          const reward = generateBattleReward(nextResult.kind);
+          setInventory((currentInventory) => {
+            const nextInventory = addRewardToInventory(currentInventory, reward);
+            savePlayerInventory(nextInventory);
+            return nextInventory;
+          });
+          setResult({
+            battle: nextResult,
+            reward,
+          });
           setScreen("result");
         }}
       />
@@ -110,8 +271,12 @@ export default function App() {
     return (
       <ResultScreen
         bossName={selectedBoss.name}
-        result={result}
-        onRetry={startBattle}
+        difficulty={difficulty}
+        inventory={inventory}
+        result={result.battle}
+        reward={result.reward}
+        onRetry={retryBattle}
+        onEquipment={() => setScreen("equipment")}
         onHome={goHome}
       />
     );

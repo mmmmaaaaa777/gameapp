@@ -65,14 +65,21 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
       onPointerUp={stopControlEvent}
     >
       <div className="hud-top">
-        <HpBar label="BOSS" value={snapshot.bossHp} max={300} variant="boss" />
-        <HpBar label="PLAYER" value={snapshot.playerHp} max={100} variant="player" />
+        <HpBar label="BOSS" value={snapshot.bossHp} max={snapshot.bossMaxHp} variant="boss" />
+        <HpBar
+          label="PLAYER"
+          value={snapshot.playerHp}
+          max={snapshot.playerMaxHp}
+          variant="player"
+        />
       </div>
 
       <div className="hud-info">
         <span>時間 {snapshot.elapsedSeconds.toFixed(1)}秒</span>
         <span>与 {snapshot.dealtDamage}</span>
         <span>被 {snapshot.takenDamage}</span>
+        <span>攻 {snapshot.playerAttackPower}</span>
+        <span>防 {snapshot.playerDefense}</span>
         <span
           className="active-attribute"
           style={
@@ -114,7 +121,7 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
                 <span className="skill-short">{skill.shortLabel}</span>
                 <span className="skill-label">{skill.label}</span>
                 <span className="skill-meta">
-                  {disabled ? formatCooldown(cooldown) : `${skill.damage} dmg`}
+                  {disabled ? formatCooldown(cooldown) : `${snapshot.skillDamagePreview[skill.id]} dmg`}
                 </span>
               </button>
             );
@@ -152,7 +159,7 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
       </div>
 
       <p className="operation-hint">
-        スワイプで移動 / タップで攻撃 / 素早いフリックで回避
+        スワイプで移動 / タップ攻撃 {snapshot.normalAttackDamage} dmg / フリックで回避
       </p>
     </div>
   );

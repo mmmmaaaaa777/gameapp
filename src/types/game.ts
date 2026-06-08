@@ -46,11 +46,31 @@ export interface BattleStats {
   elapsedSeconds: number;
   dealtDamage: number;
   takenDamage: number;
+  dodgeSuccessCount: number;
+  breakCount: number;
 }
 
 export interface BattleResult {
   kind: ResultKind;
   stats: BattleStats;
+}
+
+export type MaterialId =
+  | "beastClaw"
+  | "fireStone"
+  | "oldCloth"
+  | "stonePiece"
+  | "magicShard";
+
+export type PlayerInventory = {
+  coin: number;
+} & Record<MaterialId, number>;
+
+export type MaterialRewardMap = Record<MaterialId, number>;
+
+export interface BattleReward {
+  coin: number;
+  materials: MaterialRewardMap;
 }
 
 export interface Vec2 {
@@ -65,11 +85,17 @@ export interface Vec3XZ {
 
 export interface BattleUiSnapshot {
   playerHp: number;
+  playerMaxHp: number;
+  playerAttackPower: number;
+  playerDefense: number;
   bossHp: number;
+  bossMaxHp: number;
   elapsedSeconds: number;
   dealtDamage: number;
   takenDamage: number;
   activeAttribute: AttributeId;
+  normalAttackDamage: number;
+  skillDamagePreview: Record<SkillId, number>;
   skillCooldowns: CooldownMap;
   attackReady: boolean;
   dodgeReady: boolean;
@@ -95,4 +121,51 @@ export interface SceneSnapshot {
     direction: Vec3XZ;
     progress: number;
   };
+}
+
+export type EquipmentSlot = "weapon" | "head" | "body" | "feet";
+
+export type EquipmentId =
+  | "fireStoneSword"
+  | "travelerBandana"
+  | "adventurerClothes"
+  | "lightBoots";
+
+export interface EquipmentCost {
+  coin: number;
+  materials: Partial<Record<MaterialId, number>>;
+}
+
+export interface EquipmentEffect {
+  attackBonus?: number;
+  maxHpBonus?: number;
+  moveSpeedPercentBonus?: number;
+}
+
+export interface EquipmentDefinition {
+  id: EquipmentId;
+  slot: EquipmentSlot;
+  name: string;
+  effectLabel: string;
+  cost: EquipmentCost;
+  effect: EquipmentEffect;
+}
+
+export type OwnedEquipment = Record<EquipmentId, boolean>;
+
+export type EquippedEquipment = Record<EquipmentSlot, EquipmentId | null>;
+
+export type EquipmentLevel = 1 | 2 | 3 | 4 | 5;
+
+export type EquipmentLevelMap = Record<EquipmentId, EquipmentLevel>;
+
+export interface EquipmentUpgradeCost {
+  coin: number;
+  magicShard: number;
+}
+
+export interface BattleEquipmentBonus {
+  attackBonus: number;
+  maxHpBonus: number;
+  moveSpeedMultiplier: number;
 }

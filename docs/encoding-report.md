@@ -143,3 +143,73 @@ FBX読み込み後にメッシュを走査し、元マテリアルをdisposeし�
 ### 対処方法
 
 読み込んだFBXの `animations` について、track数、duration、キャラクター骨名との対応を確認し、対象名を含む有効clipを優先して採用するようにした。run clipが空または不採用の場合は、idleを維持しながらモデル全体の上下揺れ、前傾、足元リングで移動感を補うようにした。
+
+## その他エラー: Playwright検証スクリプトの日本語正規表現化け
+
+### 発生内容
+
+選択状態の375px確認用にPowerShellのインラインスクリプトからNode.jsを実行したところ、`getByRole('button', { name: /出撃/ })` などの日本語正規表現が ` /??/ ` のように崩れ、`SyntaxError: Invalid regular expression: /??/: Nothing to repeat` が発生した。
+
+### 原因
+
+PowerShellのヒア文字列を標準入力経由でNode.jsへ渡す実行経路で、日本語を含む正規表現リテラルが期待したUTF-8として扱われず、疑問符へ置換されたため。
+
+### 対処方法
+
+検証スクリプト内の日本語文字列はUnicodeエスケープ表記に変更し、正規表現リテラルではなく `new RegExp(...)` と文字列指定を使って再実行する。
+
+## その他エラー: Playwrightモジュール未導入
+
+### 発生内容
+
+選択状態の375px確認用にNode.jsから `require('playwright')` を実行したところ、`Error: Cannot find module 'playwright'` が発生した。
+
+### 原因
+
+このプロジェクトの `node_modules` にはPlaywrightがインストールされておらず、ローカルの検証スクリプトから直接読み込めなかったため。
+
+### 対処方法
+
+アプリ本体へ新しい依存は追加せず、利用可能なブラウザ検証ツールまたは既存の開発サーバーと手動確認に切り替える。外部依存を追加しない方針を維持する。
+
+## その他エラー: ブラウザ検証APIのnetworkidle非対応
+
+### 発生内容
+
+ in-app browser の検証APIで `waitForLoadState({ state: 'networkidle' })` を実行したところ、`playwright_wait_for_load_state does not support networkidle` が発生した。
+
+### 原因
+
+このブラウザ検証環境では、通常のPlaywrightで使える `networkidle` 待機がサポートされていなかったため。
+
+### 対処方法
+
+`load` または `domcontentloaded` を使って待機し、必要に応じて短い追加待機とDOM状態確認で画面が描画済みか確認する。
+
+## その他エラー: ブラウザ検証でlocalStorage投入不可
+
+### 発生内容
+
+v3.1.1の375px確認で作成可能装備の状態を作るため、in-app browser の `evaluate()` から `localStorage.setItem(...)` を呼んだところ、`Cannot read properties of undefined (reading 'setItem')` が発生した。続けて `javascript:` URLで同じ状態投入を試したところ、ブラウザ安全ポリシーにより拒否された。
+
+### 原因
+
+このブラウザ検証環境のページ評価は読み取り用途に制限されており、localStorageへの直接書き込みや `javascript:` URLによる状態変更は許可されていないため。
+
+### 対処方法
+
+ブラウザ検証では通常の画面操作で到達できる範囲を確認する。作成可能判定そのものは `getCraftableEquipmentIds()` のユニットテストで確認し、ブラウザ側では実際の報酬ループ後に装備画面へ遷移できることを確認する。
+
+## その他エラー: ブラウザ検証のロールクリックタイムアウト
+
+### 発生内容
+
+v3.2の375px確認で、リザルト画面の `装備を確認` ボタンを `getByRole` 経由でクリックしたところ、ブラウザ検証APIのCDPコマンドがタイムアウトした。
+
+### 原因
+
+対象ボタンはDOM上に存在していたが、in-app browserのロール解決またはクリック待機が一時的に不安定になり、通常のPlaywrightロケータ操作が完了しなかったため。
+
+### 対処方法
+
+DOM読み取りで対象ボタンの矩形と表示状態を確認し、同じボタンを座標クリックで操作した。クリック後は画面テキストとボタン状態を再取得して、装備画面への遷移とLv5強化表示を確認した。

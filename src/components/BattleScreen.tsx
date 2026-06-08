@@ -9,7 +9,6 @@ import {
   BEAM_INTERVAL_MS,
   BEAM_WARNING_MS,
   BEAM_WIDTH,
-  BOSS_MAX_HP,
   DODGE_COOLDOWN_MS,
   DODGE_DISTANCE,
   DODGE_DURATION_MS,
@@ -17,6 +16,10 @@ import {
   EMPTY_COOLDOWNS,
   FIELD_RADIUS,
   INITIAL_ATTRIBUTE,
+  PLAYER_BASE_ATTACK,
+  PLAYER_BASE_DEFENSE,
+  PLAYER_CRITICAL_MULTIPLIER,
+  PLAYER_CRITICAL_RATE,
   PLAYER_MAX_HP,
   PLAYER_SPEED_UNITS_PER_SEC,
   SHOCKWAVE_DAMAGE,
@@ -29,11 +32,15 @@ import {
 import {
   applyDamage,
   applyIncomingDamage,
+  calculateDamage,
   canUseSkill,
+  getCriticalMultiplier,
   getBattleResult,
+  rollCritical,
   setSkillCooldown,
   tickCooldowns,
 } from "../game/combat";
+import { getBossStatsForSelection } from "../game/difficulty";
 import { classifyGesture, hasSwipeMovement, shouldHandleCanvasPointer } from "../game/gesture";
 import {
   addScaled,
@@ -49,6 +56,7 @@ import {
 import { createBattleScene, type BattleScene } from "../three/createBattleScene";
 import type {
   AttributeId,
+  BattleEquipmentBonus,
   BattleResult,
   BattleUiSnapshot,
   CooldownMap,
@@ -56,8 +64,11 @@ import type {
   SkillId,
   Vec3XZ,
 } from "../types/game";
+import type { BossSelection } from "../game/menu";
 
 interface BattleScreenProps {
+  equipmentBonus?: BattleEquipmentBonus;
+  selection: BossSelection;
   onComplete: (result: BattleResult) => void;
 }
 
@@ -89,8 +100,15 @@ interface BattleRuntime {
   playerPosition: Vec3XZ;
   playerAngle: number;
   playerHp: number;
+  playerMaxHp: number;
+  playerAttackPower: number;
+  playerDefense: number;
+  playerSpeed: number;
   bossPosition: Vec3XZ;
   bossHp: number;
+  bossMaxHp: number;
+  bossDefense: number;
+  bossAttribute: AttributeId;
   activeAttribute: AttributeId;
   movement: Vec3XZ;
   pointer: PointerRuntime;
@@ -103,6 +121,8 @@ interface BattleRuntime {
   elapsedMs: number;
   dealtDamage: number;
   takenDamage: number;
+  dodgeSuccessCount: number;
+  breakCount: number;
   notice: string;
   bossHurtMs: number;
   shockwaveCountdownMs: number;
@@ -113,13 +133,50 @@ interface BattleRuntime {
   finished: boolean;
 }
 
-function createInitialRuntime(): BattleRuntime {
+const DEFAULT_EQUIPMENT_BONUS: BattleEquipmentBonus = {
+  attackBonus: 0,
+  maxHpBonus: 0,
+  moveSpeedMultiplier: 1,
+};
+
+function getSkillDamageMultiplier(skillId: SkillId): number {
+  return SKILL_BY_ID[skillId].damage / ATTACK_DAMAGE;
+}
+
+function calculatePlayerDamage(
+  runtime: BattleRuntime,
+  skillDamageMultiplier = 1,
+  criticalMultiplier = 1,
+) {
+  return calculateDamage({
+    attackPower: runtime.playerAttackPower,
+    defense: runtime.bossDefense,
+    elementMultiplier: 1,
+    criticalMultiplier,
+    skillDamageMultiplier,
+  });
+}
+
+function createInitialRuntime(
+  equipmentBonus: BattleEquipmentBonus,
+  selection: BossSelection,
+): BattleRuntime {
+  const playerMaxHp = PLAYER_MAX_HP + equipmentBonus.maxHpBonus;
+  const bossStats = getBossStatsForSelection(selection);
+
   return {
     playerPosition: { x: 0, z: 2.2 },
     playerAngle: angleFromDirection({ x: 0, z: -1 }),
-    playerHp: PLAYER_MAX_HP,
+    playerHp: playerMaxHp,
+    playerMaxHp,
+    playerAttackPower: PLAYER_BASE_ATTACK + equipmentBonus.attackBonus,
+    playerDefense: PLAYER_BASE_DEFENSE,
+    playerSpeed: PLAYER_SPEED_UNITS_PER_SEC * equipmentBonus.moveSpeedMultiplier,
     bossPosition: { x: 0, z: -1.3 },
-    bossHp: BOSS_MAX_HP,
+    bossHp: bossStats.maxHp,
+    bossMaxHp: bossStats.maxHp,
+    bossDefense: bossStats.defense,
+    bossAttribute: selection.boss.attributeId,
     activeAttribute: INITIAL_ATTRIBUTE,
     movement: { x: 0, z: 0 },
     pointer: {
@@ -139,6 +196,8 @@ function createInitialRuntime(): BattleRuntime {
     elapsedMs: 0,
     dealtDamage: 0,
     takenDamage: 0,
+    dodgeSuccessCount: 0,
+    breakCount: 0,
     notice: "ボスに近づいてタップ攻撃",
     bossHurtMs: 0,
     shockwaveCountdownMs: 1650,
@@ -153,11 +212,24 @@ function createInitialRuntime(): BattleRuntime {
 function makeUiSnapshot(runtime: BattleRuntime): BattleUiSnapshot {
   return {
     playerHp: runtime.playerHp,
+    playerMaxHp: runtime.playerMaxHp,
+    playerAttackPower: runtime.playerAttackPower,
+    playerDefense: runtime.playerDefense,
     bossHp: runtime.bossHp,
+    bossMaxHp: runtime.bossMaxHp,
     elapsedSeconds: runtime.elapsedMs / 1000,
     dealtDamage: runtime.dealtDamage,
     takenDamage: runtime.takenDamage,
     activeAttribute: runtime.activeAttribute,
+    normalAttackDamage: calculatePlayerDamage(runtime).damage,
+    skillDamagePreview: {
+      quickSlash: calculatePlayerDamage(runtime, getSkillDamageMultiplier("quickSlash")).damage,
+      attributeBurst: calculatePlayerDamage(
+        runtime,
+        getSkillDamageMultiplier("attributeBurst"),
+      ).damage,
+      breakArts: calculatePlayerDamage(runtime, getSkillDamageMultiplier("breakArts")).damage,
+    },
     skillCooldowns: runtime.cooldowns,
     attackReady: runtime.attackCooldownMs <= 0,
     dodgeReady: runtime.dodgeCooldownMs <= 0,
@@ -170,8 +242,8 @@ function makeSceneSnapshot(runtime: BattleRuntime): SceneSnapshot {
     playerPosition: runtime.playerPosition,
     playerAngle: runtime.playerAngle,
     bossPosition: runtime.bossPosition,
-    playerHpRatio: runtime.playerHp / PLAYER_MAX_HP,
-    bossHpRatio: runtime.bossHp / BOSS_MAX_HP,
+    playerHpRatio: runtime.playerHp / runtime.playerMaxHp,
+    bossHpRatio: runtime.bossHp / runtime.bossMaxHp,
     activeAttribute: runtime.activeAttribute,
     isDodging: runtime.dodgeInvulnerableMs > 0,
     playerAttackPulse: clamp(runtime.playerAttackMs / 360, 0, 1),
@@ -197,10 +269,14 @@ function isUiControlTarget(target: EventTarget | null): boolean {
   return target instanceof Element && Boolean(target.closest("[data-ui-control='true']"));
 }
 
-export function BattleScreen({ onComplete }: BattleScreenProps) {
+export function BattleScreen({
+  equipmentBonus = DEFAULT_EQUIPMENT_BONUS,
+  selection,
+  onComplete,
+}: BattleScreenProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<BattleScene | null>(null);
-  const runtimeRef = useRef<BattleRuntime>(createInitialRuntime());
+  const runtimeRef = useRef<BattleRuntime>(createInitialRuntime(equipmentBonus, selection));
   const [uiSnapshot, setUiSnapshot] = useState<BattleUiSnapshot>(() =>
     makeUiSnapshot(runtimeRef.current),
   );
@@ -221,6 +297,8 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
           elapsedSeconds: Math.round((runtime.elapsedMs / 1000) * 10) / 10,
           dealtDamage: runtime.dealtDamage,
           takenDamage: runtime.takenDamage,
+          dodgeSuccessCount: runtime.dodgeSuccessCount,
+          breakCount: runtime.breakCount,
         },
       });
     },
@@ -228,7 +306,13 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
   );
 
   const dealBossDamage = useCallback(
-    (damage: number, range: number, effectScale: number, sourceLabel: string) => {
+    (
+      skillDamageMultiplier: number,
+      range: number,
+      effectScale: number,
+      sourceLabel: string,
+      countBreak = false,
+    ) => {
       const runtime = runtimeRef.current;
 
       if (runtime.finished) {
@@ -253,12 +337,21 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
         return;
       }
 
+      const critical = rollCritical(PLAYER_CRITICAL_RATE);
+      const damageResult = calculatePlayerDamage(
+        runtime,
+        skillDamageMultiplier,
+        getCriticalMultiplier(critical, PLAYER_CRITICAL_MULTIPLIER),
+      );
       const beforeHp = runtime.bossHp;
-      runtime.bossHp = applyDamage(runtime.bossHp, damage, BOSS_MAX_HP);
+      runtime.bossHp = applyDamage(runtime.bossHp, damageResult.damage, runtime.bossMaxHp);
       const appliedDamage = beforeHp - runtime.bossHp;
       runtime.dealtDamage += appliedDamage;
+      if (appliedDamage > 0 && countBreak) {
+        runtime.breakCount += 1;
+      }
       runtime.bossHurtMs = 220;
-      runtime.notice = `${sourceLabel}: ${appliedDamage}ダメージ`;
+      runtime.notice = `${sourceLabel}: ${appliedDamage}ダメージ${critical ? " CRITICAL" : ""}`;
       sceneRef.current?.spawnHitEffect(
         runtime.activeAttribute,
         runtime.bossPosition,
@@ -283,7 +376,7 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
     }
 
     runtime.attackCooldownMs = ATTACK_COOLDOWN_MS;
-    dealBossDamage(ATTACK_DAMAGE, ATTACK_RANGE, 0.85, "通常攻撃");
+    dealBossDamage(1, ATTACK_RANGE, 0.85, "通常攻撃");
   }, [dealBossDamage]);
 
   const startDodge = useCallback((dx: number, dy: number) => {
@@ -321,7 +414,13 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
       }
 
       runtime.cooldowns = setSkillCooldown(runtime.cooldowns, skillId, skill.cooldownMs);
-      dealBossDamage(skill.damage, skill.range, skill.effectScale, skill.label);
+      dealBossDamage(
+        getSkillDamageMultiplier(skillId),
+        skill.range,
+        skill.effectScale,
+        skill.label,
+        skillId === "breakArts",
+      );
     },
     [dealBossDamage],
   );
@@ -333,16 +432,25 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
     setUiSnapshot(makeUiSnapshot(runtime));
   }, []);
 
-  const takePlayerDamage = useCallback((damage: number, label: string) => {
+  const takePlayerDamage = useCallback((attackPower: number, label: string) => {
     const runtime = runtimeRef.current;
+    const damageResult = calculateDamage({
+      attackPower,
+      defense: runtime.playerDefense,
+      elementMultiplier: 1,
+      criticalMultiplier: 1,
+    });
     const { nextHp, appliedDamage } = applyIncomingDamage(
       runtime.playerHp,
-      damage,
-      PLAYER_MAX_HP,
+      damageResult.damage,
+      runtime.playerMaxHp,
       runtime.dodgeInvulnerableMs > 0,
     );
 
     if (appliedDamage <= 0) {
+      if (runtime.dodgeInvulnerableMs > 0) {
+        runtime.dodgeSuccessCount += 1;
+      }
       runtime.notice = `${label}: 回避成功`;
       return;
     }
@@ -403,7 +511,7 @@ export function BattleScreen({ onComplete }: BattleScreenProps) {
           addScaled(
             runtime.playerPosition,
             runtime.movement,
-            PLAYER_SPEED_UNITS_PER_SEC * (deltaMs / 1000),
+            runtime.playerSpeed * (deltaMs / 1000),
           ),
           FIELD_RADIUS - 0.45,
         );
