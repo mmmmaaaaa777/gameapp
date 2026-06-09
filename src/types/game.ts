@@ -129,7 +129,9 @@ export type EquipmentId =
   | "fireStoneSword"
   | "travelerBandana"
   | "adventurerClothes"
-  | "lightBoots";
+  | "lightBoots"
+  | "waterMirrorSword"
+  | "azureStreamSword";
 
 export interface EquipmentCost {
   coin: number;
@@ -149,6 +151,9 @@ export interface EquipmentDefinition {
   effectLabel: string;
   cost: EquipmentCost;
   effect: EquipmentEffect;
+  element?: AttributeId;
+  canCraft?: boolean;
+  rebirthFrom?: EquipmentId;
 }
 
 export type OwnedEquipment = Record<EquipmentId, boolean>;

@@ -25,6 +25,8 @@ import {
   loadEquipmentLevels,
   loadOwnedEquipment,
   getCraftableEquipmentIds,
+  getRebirthableWeaponIds,
+  rebirthWeapon as applyRebirthWeapon,
   getUpgradeableEquipmentIds,
   saveEquippedEquipment,
   saveEquipmentLevels,
@@ -41,6 +43,7 @@ import {
 import { BOSS_OPTIONS, MAIN_SKILLS, type BossDifficulty } from "./game/menu";
 import { generateBattleReward } from "./game/rewards";
 import type { AppScreen, BattleResult, BattleReward, EquipmentId } from "./types/game";
+import type { WeaponId } from "./game/equipment";
 
 interface RewardedBattleResult {
   battle: BattleResult;
@@ -68,7 +71,9 @@ export default function App() {
     ownedEquipment,
     equipmentLevels,
   ).length;
-  const equipmentNoticeCount = craftableEquipmentCount + upgradeableEquipmentCount;
+  const rebirthableWeaponCount = getRebirthableWeaponIds(inventory, ownedEquipment).length;
+  const equipmentNoticeCount =
+    craftableEquipmentCount + upgradeableEquipmentCount + rebirthableWeaponCount;
   const equipmentBonus = calculateEquipmentBonus(equippedEquipment, equipmentLevels);
 
   const startBattle = () => {
@@ -161,6 +166,34 @@ export default function App() {
     return true;
   };
 
+  const rebirthWeapon = (equipmentId: WeaponId): boolean => {
+    const result = applyRebirthWeapon(inventory, ownedEquipment, equipmentLevels, equipmentId);
+
+    if (!result.result.success || !result.result.nextWeaponId) {
+      return false;
+    }
+
+    const nextInventory = result.inventory;
+    const nextOwnedEquipment = result.ownedEquipment;
+    const nextEquipmentLevels = result.equipmentLevels;
+    const nextEquippedEquipment = {
+      ...equippedEquipment,
+      weapon:
+        equippedEquipment.weapon === equipmentId ? result.result.nextWeaponId : equippedEquipment.weapon,
+    };
+
+    savePlayerInventory(nextInventory);
+    saveOwnedEquipment(nextOwnedEquipment);
+    saveEquipmentLevels(nextEquipmentLevels);
+    saveEquippedEquipment(nextEquippedEquipment);
+    setInventory(nextInventory);
+    setOwnedEquipment(nextOwnedEquipment);
+    setEquipmentLevels(nextEquipmentLevels);
+    setEquippedEquipment(nextEquippedEquipment);
+
+    return true;
+  };
+
   if (screen === "home") {
     return (
       <HomeScreen
@@ -213,20 +246,22 @@ export default function App() {
 
   if (screen === "equipment") {
     return (
-      <EquipmentScreen
-        craftableEquipmentCount={craftableEquipmentCount}
-        equipmentLevels={equipmentLevels}
-        equipmentNoticeCount={equipmentNoticeCount}
-        equippedEquipment={equippedEquipment}
-        inventory={inventory}
+        <EquipmentScreen
+          craftableEquipmentCount={craftableEquipmentCount}
+          equipmentLevels={equipmentLevels}
+          equipmentNoticeCount={equipmentNoticeCount}
+          equippedEquipment={equippedEquipment}
+          inventory={inventory}
         ownedEquipment={ownedEquipment}
-        upgradeableEquipmentCount={upgradeableEquipmentCount}
-        onCraftEquipment={craftEquipment}
-        onEquipEquipment={equipOwnedEquipment}
-        onUpgradeEquipment={upgradeOwnedEquipment}
-        onNavigate={(nextScreen) => setScreen(nextScreen)}
-      />
-    );
+          upgradeableEquipmentCount={upgradeableEquipmentCount}
+          rebirthableWeaponCount={rebirthableWeaponCount}
+          onCraftEquipment={craftEquipment}
+          onEquipEquipment={equipOwnedEquipment}
+          onUpgradeEquipment={upgradeOwnedEquipment}
+          onRebirthWeapon={rebirthWeapon}
+          onNavigate={(nextScreen) => setScreen(nextScreen)}
+        />
+      );
   }
 
   if (screen === "settings") {
@@ -250,6 +285,7 @@ export default function App() {
         equipmentBonus={equipmentBonus}
         key={runId}
         selection={bossSelection}
+        equippedWeaponId={equippedEquipment.weapon}
         onComplete={(nextResult) => {
           const reward = generateBattleReward(nextResult.kind);
           setInventory((currentInventory) => {

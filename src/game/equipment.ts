@@ -8,6 +8,7 @@ import type {
   EquipmentUpgradeCost,
   EquippedEquipment,
   OwnedEquipment,
+  MaterialId,
   PlayerInventory,
 } from "../types/game";
 import { MATERIAL_IDS, type InventoryStorage } from "./inventory";
@@ -56,7 +57,8 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "fireStoneSword",
     slot: "weapon",
     name: "炎石の剣",
-    effectLabel: "攻撃力+6",
+    effectLabel: "通常攻撃 +6",
+    element: "fire",
     cost: {
       coin: 100,
       materials: {
@@ -67,6 +69,38 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     effect: {
       attackBonus: 6,
     },
+  },
+  {
+    id: "waterMirrorSword",
+    slot: "weapon",
+    name: "水鏡の剣",
+    effectLabel: "通常攻撃 +10",
+    element: "water",
+    cost: {
+      coin: 0,
+      materials: {},
+    },
+    effect: {
+      attackBonus: 10,
+    },
+    canCraft: false,
+    rebirthFrom: "fireStoneSword",
+  },
+  {
+    id: "azureStreamSword",
+    slot: "weapon",
+    name: "蒼流の剣",
+    effectLabel: "通常攻撃 +14",
+    element: "water",
+    cost: {
+      coin: 0,
+      materials: {},
+    },
+    effect: {
+      attackBonus: 14,
+    },
+    canCraft: false,
+    rebirthFrom: "waterMirrorSword",
   },
   {
     id: "travelerBandana",
@@ -115,6 +149,187 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     },
   },
 ];
+
+export const REBIRTH_CHAIN: Record<EquipmentId, EquipmentId | null> = {
+  fireStoneSword: "waterMirrorSword",
+  waterMirrorSword: "azureStreamSword",
+  azureStreamSword: null,
+  travelerBandana: null,
+  adventurerClothes: null,
+  lightBoots: null,
+};
+
+const WEAPON_REBIRTH_COSTS: Partial<
+  Record<WeaponId, { coin: number; materials: Partial<Record<MaterialId, number>> }>
+> = {
+  fireStoneSword: {
+    coin: 250,
+    materials: {
+      beastClaw: 4,
+      stonePiece: 3,
+      magicShard: 2,
+    },
+  },
+  waterMirrorSword: {
+    coin: 500,
+    materials: {
+      beastClaw: 6,
+      stonePiece: 6,
+      magicShard: 5,
+    },
+  },
+};
+
+export type WeaponId =
+  | "fireStoneSword"
+  | "waterMirrorSword"
+  | "azureStreamSword";
+
+export interface WeaponRebirthCost {
+  coin: number;
+  materials: Partial<Record<MaterialId, number>>;
+}
+
+export interface WeaponRebirthResult {
+  success: boolean;
+  nextWeaponId?: WeaponId;
+}
+
+export const WEAPON_REBIRTH_ORDER: WeaponId[] = ["fireStoneSword", "waterMirrorSword"];
+
+function isWeaponId(value: EquipmentId | null): value is WeaponId {
+  return (
+    value === "fireStoneSword" ||
+    value === "waterMirrorSword" ||
+    value === "azureStreamSword"
+  );
+}
+
+export function getNextRebirthWeapon(equipmentId: EquipmentId): WeaponId | null {
+  const nextId = REBIRTH_CHAIN[equipmentId];
+  return isWeaponId(nextId) ? nextId : null;
+}
+
+export function getWeaponRebirthCost(equipmentId: WeaponId): WeaponRebirthCost | null {
+  return WEAPON_REBIRTH_COSTS[equipmentId] ?? null;
+}
+
+export function canAffordRebirthCost(
+  inventory: PlayerInventory,
+  cost: WeaponRebirthCost,
+): boolean {
+  if (inventory.coin < cost.coin) {
+    return false;
+  }
+
+  return MATERIAL_IDS.every(
+    (materialId) => inventory[materialId] >= (cost.materials[materialId] ?? 0),
+  );
+}
+
+export function applyRebirthCost(
+  inventory: PlayerInventory,
+  cost: WeaponRebirthCost,
+): PlayerInventory {
+  return MATERIAL_IDS.reduce(
+    (nextInventory, materialId) => ({
+      ...nextInventory,
+      [materialId]: nextInventory[materialId] - (cost.materials[materialId] ?? 0),
+    }),
+    {
+      ...inventory,
+      coin: inventory.coin - cost.coin,
+    },
+  );
+}
+
+export function canRebirthWeapon(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+  equipmentId: WeaponId,
+): boolean {
+  if (!ownedEquipment[equipmentId]) {
+    return false;
+  }
+
+  const nextWeaponId = getNextRebirthWeapon(equipmentId);
+  const cost = getWeaponRebirthCost(equipmentId);
+
+  if (!nextWeaponId || !cost || ownedEquipment[nextWeaponId]) {
+    return false;
+  }
+
+  return canAffordRebirthCost(inventory, cost);
+}
+
+export function getRebirthableWeaponIds(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+): WeaponId[] {
+  return WEAPON_REBIRTH_ORDER.filter((weaponId) =>
+    canRebirthWeapon(inventory, ownedEquipment, weaponId),
+  );
+}
+
+export function hasRebirthableWeapon(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+): boolean {
+  return getRebirthableWeaponIds(inventory, ownedEquipment).length > 0;
+}
+
+export function rebirthWeapon(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+  equipmentLevels: EquipmentLevelMap,
+  weaponId: WeaponId,
+): {
+  result: WeaponRebirthResult;
+  inventory: PlayerInventory;
+  ownedEquipment: OwnedEquipment;
+  equipmentLevels: EquipmentLevelMap;
+} {
+  if (!canRebirthWeapon(inventory, ownedEquipment, weaponId)) {
+    return {
+      result: { success: false },
+      inventory,
+      ownedEquipment,
+      equipmentLevels,
+    };
+  }
+
+  const nextWeaponId = getNextRebirthWeapon(weaponId);
+  const cost = getWeaponRebirthCost(weaponId);
+
+  if (!nextWeaponId || !cost) {
+    return {
+      result: { success: false },
+      inventory,
+      ownedEquipment,
+      equipmentLevels,
+    };
+  }
+
+  const nextEquipmentLevels = {
+    ...equipmentLevels,
+    [weaponId]: 1,
+    [nextWeaponId]: getEquipmentLevel(equipmentLevels, weaponId),
+  };
+
+  return {
+    result: {
+      success: true,
+      nextWeaponId,
+    },
+    inventory: applyRebirthCost(inventory, cost),
+    ownedEquipment: {
+      ...ownedEquipment,
+      [weaponId]: false,
+      [nextWeaponId]: true,
+    },
+    equipmentLevels: nextEquipmentLevels,
+  };
+}
 
 export const EQUIPMENT_BY_ID: Record<EquipmentId, EquipmentDefinition> =
   EQUIPMENT_DEFINITIONS.reduce(
@@ -292,6 +507,10 @@ export function canCraftEquipment(
   inventory: PlayerInventory,
   equipment: EquipmentDefinition,
 ): boolean {
+  if (equipment.canCraft === false) {
+    return false;
+  }
+
   if (inventory.coin < equipment.cost.coin) {
     return false;
   }

@@ -240,6 +240,8 @@ describe("equipment storage", () => {
       travelerBandana: 1,
       adventurerClothes: 1,
       lightBoots: 1,
+      waterMirrorSword: 1,
+      azureStreamSword: 1,
     });
   });
 });

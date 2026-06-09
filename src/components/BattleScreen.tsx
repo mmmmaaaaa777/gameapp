@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+﻿import { useCallback, useEffect, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { BattleHud } from "./BattleHud";
 import {
@@ -53,13 +53,16 @@ import {
   screenDeltaToWorldDirection,
   smoothStep,
 } from "../game/math";
+import { getAttackElement, getDefenseElement, getElementMultiplier } from "../game/elements";
 import { createBattleScene, type BattleScene } from "../three/createBattleScene";
+import { EQUIPMENT_BY_ID } from "../game/equipment";
 import type {
   AttributeId,
   BattleEquipmentBonus,
   BattleResult,
   BattleUiSnapshot,
   CooldownMap,
+  EquipmentId,
   SceneSnapshot,
   SkillId,
   Vec3XZ,
@@ -69,6 +72,7 @@ import type { BossSelection } from "../game/menu";
 interface BattleScreenProps {
   equipmentBonus?: BattleEquipmentBonus;
   selection: BossSelection;
+  equippedWeaponId?: EquipmentId | null;
   onComplete: (result: BattleResult) => void;
 }
 
@@ -110,6 +114,9 @@ interface BattleRuntime {
   bossDefense: number;
   bossAttribute: AttributeId;
   activeAttribute: AttributeId;
+  equippedWeaponId: EquipmentId | null;
+  attackElement: AttributeId;
+  defenseElement: AttributeId;
   movement: Vec3XZ;
   pointer: PointerRuntime;
   cooldowns: CooldownMap;
@@ -151,18 +158,29 @@ function calculatePlayerDamage(
   return calculateDamage({
     attackPower: runtime.playerAttackPower,
     defense: runtime.bossDefense,
-    elementMultiplier: 1,
+    elementMultiplier: getElementMultiplier(runtime.attackElement, runtime.bossAttribute),
     criticalMultiplier,
     skillDamageMultiplier,
   });
 }
 
+function getRuntimeAttackElement(
+  weaponId: EquipmentId | null,
+  selectedAttribute: AttributeId,
+): AttributeId {
+  const weapon = weaponId ? EQUIPMENT_BY_ID[weaponId] : null;
+
+  return getAttackElement(weapon, selectedAttribute);
+}
+
 function createInitialRuntime(
   equipmentBonus: BattleEquipmentBonus,
   selection: BossSelection,
+  equippedWeaponId: EquipmentId | null,
 ): BattleRuntime {
   const playerMaxHp = PLAYER_MAX_HP + equipmentBonus.maxHpBonus;
   const bossStats = getBossStatsForSelection(selection);
+  const activeAttribute = INITIAL_ATTRIBUTE;
 
   return {
     playerPosition: { x: 0, z: 2.2 },
@@ -177,7 +195,10 @@ function createInitialRuntime(
     bossMaxHp: bossStats.maxHp,
     bossDefense: bossStats.defense,
     bossAttribute: selection.boss.attributeId,
-    activeAttribute: INITIAL_ATTRIBUTE,
+    activeAttribute,
+    equippedWeaponId,
+    attackElement: getRuntimeAttackElement(equippedWeaponId, activeAttribute),
+    defenseElement: getDefenseElement(activeAttribute),
     movement: { x: 0, z: 0 },
     pointer: {
       active: false,
@@ -272,11 +293,14 @@ function isUiControlTarget(target: EventTarget | null): boolean {
 export function BattleScreen({
   equipmentBonus = DEFAULT_EQUIPMENT_BONUS,
   selection,
+  equippedWeaponId = null,
   onComplete,
 }: BattleScreenProps) {
   const mountRef = useRef<HTMLDivElement | null>(null);
   const sceneRef = useRef<BattleScene | null>(null);
-  const runtimeRef = useRef<BattleRuntime>(createInitialRuntime(equipmentBonus, selection));
+  const runtimeRef = useRef<BattleRuntime>(
+    createInitialRuntime(equipmentBonus, selection, equippedWeaponId),
+  );
   const [uiSnapshot, setUiSnapshot] = useState<BattleUiSnapshot>(() =>
     makeUiSnapshot(runtimeRef.current),
   );
@@ -325,11 +349,7 @@ export function BattleScreen({
       });
       runtime.playerAttackMs = Math.max(runtime.playerAttackMs, 230 + effectScale * 90);
       runtime.playerAngle = angleFromDirection(directionToBoss);
-      sceneRef.current?.spawnAttackFlash(
-        runtime.activeAttribute,
-        runtime.playerPosition,
-        runtime.playerAngle,
-      );
+      sceneRef.current?.spawnAttackFlash(runtime.attackElement, runtime.playerPosition, runtime.playerAngle);
 
       if (distance2d(runtime.playerPosition, runtime.bossPosition) > range) {
         runtime.notice = `${sourceLabel}: 距離が遠い`;
@@ -352,11 +372,7 @@ export function BattleScreen({
       }
       runtime.bossHurtMs = 220;
       runtime.notice = `${sourceLabel}: ${appliedDamage}ダメージ${critical ? " CRITICAL" : ""}`;
-      sceneRef.current?.spawnHitEffect(
-        runtime.activeAttribute,
-        runtime.bossPosition,
-        effectScale,
-      );
+      sceneRef.current?.spawnHitEffect(runtime.attackElement, runtime.bossPosition, effectScale);
 
       const result = getBattleResult(runtime.playerHp, runtime.bossHp);
       setUiSnapshot(makeUiSnapshot(runtime));
@@ -428,7 +444,9 @@ export function BattleScreen({
   const changeAttribute = useCallback((attributeId: AttributeId) => {
     const runtime = runtimeRef.current;
     runtime.activeAttribute = attributeId;
-    runtime.notice = "属性を切り替え";
+    runtime.attackElement = getRuntimeAttackElement(runtime.equippedWeaponId, attributeId);
+    runtime.defenseElement = getDefenseElement(attributeId);
+    runtime.notice = `属性を${attributeId}に変更`;
     setUiSnapshot(makeUiSnapshot(runtime));
   }, []);
 
@@ -437,7 +455,7 @@ export function BattleScreen({
     const damageResult = calculateDamage({
       attackPower,
       defense: runtime.playerDefense,
-      elementMultiplier: 1,
+      elementMultiplier: getElementMultiplier(runtime.bossAttribute, runtime.defenseElement),
       criticalMultiplier: 1,
     });
     const { nextHp, appliedDamage } = applyIncomingDamage(
@@ -702,3 +720,4 @@ export function BattleScreen({
     </main>
   );
 }
+

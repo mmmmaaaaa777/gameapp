@@ -1,10 +1,11 @@
-import type { CSSProperties } from "react";
+﻿import type { CSSProperties } from "react";
 import { useState } from "react";
 import { ATTRIBUTE_BY_ID, PLAYER_BASE_ATTACK, PLAYER_MAX_HP } from "../game/constants";
 import { getPlayerBattleStats } from "../game/combat";
 import { getBossStatsForSelection } from "../game/difficulty";
 import {
   canCraftEquipment,
+  canRebirthWeapon,
   canUpgradeEquipment,
   EQUIPMENT_BY_ID,
   EQUIPMENT_DEFINITIONS,
@@ -12,6 +13,7 @@ import {
   getEquipmentLevel,
   getEquipmentUpgradeCost,
   getNextEquipmentLevel,
+  getWeaponRebirthCost,
   getScaledEquipmentEffect,
 } from "../game/equipment";
 import { MATERIAL_IDS, MATERIAL_LABELS } from "../game/inventory";
@@ -37,6 +39,7 @@ import type {
   OwnedEquipment,
   PlayerInventory,
 } from "../types/game";
+import type { WeaponId } from "../game/equipment";
 
 type NavScreen = "home" | "formation" | "equipment" | "settings";
 
@@ -82,9 +85,11 @@ interface EquipmentScreenProps {
   inventory: PlayerInventory;
   ownedEquipment: OwnedEquipment;
   upgradeableEquipmentCount: number;
+  rebirthableWeaponCount: number;
   onCraftEquipment: (equipmentId: EquipmentId) => boolean;
   onEquipEquipment: (equipmentId: EquipmentId) => boolean;
   onUpgradeEquipment: (equipmentId: EquipmentId) => boolean;
+  onRebirthWeapon: (weaponId: WeaponId) => boolean;
   onNavigate: (screen: NavScreen) => void;
 }
 
@@ -574,10 +579,12 @@ export function EquipmentScreen({
   equippedEquipment,
   inventory,
   ownedEquipment,
+  rebirthableWeaponCount,
   upgradeableEquipmentCount,
   onCraftEquipment,
   onEquipEquipment,
   onUpgradeEquipment,
+  onRebirthWeapon,
   onNavigate,
 }: EquipmentScreenProps) {
   const [notice, setNotice] = useState("素材を集めて装備を作成できます");
@@ -621,6 +628,10 @@ export function EquipmentScreen({
       {craftableEquipmentCount > 0 ? (
         <p className="craftable-summary">作成可能な装備 {craftableEquipmentCount}件</p>
       ) : null}
+      {rebirthableWeaponCount > 0 ? (
+        <p className="craftable-summary rebirthable-summary">Rebirth available: {rebirthableWeaponCount}</p>
+      ) : null}
+
       {upgradeableEquipmentCount > 0 ? (
         <p className="craftable-summary upgradeable-summary">
           強化可能な装備 {upgradeableEquipmentCount}件
@@ -637,6 +648,12 @@ export function EquipmentScreen({
           const level = getEquipmentLevel(equipmentLevels, equipment.id);
           const nextLevel = getNextEquipmentLevel(level);
           const upgradeCost = getEquipmentUpgradeCost(level);
+          const rebirthable = equipment.slot === "weapon"
+            ? canRebirthWeapon(inventory, ownedEquipment, equipment.id as WeaponId)
+            : false;
+          const rebirthCost = rebirthable
+            ? getWeaponRebirthCost(equipment.id as WeaponId)
+            : null;
           const upgradeable = canUpgradeEquipment(
             inventory,
             ownedEquipment,
@@ -662,6 +679,7 @@ export function EquipmentScreen({
                 </div>
                 {craftable && !owned ? <span className="craftable-badge">作成可能</span> : null}
                 {upgradeable ? <span className="craftable-badge upgradeable-badge">強化可能</span> : null}
+                {rebirthable ? <span className="craftable-badge rebirth-badge">再生可能</span> : null}
               </div>
               <div className="equipment-level-row">
                 <span>Lv{level}</span>
@@ -705,6 +723,31 @@ export function EquipmentScreen({
                 </button>
               ) : (
                 <div className="equipment-action-stack">
+                  {rebirthable && rebirthCost ? (
+                    <>
+                      <div className="upgrade-cost">
+                        再生コスト: コイン×{rebirthCost.coin}
+                        {Object.entries(rebirthCost.materials).map(([materialId, amount]) =>
+                          amount > 0 ? ` / ${materialId}×${amount}` : "",
+                        )}
+                      </div>
+                      <button
+                        className="secondary-button rebirth-button"
+                        disabled={!rebirthable}
+                        type="button"
+                        onClick={() => {
+                          const reborn = onRebirthWeapon(equipment.id as WeaponId);
+                          setNotice(
+                            reborn
+                              ? `${equipment.name}を再生しました`
+                              : `${equipment.name}はまだ再生できません`,
+                          );
+                        }}
+                      >
+                        再生する
+                      </button>
+                    </>
+                  ) : null}
                   <button
                     className={equipped ? "secondary-button equipped-button" : "primary-button game-cta"}
                     disabled={equipped}
