@@ -629,7 +629,9 @@ export function EquipmentScreen({
         <p className="craftable-summary">作成可能な装備 {craftableEquipmentCount}件</p>
       ) : null}
       {rebirthableWeaponCount > 0 ? (
-        <p className="craftable-summary rebirthable-summary">Rebirth available: {rebirthableWeaponCount}</p>
+        <p className="craftable-summary rebirthable-summary">
+          武器転生可能な装備 {rebirthableWeaponCount}件
+        </p>
       ) : null}
 
       {upgradeableEquipmentCount > 0 ? (
@@ -665,7 +667,7 @@ export function EquipmentScreen({
             <article
               className={`equipment-craft-card ${equipped ? "equipped" : ""} ${
                 craftable && !owned ? "craftable" : ""
-              } ${upgradeable ? "upgradeable" : ""}`}
+              } ${upgradeable ? "upgradeable" : ""} ${rebirthable ? "rebirthable" : ""}`}
               key={equipment.id}
             >
               <div className="equipment-card-main">
@@ -679,7 +681,9 @@ export function EquipmentScreen({
                 </div>
                 {craftable && !owned ? <span className="craftable-badge">作成可能</span> : null}
                 {upgradeable ? <span className="craftable-badge upgradeable-badge">強化可能</span> : null}
-                {rebirthable ? <span className="craftable-badge rebirth-badge">再生可能</span> : null}
+                {rebirthable ? (
+                  <span className="craftable-badge rebirth-badge">転生可能</span>
+                ) : null}
               </div>
               <div className="equipment-level-row">
                 <span>Lv{level}</span>
@@ -728,7 +732,9 @@ export function EquipmentScreen({
                       <div className="upgrade-cost">
                         再生コスト: コイン×{rebirthCost.coin}
                         {Object.entries(rebirthCost.materials).map(([materialId, amount]) =>
-                          amount > 0 ? ` / ${materialId}×${amount}` : "",
+                          amount > 0
+                            ? ` / ${MATERIAL_LABELS[materialId as keyof typeof MATERIAL_LABELS]}×${amount}`
+                            : "",
                         )}
                       </div>
                       <button
@@ -739,12 +745,12 @@ export function EquipmentScreen({
                           const reborn = onRebirthWeapon(equipment.id as WeaponId);
                           setNotice(
                             reborn
-                              ? `${equipment.name}を再生しました`
+                              ? `${equipment.name}を転生しました`
                               : `${equipment.name}はまだ再生できません`,
                           );
                         }}
                       >
-                        再生する
+                        武器転生
                       </button>
                     </>
                   ) : null}

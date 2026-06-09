@@ -3517,22 +3517,25 @@ dl {
 .skill-select-grid button.selected,
 .difficulty-row button.selected,
 .attribute-button.active,
-.equipment-craft-card.equipped {
+.equipment-craft-card.equipped,
+.equipment-craft-card.rebirthable {
   position: relative;
   border-color: #ffe08a;
   box-shadow:
     inset 0 0 0 2px rgba(255, 244, 196, 0.62),
-    inset 0 0 18px rgba(75, 149, 188, 0.22),
+    inset 0 0 16px rgba(75, 149, 188, 0.22),
     0 0 0 2px rgba(24, 95, 132, 0.52),
-    0 0 20px rgba(255, 213, 93, 0.34),
-    0 8px 16px rgba(0, 0, 0, 0.26);
+    0 0 18px rgba(255, 213, 93, 0.34),
+    0 8px 16px rgba(0, 0, 0, 0.24);
 }
 
 .quest-banner.selected::before,
 .boss-card.selected::before,
 .skill-card-wheel button.selected::before,
 .skill-select-grid button.selected::before,
-.equipment-craft-card.equipped::before {
+.equipment-craft-card.equipped::before,
+.equipment-craft-card.rebirthable::before,
+.difficulty-row button.selected::before {
   position: absolute;
   top: 7px;
   right: 7px;
@@ -3544,7 +3547,7 @@ dl {
   background:
     linear-gradient(180deg, #ffe7a4, #c98f3c);
   color: #2a1a0c;
-  content: "選択中";
+  content: "SELECT";
   font-size: 0.62rem;
   font-weight: 950;
   letter-spacing: 0;
@@ -3553,12 +3556,25 @@ dl {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.26);
 }
 
+.quest-banner.selected::before,
+.boss-card.selected::before,
+.skill-card-wheel button.selected::before,
+.skill-select-grid button.selected::before,
+.difficulty-row button.selected::before {
+  content: "SELECT";
+}
+
 .equipment-craft-card.equipped::before {
-  content: "装備中";
+  content: "EQUIP";
+}
+
+.equipment-craft-card.rebirthable::before {
+  content: "REBIRTH";
 }
 
 .difficulty-row button.selected {
   transform: translateY(-2px);
+  padding-left: 54px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.58);
 }
 
@@ -3566,7 +3582,7 @@ dl {
   display: inline-block;
   margin-left: 6px;
   color: #ffe08a;
-  content: "◆";
+  content: "●";
   font-size: 0.72em;
   text-shadow: 0 0 8px rgba(255, 224, 138, 0.7);
 }
@@ -3680,6 +3696,14 @@ dl {
     inset 0 0 0 1px rgba(255, 244, 196, 0.2),
     0 0 14px rgba(255, 224, 138, 0.16),
     0 6px 14px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(circle at 84% 0%, rgba(255, 224, 138, 0.12), transparent 30%),
+    rgba(28, 49, 70, 0.94);
+}
+
+.equipment-craft-card.craftable .craftable-badge {
+  border-color: rgba(255, 244, 196, 0.86);
+  box-shadow: inset 0 1px 0 rgba(255, 250, 218, 0.48), 0 0 0 1px rgba(255, 224, 138, 0.55);
 }
 
 .equipment-craft-card.upgradeable {
@@ -3688,6 +3712,25 @@ dl {
     inset 0 0 0 1px rgba(154, 243, 220, 0.18),
     0 0 14px rgba(154, 243, 220, 0.14),
     0 6px 14px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(circle at 84% 0%, rgba(154, 243, 220, 0.14), transparent 30%),
+    rgba(28, 49, 70, 0.94);
+}
+
+.equipment-craft-card.upgradeable .upgradeable-badge {
+  border-color: rgba(154, 243, 220, 0.86);
+  box-shadow: inset 0 1px 0 rgba(224, 255, 245, 0.5), 0 0 0 1px rgba(154, 243, 220, 0.45);
+}
+
+.equipment-craft-card.rebirthable {
+  border-color: rgba(180, 230, 255, 0.54);
+  box-shadow:
+    inset 0 0 0 1px rgba(180, 230, 255, 0.18),
+    0 0 14px rgba(180, 230, 255, 0.2),
+    0 6px 14px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(circle at 84% 0%, rgba(180, 230, 255, 0.12), transparent 30%),
+    rgba(28, 49, 70, 0.94);
 }
 
 .craftable-summary {
@@ -3841,3 +3884,4 @@ dl {
   width: 100%;
   min-height: 44px;
 }
+
