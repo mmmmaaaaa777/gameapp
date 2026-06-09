@@ -1266,6 +1266,19 @@ dl {
   min-height: 56px;
 }
 
+.formation-save-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, 430px);
+  margin: 0 auto 10px;
+}
+
+.formation-save-row .game-cta {
+  width: 100%;
+  min-height: 54px;
+}
+
 .forge-button {
   border-color: rgba(154, 255, 239, 0.28);
 }
@@ -3340,6 +3353,19 @@ dl {
   width: 100%;
 }
 
+.demo-data-description {
+  width: 100%;
+  margin: 0;
+  color: #f5f0d2;
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.demo-grant-button {
+  border-color: rgba(154, 243, 220, 0.28);
+}
+
 .demo-data-panel .game-toast {
   width: 100%;
   margin: 0;
@@ -3430,6 +3456,84 @@ dl {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.equipment-filter-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, 430px);
+  max-width: 430px;
+  margin-inline: auto;
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid rgba(218, 187, 117, 0.24);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.08), transparent 26%),
+    linear-gradient(180deg, rgba(28, 49, 70, 0.94), rgba(12, 20, 31, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+.equipment-filter-group {
+  display: grid;
+  gap: 6px;
+}
+
+.equipment-filter-group > span,
+.equipment-list-header small,
+.equipment-cost-block > strong {
+  color: #d8a84e;
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.equipment-toggle-row,
+.equipment-part-tabs {
+  display: grid;
+  gap: 7px;
+}
+
+.equipment-toggle-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.equipment-part-tabs {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.equipment-toggle-row button,
+.equipment-part-tabs button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 7px;
+  border: 1px solid rgba(218, 187, 117, 0.28);
+  border-radius: 7px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(40, 67, 89, 0.92), rgba(13, 20, 29, 0.94));
+  color: #f5f0d2;
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 3px 0 rgba(0, 0, 0, 0.28);
+}
+
+.equipment-toggle-row button.selected,
+.equipment-part-tabs button.selected {
+  border-color: #ffe08a;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 224, 138, 0.22), transparent 48%),
+    linear-gradient(180deg, rgba(79, 93, 87, 0.96), rgba(25, 39, 43, 0.94));
+  color: #fff7d6;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 244, 196, 0.48),
+    0 0 0 2px rgba(24, 95, 132, 0.42),
+    0 0 14px rgba(255, 224, 138, 0.28);
+}
+
 .equipment-craft-card {
   display: grid;
   gap: 9px;
@@ -3448,9 +3552,15 @@ dl {
 
 .equipment-card-main {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
+  grid-template-columns: 58px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
+}
+
+.equipment-card-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
 }
 
 .equipment-card-main h2 {
@@ -3465,6 +3575,49 @@ dl {
   color: #9af3dc;
   font-size: 0.78rem;
   font-weight: 850;
+}
+
+.equipment-image-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  aspect-ratio: 1;
+  margin: 0;
+  border: 1px solid rgba(218, 187, 117, 0.26);
+  border-radius: 7px;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255, 224, 138, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(29, 53, 71, 0.95), rgba(7, 13, 20, 0.94));
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.equipment-image-frame img {
+  display: block;
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+}
+
+.equipment-image-frame img.image-missing {
+  display: none;
+}
+
+.equipment-image-frame::after {
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(255, 224, 138, 0.12);
+  border-radius: 5px;
+  content: "";
+  pointer-events: none;
+}
+
+.equipment-cost-block {
+  display: grid;
+  gap: 6px;
 }
 
 .equipment-cost-list {
@@ -3488,6 +3641,63 @@ dl {
   font-weight: 850;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.equipment-cost-list span.short {
+  border-color: rgba(143, 61, 53, 0.42);
+  background:
+    radial-gradient(circle at 20% 16%, rgba(255, 255, 255, 0.14), transparent 28%),
+    linear-gradient(180deg, #b98a65, #7b4a3e);
+  color: #fff1d5;
+}
+
+.equipment-cost-list span.enough {
+  border-color: rgba(96, 123, 85, 0.32);
+}
+
+.equipment-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 11px;
+  border: 1px solid rgba(218, 187, 117, 0.22);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 10% 50%, rgba(255, 224, 138, 0.12), transparent 34%),
+    rgba(8, 12, 14, 0.58);
+}
+
+.equipment-list-header h2 {
+  margin: 2px 0 0;
+  color: #fff1c5;
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.equipment-list-header span {
+  flex: 0 0 auto;
+  min-width: 44px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255, 224, 138, 0.24);
+  border-radius: 999px;
+  color: #f5f0d2;
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-align: center;
+}
+
+.equipment-empty-state {
+  min-height: 88px;
+  padding: 22px 14px;
+  border: 1px dashed rgba(218, 187, 117, 0.28);
+  border-radius: 8px;
+  background: rgba(8, 12, 14, 0.48);
+  color: #f5f0d2;
+  font-size: 0.86rem;
+  font-weight: 850;
+  text-align: center;
 }
 
 .equipment-craft-card .primary-button,
@@ -3771,6 +3981,19 @@ dl {
   box-shadow: inset 0 1px 0 rgba(255, 250, 218, 0.48);
 }
 
+.owned-badge {
+  border-color: rgba(154, 243, 220, 0.42);
+  background:
+    linear-gradient(180deg, rgba(184, 229, 211, 0.88), rgba(87, 138, 128, 0.88));
+}
+
+.muted-badge {
+  border-color: rgba(218, 187, 117, 0.24);
+  background:
+    linear-gradient(180deg, rgba(133, 132, 118, 0.86), rgba(70, 78, 80, 0.86));
+  color: #f5f0d2;
+}
+
 .upgradeable-badge {
   border-color: rgba(154, 243, 220, 0.5);
   background:
@@ -3838,6 +4061,10 @@ dl {
   white-space: nowrap;
 }
 
+.equipment-mode-card .equipment-effect-preview strong {
+  white-space: normal;
+}
+
 .battle-preview {
   border-color: rgba(255, 224, 138, 0.16);
 }
@@ -3885,3 +4112,155 @@ dl {
   min-height: 44px;
 }
 
+/* Unified bottom navigation: keep the same slab bar across every menu screen. */
+.bottom-menu,
+.lobby-screen .bottom-menu {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  min-height: 88px;
+  padding: 8px;
+  border: 1px solid #7f5527;
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, rgba(228, 189, 111, 0.08), transparent 40%),
+    radial-gradient(circle at 14% 28%, rgba(76, 93, 63, 0.2), transparent 18%),
+    repeating-linear-gradient(90deg, rgba(105, 76, 42, 0.18) 0 1px, transparent 1px 34px),
+    linear-gradient(180deg, #24190f, #0e0b08);
+  box-shadow:
+    inset 0 2px 0 rgba(237, 207, 128, 0.18),
+    inset 0 -5px 0 rgba(0, 0, 0, 0.42),
+    0 -2px 0 rgba(0, 0, 0, 0.55);
+}
+
+.menu-screen.has-bottom-menu .bottom-menu,
+.lobby-screen.has-bottom-menu .bottom-menu {
+  position: fixed;
+  right: auto;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 40;
+  width: min(calc(100vw - 20px), 430px);
+  max-width: calc(100vw - 20px);
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.bottom-menu button,
+.lobby-screen .bottom-menu button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 68px;
+  padding: 5px 2px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 2px solid #8a6334;
+  border-radius: 6px;
+  clip-path: polygon(0 13%, 5% 13%, 5% 4%, 14% 4%, 14% 0, 88% 0, 88% 5%, 96% 5%, 96% 12%, 100% 12%, 100% 88%, 95% 88%, 95% 97%, 86% 97%, 86% 100%, 9% 100%, 9% 94%, 0 94%);
+  background:
+    radial-gradient(circle at 14% 18%, rgba(238, 234, 211, 0.24), transparent 8%),
+    radial-gradient(circle at 36% 72%, rgba(232, 225, 195, 0.1), transparent 6%),
+    radial-gradient(circle at 78% 22%, rgba(7, 7, 6, 0.42), transparent 11%),
+    radial-gradient(circle at 90% 78%, rgba(8, 8, 7, 0.48), transparent 12%),
+    linear-gradient(122deg, transparent 0 24%, rgba(246, 239, 205, 0.12) 24% 25%, transparent 25% 56%, rgba(9, 9, 8, 0.5) 56% 58%, transparent 58%),
+    linear-gradient(34deg, transparent 0 30%, rgba(10, 10, 9, 0.52) 30% 32%, transparent 32% 76%, rgba(236, 226, 189, 0.14) 76% 77%, transparent 77%),
+    repeating-linear-gradient(0deg, rgba(250, 248, 225, 0.045) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, rgba(7, 7, 6, 0.16) 0 1px, transparent 1px 15px),
+    linear-gradient(180deg, #9a9a8d 0%, #70746c 36%, #4a504b 69%, #282d2a 100%);
+  color: #f0e4c3;
+  font-size: 0.76rem;
+  font-weight: 850;
+  text-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.85),
+    0 0 6px rgba(15, 12, 8, 0.55);
+  box-shadow:
+    inset 0 5px 0 rgba(241, 236, 205, 0.23),
+    inset 0 -9px 0 rgba(12, 13, 11, 0.55),
+    inset 6px 0 0 rgba(255, 255, 255, 0.07),
+    inset -7px 0 0 rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(225, 210, 160, 0.16),
+    inset 0 0 20px rgba(17, 18, 16, 0.32),
+    0 3px 0 rgba(50, 33, 12, 0.62);
+}
+
+.bottom-menu button.active,
+.lobby-screen .bottom-menu button.active {
+  border-color: #ffe08a;
+  clip-path: polygon(0 12%, 5% 12%, 5% 3%, 13% 3%, 13% 0, 90% 0, 90% 5%, 97% 5%, 97% 13%, 100% 13%, 100% 88%, 95% 88%, 95% 98%, 84% 98%, 84% 100%, 8% 100%, 8% 94%, 0 94%);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(198, 224, 232, 0.2), transparent 28%),
+    radial-gradient(circle at 18% 24%, rgba(239, 234, 207, 0.22), transparent 8%),
+    radial-gradient(circle at 82% 76%, rgba(8, 8, 7, 0.42), transparent 11%),
+    linear-gradient(122deg, transparent 0 43%, rgba(8, 10, 10, 0.46) 43% 45%, transparent 45.5%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 10px),
+    linear-gradient(180deg, #92998f 0%, #68716d 42%, #414a49 100%);
+  color: #fff7d6;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 244, 196, 0.52),
+    inset 0 4px 0 rgba(243, 237, 205, 0.3),
+    inset 0 -9px 0 rgba(11, 13, 12, 0.54),
+    inset 0 0 20px rgba(64, 117, 138, 0.34),
+    0 3px 0 rgba(50, 33, 12, 0.7),
+    0 0 0 2px rgba(24, 95, 132, 0.52),
+    0 0 18px rgba(255, 224, 138, 0.36);
+}
+
+.bottom-menu button span,
+.lobby-screen .bottom-menu button span,
+.bottom-menu button.active span,
+.lobby-screen .bottom-menu button.active span {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border: 2px solid rgba(126, 89, 44, 0.78);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 24%, rgba(236, 232, 205, 0.2), transparent 32%),
+    linear-gradient(180deg, #686b63, #333934);
+  color: #f0d99a;
+  font-size: 0.9rem;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 245, 205, 0.16),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.34),
+    0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.bottom-menu button.active span,
+.lobby-screen .bottom-menu button.active span {
+  border-color: rgba(255, 232, 165, 0.88);
+  background:
+    radial-gradient(circle at 48% 28%, rgba(246, 238, 190, 0.26), transparent 34%),
+    linear-gradient(180deg, #75807a, #3d4847);
+  color: #fff3c6;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 245, 205, 0.24),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.34),
+    0 0 0 2px rgba(24, 95, 132, 0.46),
+    0 0 14px rgba(255, 224, 138, 0.38);
+}
+
+.bottom-menu button strong,
+.lobby-screen .bottom-menu button strong {
+  position: relative;
+  z-index: 2;
+  display: block;
+  color: inherit;
+  font-size: inherit;
+  line-height: 1;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.7),
+    0 0 9px rgba(255, 224, 138, 0.28);
+}
+
+.bottom-menu button.active strong,
+.lobby-screen .bottom-menu button.active strong {
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.7),
+    0 0 9px rgba(255, 224, 138, 0.48);
+}

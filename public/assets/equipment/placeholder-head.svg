@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Head armor placeholder">
+  <defs>
+    <linearGradient id="cloth" x1="18" y1="20" x2="78" y2="76" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d4b66c"/>
+      <stop offset="0.55" stop-color="#567990"/>
+      <stop offset="1" stop-color="#1f384d"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="10" fill="#142331"/>
+  <circle cx="48" cy="48" r="32" fill="none" stroke="#3f7190" stroke-width="2" opacity="0.55"/>
+  <path d="M23 44c7-15 18-22 33-18 10 3 16 10 18 21-15-8-33-8-51-3Z" fill="url(#cloth)" stroke="#e4c06a" stroke-width="2"/>
+  <path d="M30 46c12-4 27-4 43 2v10c-18-5-34-5-48 0Z" fill="#23394f" stroke="#d7ad5a" stroke-width="2"/>
+  <path d="M60 42 78 31l-7 24Z" fill="#8ea1a4" stroke="#d7ad5a" stroke-width="2"/>
+</svg>

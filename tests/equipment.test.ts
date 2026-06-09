@@ -10,17 +10,28 @@ import {
   createEmptyOwnedEquipment,
   equipEquipment,
   EQUIPMENT_BY_ID,
+  EQUIPMENT_DEFINITIONS,
   EQUIPMENT_LEVEL_STORAGE_KEY,
   EQUIPPED_STORAGE_KEY,
+  getCraftModeEquipmentBySlot,
   getCraftableEquipmentIds,
+  getEquipmentLevel,
+  getEquipmentImageSrc,
+  getEquipmentListForMode,
+  getEquipmentLevelMultiplier,
+  getRebirthModeEquipmentBySlot,
+  getRebirthableWeaponIds,
+  getUpgradeModeEquipmentBySlot,
   getUpgradeableEquipmentIds,
   loadEquippedEquipment,
   loadEquipmentLevels,
   loadOwnedEquipment,
   OWNED_EQUIPMENT_STORAGE_KEY,
+  rebirthWeapon,
   saveEquippedEquipment,
   saveEquipmentLevels,
   saveOwnedEquipment,
+  upgradeEquipment,
   upgradeEquipmentLevel,
 } from "../src/game/equipment";
 import { createEmptyInventory } from "../src/game/inventory";
@@ -83,8 +94,8 @@ describe("equipment crafting", () => {
   it("装備作成直後に使うLv初期値はLv1になる", () => {
     const levels = createEmptyEquipmentLevels();
 
-    expect(levels.fireStoneSword).toBe(1);
-    expect(levels.adventurerClothes).toBe(1);
+    expect(getEquipmentLevel(levels, "fireStoneSword")).toBe(1);
+    expect(getEquipmentLevel(levels, "adventurerClothes")).toBe(1);
   });
 
   it("作成済み装備を同じスロットへ装備できる", () => {
@@ -118,12 +129,15 @@ describe("equipment crafting", () => {
     };
     const levels = createEmptyEquipmentLevels();
 
-    const nextInventory = consumeEquipmentUpgradeCost(inventory, levels.fireStoneSword);
+    const nextInventory = consumeEquipmentUpgradeCost(
+      inventory,
+      getEquipmentLevel(levels, "fireStoneSword"),
+    );
     const nextLevels = upgradeEquipmentLevel(levels, "fireStoneSword");
 
     expect(nextInventory.coin).toBe(30);
     expect(nextInventory.magicShard).toBe(1);
-    expect(nextLevels.fireStoneSword).toBe(2);
+    expect(getEquipmentLevel(nextLevels, "fireStoneSword")).toBe(2);
   });
 
   it("素材不足では強化できない", () => {
@@ -182,6 +196,51 @@ describe("equipment crafting", () => {
     ]);
   });
 
+  it("Lv1からLv2へ強化すると素材とコインが減りLvが1上がる", () => {
+    const owned = {
+      ...createEmptyOwnedEquipment(),
+      fireStoneSword: true,
+    };
+    const inventory = {
+      ...createEmptyInventory(),
+      coin: 50,
+      magicShard: 1,
+    };
+
+    const result = upgradeEquipment(
+      inventory,
+      owned,
+      createEmptyEquipmentLevels(),
+      "fireStoneSword",
+    );
+
+    expect(result.result).toEqual({ success: true, nextLevel: 2 });
+    expect(result.inventory.coin).toBe(0);
+    expect(result.inventory.magicShard).toBe(0);
+    expect(getEquipmentLevel(result.equipmentLevels, "fireStoneSword")).toBe(2);
+  });
+
+  it("コイン不足では強化できない", () => {
+    const owned = {
+      ...createEmptyOwnedEquipment(),
+      fireStoneSword: true,
+    };
+    const inventory = {
+      ...createEmptyInventory(),
+      coin: 49,
+      magicShard: 1,
+    };
+
+    expect(
+      canUpgradeEquipment(
+        inventory,
+        owned,
+        createEmptyEquipmentLevels(),
+        EQUIPMENT_BY_ID.fireStoneSword,
+      ),
+    ).toBe(false);
+  });
+
   it("強化倍率がバトル用ステータスに反映される", () => {
     const equipped = {
       ...createEmptyEquippedEquipment(),
@@ -201,6 +260,154 @@ describe("equipment crafting", () => {
       maxHpBonus: 32,
       moveSpeedMultiplier: 1.08,
     });
+  });
+
+  it("Lv倍率が各上位武器の攻撃力に反映される", () => {
+    expect(getEquipmentLevelMultiplier(5)).toBe(1.6);
+
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "fireStoneSword" },
+        { fireStoneSword: 5 },
+      ).attackBonus,
+    ).toBe(10);
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "waterMirrorSword" },
+        { waterMirrorSword: 5 },
+      ).attackBonus,
+    ).toBe(16);
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "azureStreamSword" },
+        { azureStreamSword: 5 },
+      ).attackBonus,
+    ).toBe(22);
+  });
+
+  it("Lv5装備のバトル表示目安に合う補正を返す", () => {
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "fireStoneSword" },
+        { fireStoneSword: 5 },
+      ).attackBonus + 10,
+    ).toBe(20);
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "waterMirrorSword" },
+        { waterMirrorSword: 5 },
+      ).attackBonus + 10,
+    ).toBe(26);
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), weapon: "azureStreamSword" },
+        { azureStreamSword: 5 },
+      ).attackBonus + 10,
+    ).toBe(32);
+    expect(
+      calculateEquipmentBonus(
+        { ...createEmptyEquippedEquipment(), body: "adventurerClothes" },
+        { adventurerClothes: 5 },
+      ).maxHpBonus + 100,
+    ).toBe(132);
+  });
+
+  it("転生時にLvを引き継ぎ、転生元のLv記録を削除する", () => {
+    const owned = {
+      ...createEmptyOwnedEquipment(),
+      fireStoneSword: true,
+    };
+    const inventory = {
+      ...createEmptyInventory(),
+      coin: 250,
+      beastClaw: 4,
+      stonePiece: 3,
+      magicShard: 2,
+    };
+
+    const result = rebirthWeapon(
+      inventory,
+      owned,
+      { fireStoneSword: 3 },
+      "fireStoneSword",
+    );
+
+    expect(result.result).toEqual({ success: true, nextWeaponId: "waterMirrorSword" });
+    expect(result.ownedEquipment.fireStoneSword).toBe(false);
+    expect(result.ownedEquipment.waterMirrorSword).toBe(true);
+    expect(result.equipmentLevels.fireStoneSword).toBeUndefined();
+    expect(getEquipmentLevel(result.equipmentLevels, "waterMirrorSword")).toBe(3);
+  });
+
+  it("転生可能と強化可能は装備通知印の条件に含められる", () => {
+    const owned = {
+      ...createEmptyOwnedEquipment(),
+      fireStoneSword: true,
+      travelerBandana: true,
+    };
+    const inventory = {
+      ...createEmptyInventory(),
+      coin: 300,
+      beastClaw: 4,
+      stonePiece: 3,
+      magicShard: 2,
+    };
+
+    expect(getRebirthableWeaponIds(inventory, owned)).toEqual(["fireStoneSword"]);
+    expect(getUpgradeableEquipmentIds(inventory, owned, createEmptyEquipmentLevels())).toContain(
+      "travelerBandana",
+    );
+  });
+  it("returns only craft targets for the selected equipment slot", () => {
+    expect(getEquipmentListForMode("craft", "weapon").map((equipment) => equipment.id)).toEqual([
+      "fireStoneSword",
+    ]);
+    expect(getCraftModeEquipmentBySlot("head").map((equipment) => equipment.id)).toEqual([
+      "travelerBandana",
+    ]);
+    expect(getCraftModeEquipmentBySlot("body").map((equipment) => equipment.id)).toEqual([
+      "adventurerClothes",
+    ]);
+    expect(getCraftModeEquipmentBySlot("feet").map((equipment) => equipment.id)).toEqual([
+      "lightBoots",
+    ]);
+  });
+
+  it("returns weapon rebirth targets and no armor targets for rebirth mode", () => {
+    expect(getEquipmentListForMode("rebirth", "weapon").map((equipment) => equipment.id)).toEqual([
+      "fireStoneSword",
+      "waterMirrorSword",
+      "azureStreamSword",
+    ]);
+    expect(getRebirthModeEquipmentBySlot("head")).toEqual([]);
+    expect(getRebirthModeEquipmentBySlot("body")).toEqual([]);
+    expect(getRebirthModeEquipmentBySlot("feet")).toEqual([]);
+  });
+
+  it("returns owned equipment only for upgrade mode by selected slot", () => {
+    const owned = {
+      ...createEmptyOwnedEquipment(),
+      fireStoneSword: true,
+      adventurerClothes: true,
+    };
+
+    expect(getEquipmentListForMode("upgrade", "weapon", owned).map((equipment) => equipment.id)).toEqual([
+      "fireStoneSword",
+    ]);
+    expect(getUpgradeModeEquipmentBySlot("body", owned).map((equipment) => equipment.id)).toEqual([
+      "adventurerClothes",
+    ]);
+    expect(getUpgradeModeEquipmentBySlot("head", owned)).toEqual([]);
+  });
+
+  it("defines placeholder image paths and falls back by equipment slot", () => {
+    expect(EQUIPMENT_DEFINITIONS.every((equipment) => Boolean(equipment.imageSrc))).toBe(true);
+    expect(getEquipmentImageSrc(EQUIPMENT_BY_ID.fireStoneSword)).toBe(
+      "/assets/equipment/placeholder-weapon.svg",
+    );
+    expect(getEquipmentImageSrc({ slot: "head" })).toBe(
+      "/assets/equipment/placeholder-head.svg",
+    );
   });
 });
 
@@ -234,14 +441,10 @@ describe("equipment storage", () => {
     expect(loadEquipmentLevels(storage).fireStoneSword).toBe(3);
   });
 
-  it("リセット用のLv初期化は全装備をLv1へ戻す", () => {
-    expect(createEmptyEquipmentLevels()).toEqual({
-      fireStoneSword: 1,
-      travelerBandana: 1,
-      adventurerClothes: 1,
-      lightBoots: 1,
-      waterMirrorSword: 1,
-      azureStreamSword: 1,
-    });
+  it("リセット用のLv初期化は保存Lvを空にし、未保存装備はLv1として扱う", () => {
+    const levels = createEmptyEquipmentLevels();
+
+    expect(levels).toEqual({});
+    expect(getEquipmentLevel(levels, "fireStoneSword")).toBe(1);
   });
 });

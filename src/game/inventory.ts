@@ -18,6 +18,15 @@ export const MATERIAL_LABELS: Record<MaterialId, string> = {
   magicShard: "魔力の欠片",
 };
 
+export const DEMO_MATERIAL_GRANT: PlayerInventory = {
+  coin: 2000,
+  beastClaw: 30,
+  fireStone: 30,
+  oldCloth: 30,
+  stonePiece: 30,
+  magicShard: 30,
+};
+
 export type InventoryStorage = Pick<Storage, "getItem" | "setItem">;
 
 export function createEmptyMaterialMap(): MaterialRewardMap {
@@ -49,6 +58,19 @@ export function addRewardToInventory(
     {
       ...inventory,
       coin: inventory.coin + reward.coin,
+    },
+  );
+}
+
+export function addDemoMaterialsToInventory(inventory: PlayerInventory): PlayerInventory {
+  return MATERIAL_IDS.reduce(
+    (nextInventory, materialId) => ({
+      ...nextInventory,
+      [materialId]: nextInventory[materialId] + DEMO_MATERIAL_GRANT[materialId],
+    }),
+    {
+      ...inventory,
+      coin: inventory.coin + DEMO_MATERIAL_GRANT.coin,
     },
   );
 }

@@ -52,11 +52,19 @@ export const EQUIPMENT_SLOT_LABELS: Record<EquipmentSlot, string> = {
   feet: "足",
 };
 
+export const EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT: Record<EquipmentSlot, string> = {
+  weapon: "/assets/equipment/placeholder-weapon.svg",
+  head: "/assets/equipment/placeholder-head.svg",
+  body: "/assets/equipment/placeholder-body.svg",
+  feet: "/assets/equipment/placeholder-feet.svg",
+};
+
 export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
   {
     id: "fireStoneSword",
     slot: "weapon",
     name: "炎石の剣",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.weapon,
     effectLabel: "通常攻撃 +6",
     element: "fire",
     cost: {
@@ -74,6 +82,7 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "waterMirrorSword",
     slot: "weapon",
     name: "水鏡の剣",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.weapon,
     effectLabel: "通常攻撃 +10",
     element: "water",
     cost: {
@@ -90,6 +99,7 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "azureStreamSword",
     slot: "weapon",
     name: "蒼流の剣",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.weapon,
     effectLabel: "通常攻撃 +14",
     element: "water",
     cost: {
@@ -106,6 +116,7 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "travelerBandana",
     slot: "head",
     name: "旅人のバンダナ",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.head,
     effectLabel: "最大HP+10",
     cost: {
       coin: 80,
@@ -121,6 +132,7 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "adventurerClothes",
     slot: "body",
     name: "冒険者の服",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.body,
     effectLabel: "最大HP+20",
     cost: {
       coin: 100,
@@ -136,6 +148,7 @@ export const EQUIPMENT_DEFINITIONS: EquipmentDefinition[] = [
     id: "lightBoots",
     slot: "feet",
     name: "軽いブーツ",
+    imageSrc: EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT.feet,
     effectLabel: "移動速度+5%",
     cost: {
       coin: 80,
@@ -310,11 +323,9 @@ export function rebirthWeapon(
     };
   }
 
-  const nextEquipmentLevels = {
-    ...equipmentLevels,
-    [weaponId]: 1,
-    [nextWeaponId]: getEquipmentLevel(equipmentLevels, weaponId),
-  };
+  const nextEquipmentLevels = normalizeEquipmentLevels(equipmentLevels);
+  delete nextEquipmentLevels[weaponId];
+  nextEquipmentLevels[nextWeaponId] = getEquipmentLevel(equipmentLevels, weaponId);
 
   return {
     result: {
@@ -342,6 +353,53 @@ export const EQUIPMENT_BY_ID: Record<EquipmentId, EquipmentDefinition> =
 
 const EQUIPMENT_IDS = EQUIPMENT_DEFINITIONS.map((equipment) => equipment.id);
 const EQUIPMENT_SLOTS: EquipmentSlot[] = ["weapon", "head", "body", "feet"];
+
+export type EquipmentScreenMode = "craft" | "rebirth" | "upgrade";
+
+export function getEquipmentImageSrc(
+  equipment: Pick<EquipmentDefinition, "imageSrc" | "slot">,
+): string {
+  return equipment.imageSrc ?? EQUIPMENT_PLACEHOLDER_IMAGE_BY_SLOT[equipment.slot];
+}
+
+export function getCraftModeEquipmentBySlot(slot: EquipmentSlot): EquipmentDefinition[] {
+  return EQUIPMENT_DEFINITIONS.filter(
+    (equipment) => equipment.slot === slot && equipment.canCraft !== false,
+  );
+}
+
+export function getRebirthModeEquipmentBySlot(slot: EquipmentSlot): EquipmentDefinition[] {
+  if (slot !== "weapon") {
+    return [];
+  }
+
+  return EQUIPMENT_DEFINITIONS.filter((equipment) => equipment.slot === "weapon");
+}
+
+export function getUpgradeModeEquipmentBySlot(
+  slot: EquipmentSlot,
+  ownedEquipment: OwnedEquipment,
+): EquipmentDefinition[] {
+  return EQUIPMENT_DEFINITIONS.filter(
+    (equipment) => equipment.slot === slot && ownedEquipment[equipment.id],
+  );
+}
+
+export function getEquipmentListForMode(
+  mode: EquipmentScreenMode,
+  slot: EquipmentSlot,
+  ownedEquipment: OwnedEquipment = createEmptyOwnedEquipment(),
+): EquipmentDefinition[] {
+  if (mode === "craft") {
+    return getCraftModeEquipmentBySlot(slot);
+  }
+
+  if (mode === "rebirth") {
+    return getRebirthModeEquipmentBySlot(slot);
+  }
+
+  return getUpgradeModeEquipmentBySlot(slot, ownedEquipment);
+}
 
 function getBrowserStorage(): InventoryStorage | null {
   if (typeof window === "undefined") {
@@ -400,13 +458,7 @@ export function createEmptyEquippedEquipment(): EquippedEquipment {
 }
 
 export function createEmptyEquipmentLevels(): EquipmentLevelMap {
-  return EQUIPMENT_IDS.reduce(
-    (levels, equipmentId) => ({
-      ...levels,
-      [equipmentId]: 1,
-    }),
-    {} as EquipmentLevelMap,
-  );
+  return {};
 }
 
 function normalizeEquipmentLevelValue(value: unknown): EquipmentLevel {
@@ -455,13 +507,16 @@ export function normalizeEquippedEquipment(value: unknown): EquippedEquipment {
 export function normalizeEquipmentLevels(value: unknown): EquipmentLevelMap {
   const source = isRecord(value) ? value : {};
 
-  return EQUIPMENT_IDS.reduce(
-    (levels, equipmentId) => ({
+  return EQUIPMENT_IDS.reduce((levels, equipmentId) => {
+    if (source[equipmentId] === undefined) {
+      return levels;
+    }
+
+    return {
       ...levels,
       [equipmentId]: normalizeEquipmentLevelValue(source[equipmentId]),
-    }),
-    createEmptyEquipmentLevels(),
-  );
+    };
+  }, createEmptyEquipmentLevels());
 }
 
 export function loadOwnedEquipment(
@@ -537,6 +592,10 @@ export function getEquipmentLevel(
   return normalizeEquipmentLevelValue(equipmentLevels[equipmentId]);
 }
 
+export function getEquipmentLevelMultiplier(level: EquipmentLevel): number {
+  return EQUIPMENT_LEVEL_MULTIPLIERS[level];
+}
+
 export function getNextEquipmentLevel(level: EquipmentLevel): EquipmentLevel | null {
   if (level >= EQUIPMENT_MAX_LEVEL) {
     return null;
@@ -549,11 +608,11 @@ export function getEquipmentUpgradeCost(level: EquipmentLevel): EquipmentUpgrade
   return EQUIPMENT_UPGRADE_COSTS[level] ?? null;
 }
 
-export function getScaledEquipmentEffect(
+export function getEnhancedEquipmentEffect(
   equipment: EquipmentDefinition,
   level: EquipmentLevel,
 ) {
-  const multiplier = EQUIPMENT_LEVEL_MULTIPLIERS[level];
+  const multiplier = getEquipmentLevelMultiplier(level);
 
   return {
     attackBonus:
@@ -570,6 +629,8 @@ export function getScaledEquipmentEffect(
         : Math.round(equipment.effect.moveSpeedPercentBonus * multiplier),
   };
 }
+
+export const getScaledEquipmentEffect = getEnhancedEquipmentEffect;
 
 export function canUpgradeEquipment(
   inventory: PlayerInventory,
@@ -598,6 +659,14 @@ export function getUpgradeableEquipmentIds(
   return EQUIPMENT_DEFINITIONS.filter((equipment) =>
     canUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipment),
   ).map((equipment) => equipment.id);
+}
+
+export function hasUpgradeableEquipment(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+  equipmentLevels: EquipmentLevelMap,
+): boolean {
+  return getUpgradeableEquipmentIds(inventory, ownedEquipment, equipmentLevels).length > 0;
 }
 
 export function consumeEquipmentCost(
@@ -659,6 +728,46 @@ export function upgradeEquipmentLevel(
   return {
     ...normalizeEquipmentLevels(equipmentLevels),
     [equipmentId]: nextLevel,
+  };
+}
+
+export interface EquipmentUpgradeResult {
+  success: boolean;
+  nextLevel?: EquipmentLevel;
+}
+
+export function upgradeEquipment(
+  inventory: PlayerInventory,
+  ownedEquipment: OwnedEquipment,
+  equipmentLevels: EquipmentLevelMap,
+  equipmentId: EquipmentId,
+): {
+  result: EquipmentUpgradeResult;
+  inventory: PlayerInventory;
+  equipmentLevels: EquipmentLevelMap;
+} {
+  const equipment = EQUIPMENT_BY_ID[equipmentId];
+  const currentLevel = getEquipmentLevel(equipmentLevels, equipmentId);
+  const nextLevel = getNextEquipmentLevel(currentLevel);
+
+  if (!nextLevel || !canUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipment)) {
+    return {
+      result: { success: false },
+      inventory,
+      equipmentLevels,
+    };
+  }
+
+  return {
+    result: {
+      success: true,
+      nextLevel,
+    },
+    inventory: consumeEquipmentUpgradeCost(inventory, currentLevel),
+    equipmentLevels: {
+      ...normalizeEquipmentLevels(equipmentLevels),
+      [equipmentId]: nextLevel,
+    },
   };
 }
 

@@ -8,11 +8,14 @@ import {
   canRebirthWeapon,
   canUpgradeEquipment,
   EQUIPMENT_BY_ID,
-  EQUIPMENT_DEFINITIONS,
   EQUIPMENT_SLOT_LABELS,
+  type EquipmentScreenMode,
+  getEquipmentImageSrc,
+  getEquipmentListForMode,
   getEquipmentLevel,
   getEquipmentUpgradeCost,
   getNextEquipmentLevel,
+  getNextRebirthWeapon,
   getWeaponRebirthCost,
   getScaledEquipmentEffect,
 } from "../game/equipment";
@@ -35,6 +38,7 @@ import type {
   EquipmentLevel,
   EquipmentLevelMap,
   EquipmentSlot,
+  EquipmentUpgradeCost,
   EquippedEquipment,
   OwnedEquipment,
   PlayerInventory,
@@ -84,12 +88,12 @@ interface EquipmentScreenProps {
   equippedEquipment: EquippedEquipment;
   inventory: PlayerInventory;
   ownedEquipment: OwnedEquipment;
-  upgradeableEquipmentCount: number;
   rebirthableWeaponCount: number;
+  upgradeableEquipmentCount: number;
   onCraftEquipment: (equipmentId: EquipmentId) => boolean;
   onEquipEquipment: (equipmentId: EquipmentId) => boolean;
-  onUpgradeEquipment: (equipmentId: EquipmentId) => boolean;
   onRebirthWeapon: (weaponId: WeaponId) => boolean;
+  onUpgradeEquipment: (equipmentId: EquipmentId) => boolean;
   onNavigate: (screen: NavScreen) => void;
 }
 
@@ -101,6 +105,7 @@ interface SettingsScreenProps {
   ownedEquipment: OwnedEquipment;
   onHome: () => void;
   onNavigate: (screen: NavScreen) => void;
+  onGrantDemoMaterials: () => void;
   onResetInventory: () => void;
 }
 
@@ -112,6 +117,14 @@ const NAV_ITEMS = [
 ] as const;
 
 const EQUIPMENT_SLOT_ORDER: EquipmentSlot[] = ["weapon", "head", "body", "feet"];
+
+const EQUIPMENT_MODE_LABELS: Record<EquipmentScreenMode, string> = {
+  craft: "作成",
+  rebirth: "転生",
+  upgrade: "強化",
+};
+
+const EQUIPMENT_MODE_ORDER: EquipmentScreenMode[] = ["craft", "rebirth", "upgrade"];
 
 const INITIAL_EQUIPMENT_LABELS: Record<EquipmentSlot, string> = {
   weapon: "初期武器",
@@ -268,19 +281,77 @@ function getMaterialTotal(inventory: PlayerInventory): number {
   return MATERIAL_IDS.reduce((total, materialId) => total + inventory[materialId], 0);
 }
 
-function EquipmentCost({ equipment }: { equipment: EquipmentDefinition }) {
-  const materialCosts = MATERIAL_IDS.filter(
-    (materialId) => (equipment.cost.materials[materialId] ?? 0) > 0,
+function EquipmentImage({ equipment }: { equipment: EquipmentDefinition }) {
+  return (
+    <figure className="equipment-image-frame">
+      <img
+        alt={`${equipment.name}の仮画像`}
+        loading="lazy"
+        src={getEquipmentImageSrc(equipment)}
+        onError={(event) => {
+          event.currentTarget.classList.add("image-missing");
+          event.currentTarget.removeAttribute("src");
+        }}
+      />
+    </figure>
   );
+}
+
+function EquipmentCost({
+  cost,
+  inventory,
+  title = "必要素材",
+}: {
+  cost: EquipmentDefinition["cost"];
+  inventory: PlayerInventory;
+  title?: string;
+}) {
+  const materialCosts = MATERIAL_IDS.filter((materialId) => (cost.materials[materialId] ?? 0) > 0);
+  const coinEnough = inventory.coin >= cost.coin;
 
   return (
-    <div className="equipment-cost-list" aria-label="必要素材">
-      <span>コイン {equipment.cost.coin}</span>
-      {materialCosts.map((materialId) => (
-        <span key={materialId}>
-          {MATERIAL_LABELS[materialId]} {equipment.cost.materials[materialId]}
+    <div className="equipment-cost-block">
+      <strong>{title}</strong>
+      <div className="equipment-cost-list" aria-label={title}>
+        <span className={coinEnough ? "enough" : "short"}>
+          コイン {cost.coin} / 所持 {inventory.coin}
         </span>
-      ))}
+        {materialCosts.map((materialId) => {
+          const required = cost.materials[materialId] ?? 0;
+          const enough = inventory[materialId] >= required;
+
+          return (
+            <span className={enough ? "enough" : "short"} key={materialId}>
+              {MATERIAL_LABELS[materialId]} {required} / 所持 {inventory[materialId]}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function EquipmentUpgradeCostView({
+  cost,
+  inventory,
+}: {
+  cost: EquipmentUpgradeCost;
+  inventory: PlayerInventory;
+}) {
+  const coinEnough = inventory.coin >= cost.coin;
+  const shardEnough = inventory.magicShard >= cost.magicShard;
+
+  return (
+    <div className="equipment-cost-block">
+      <strong>必要素材</strong>
+      <div className="equipment-cost-list" aria-label="強化に必要な素材">
+        <span className={coinEnough ? "enough" : "short"}>
+          コイン {cost.coin} / 所持 {inventory.coin}
+        </span>
+        <span className={shardEnough ? "enough" : "short"}>
+          {MATERIAL_LABELS.magicShard} {cost.magicShard} / 所持 {inventory.magicShard}
+        </span>
+      </div>
     </div>
   );
 }
@@ -319,6 +390,320 @@ function getEquipmentBattlePreview(equipment: EquipmentDefinition, level: Equipm
   }
 
   return equipment.effectLabel;
+}
+
+function CraftEquipmentCard({
+  equipment,
+  equipmentLevels,
+  equippedEquipment,
+  inventory,
+  ownedEquipment,
+  onCraftEquipment,
+  onEquipEquipment,
+  onNotice,
+}: {
+  equipment: EquipmentDefinition;
+  equipmentLevels: EquipmentLevelMap;
+  equippedEquipment: EquippedEquipment;
+  inventory: PlayerInventory;
+  ownedEquipment: OwnedEquipment;
+  onCraftEquipment: (equipmentId: EquipmentId) => boolean;
+  onEquipEquipment: (equipmentId: EquipmentId) => boolean;
+  onNotice: (message: string) => void;
+}) {
+  const owned = ownedEquipment[equipment.id];
+  const equipped = equippedEquipment[equipment.slot] === equipment.id;
+  const craftable = canCraftEquipment(inventory, equipment);
+  const level = getEquipmentLevel(equipmentLevels, equipment.id);
+
+  return (
+    <article
+      className={`equipment-craft-card equipment-mode-card ${equipped ? "equipped" : ""} ${
+        craftable && !owned ? "craftable" : ""
+      }`}
+    >
+      <div className="equipment-card-main">
+        <EquipmentImage equipment={equipment} />
+        <div className="equipment-card-copy">
+          <small>{EQUIPMENT_SLOT_LABELS[equipment.slot]}</small>
+          <h2>{equipment.name}</h2>
+          <p>{getEquipmentEffectText(equipment, level)}</p>
+          {equipment.element ? <AttributePill attributeId={equipment.element} /> : null}
+        </div>
+        {craftable && !owned ? <span className="craftable-badge">作成可能</span> : null}
+        {owned ? <span className="craftable-badge owned-badge">作成済み</span> : null}
+      </div>
+
+      <div className="equipment-level-row">
+        <span>{EQUIPMENT_SLOT_LABELS[equipment.slot]}</span>
+        {equipped ? <strong>装備中</strong> : owned ? <strong>作成済み</strong> : <strong>未作成</strong>}
+      </div>
+
+      <div className="equipment-effect-preview battle-preview">
+        <span>反映</span>
+        <strong>{getEquipmentBattlePreview(equipment, level)}</strong>
+      </div>
+
+      <EquipmentCost cost={equipment.cost} inventory={inventory} />
+
+      {!owned ? (
+        <button
+          className="primary-button game-cta"
+          disabled={!craftable}
+          type="button"
+          onClick={() => {
+            const crafted = onCraftEquipment(equipment.id);
+            onNotice(
+              crafted
+                ? `${equipment.name}を作成しました`
+                : `${equipment.name}は素材またはコインが不足しています`,
+            );
+          }}
+        >
+          {craftable ? "作成する" : "素材不足"}
+        </button>
+      ) : (
+        <div className="equipment-action-stack">
+          <button
+            className={equipped ? "secondary-button equipped-button" : "primary-button game-cta"}
+            disabled={equipped}
+            type="button"
+            onClick={() => {
+              const equippedNow = onEquipEquipment(equipment.id);
+              onNotice(
+                equippedNow
+                  ? `${equipment.name}を装備しました`
+                  : `${equipment.name}はまだ作成されていません`,
+              );
+            }}
+          >
+            {equipped ? "装備中" : "装備する"}
+          </button>
+        </div>
+      )}
+    </article>
+  );
+}
+
+function RebirthEquipmentCard({
+  equipment,
+  equipmentLevels,
+  equippedEquipment,
+  inventory,
+  ownedEquipment,
+  onEquipEquipment,
+  onNotice,
+  onRebirthWeapon,
+}: {
+  equipment: EquipmentDefinition;
+  equipmentLevels: EquipmentLevelMap;
+  equippedEquipment: EquippedEquipment;
+  inventory: PlayerInventory;
+  ownedEquipment: OwnedEquipment;
+  onEquipEquipment: (equipmentId: EquipmentId) => boolean;
+  onNotice: (message: string) => void;
+  onRebirthWeapon: (weaponId: WeaponId) => boolean;
+}) {
+  const weaponId = equipment.id as WeaponId;
+  const owned = ownedEquipment[equipment.id];
+  const equipped = equippedEquipment.weapon === equipment.id;
+  const nextWeaponId = getNextRebirthWeapon(equipment.id);
+  const nextEquipment = nextWeaponId ? EQUIPMENT_BY_ID[nextWeaponId] : null;
+  const nextOwned = nextWeaponId ? ownedEquipment[nextWeaponId] : false;
+  const rebirthable = canRebirthWeapon(inventory, ownedEquipment, weaponId);
+  const rebirthCost = nextWeaponId ? getWeaponRebirthCost(weaponId) : null;
+  const level = getEquipmentLevel(equipmentLevels, equipment.id);
+  const status = !owned
+    ? "未所持"
+    : !nextWeaponId
+      ? "転生先なし"
+      : nextOwned
+        ? "転生済み"
+        : rebirthable
+          ? "転生可能"
+          : "素材不足";
+
+  return (
+    <article
+      className={`equipment-craft-card equipment-mode-card ${equipped ? "equipped" : ""} ${
+        rebirthable ? "rebirthable" : ""
+      }`}
+    >
+      <div className="equipment-card-main">
+        <EquipmentImage equipment={equipment} />
+        <div className="equipment-card-copy">
+          <small>{equipped ? "装備中" : "所持武器"}</small>
+          <h2>{equipment.name}</h2>
+          <p>{getEquipmentEffectText(equipment, level)}</p>
+          {equipment.element ? <AttributePill attributeId={equipment.element} /> : null}
+        </div>
+        <span className={rebirthable ? "craftable-badge rebirth-badge" : "craftable-badge muted-badge"}>
+          {status}
+        </span>
+      </div>
+
+      <div className="equipment-effect-preview">
+        <span>転生先</span>
+        <strong>{nextEquipment ? nextEquipment.name : "転生先なし"}</strong>
+      </div>
+
+      {nextEquipment ? (
+        <div className="equipment-effect-preview battle-preview">
+          <span>変化</span>
+          <strong>
+            {getEquipmentBattlePreview(equipment, level)} / {getEquipmentBattlePreview(nextEquipment, level)}
+          </strong>
+        </div>
+      ) : null}
+
+      {rebirthCost ? (
+        <EquipmentCost cost={rebirthCost} inventory={inventory} title="転生素材" />
+      ) : (
+        <div className="max-level-label">転生素材なし</div>
+      )}
+
+      <div className="equipment-action-stack">
+        {owned ? (
+          <button
+            className={equipped ? "secondary-button equipped-button" : "primary-button game-cta"}
+            disabled={equipped}
+            type="button"
+            onClick={() => {
+              const equippedNow = onEquipEquipment(equipment.id);
+              onNotice(
+                equippedNow
+                  ? `${equipment.name}を装備しました`
+                  : `${equipment.name}はまだ作成されていません`,
+              );
+            }}
+          >
+            {equipped ? "装備中" : "装備する"}
+          </button>
+        ) : null}
+        <button
+          className="secondary-button rebirth-button"
+          disabled={!rebirthable}
+          type="button"
+          onClick={() => {
+            const reborn = onRebirthWeapon(weaponId);
+            onNotice(
+              reborn
+                ? `${equipment.name}を転生しました`
+                : `${equipment.name}はまだ転生できません`,
+            );
+          }}
+        >
+          {rebirthable ? "転生する" : status}
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function UpgradeEquipmentCard({
+  equipment,
+  equipmentLevels,
+  equippedEquipment,
+  inventory,
+  ownedEquipment,
+  onEquipEquipment,
+  onNotice,
+  onUpgradeEquipment,
+}: {
+  equipment: EquipmentDefinition;
+  equipmentLevels: EquipmentLevelMap;
+  equippedEquipment: EquippedEquipment;
+  inventory: PlayerInventory;
+  ownedEquipment: OwnedEquipment;
+  onEquipEquipment: (equipmentId: EquipmentId) => boolean;
+  onNotice: (message: string) => void;
+  onUpgradeEquipment: (equipmentId: EquipmentId) => boolean;
+}) {
+  const equipped = equippedEquipment[equipment.slot] === equipment.id;
+  const level = getEquipmentLevel(equipmentLevels, equipment.id);
+  const nextLevel = getNextEquipmentLevel(level);
+  const upgradeCost = getEquipmentUpgradeCost(level);
+  const upgradeable = canUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipment);
+  const status = !nextLevel ? "最大Lv" : upgradeable ? "強化可能" : "素材不足";
+
+  return (
+    <article
+      className={`equipment-craft-card equipment-mode-card ${equipped ? "equipped" : ""} ${
+        upgradeable ? "upgradeable" : ""
+      }`}
+    >
+      <div className="equipment-card-main">
+        <EquipmentImage equipment={equipment} />
+        <div className="equipment-card-copy">
+          <small>{equipped ? "装備中" : EQUIPMENT_SLOT_LABELS[equipment.slot]}</small>
+          <h2>{equipment.name}</h2>
+          <p>Lv{level}</p>
+          {equipment.element ? <AttributePill attributeId={equipment.element} /> : null}
+        </div>
+        <span className={upgradeable ? "craftable-badge upgradeable-badge" : "craftable-badge muted-badge"}>
+          {status}
+        </span>
+      </div>
+
+      <div className="equipment-level-row">
+        <span>現在Lv</span>
+        <strong>Lv{level}</strong>
+      </div>
+
+      <div className="equipment-effect-preview">
+        <span>現在</span>
+        <strong>{getEquipmentEffectText(equipment, level)}</strong>
+      </div>
+
+      {nextLevel ? (
+        <div className="equipment-effect-preview battle-preview">
+          <span>次</span>
+          <strong>{getEquipmentEffectText(equipment, nextLevel)}</strong>
+        </div>
+      ) : (
+        <div className="max-level-label">最大Lv</div>
+      )}
+
+      {upgradeCost ? (
+        <EquipmentUpgradeCostView cost={upgradeCost} inventory={inventory} />
+      ) : null}
+
+      <div className="equipment-action-stack">
+        <button
+          className={equipped ? "secondary-button equipped-button" : "primary-button game-cta"}
+          disabled={equipped}
+          type="button"
+          onClick={() => {
+            const equippedNow = onEquipEquipment(equipment.id);
+            onNotice(
+              equippedNow
+                ? `${equipment.name}を装備しました`
+                : `${equipment.name}はまだ作成されていません`,
+            );
+          }}
+        >
+          {equipped ? "装備中" : "装備する"}
+        </button>
+        {nextLevel ? (
+          <button
+            className="secondary-button upgrade-button"
+            disabled={!upgradeable}
+            type="button"
+            onClick={() => {
+              const upgraded = onUpgradeEquipment(equipment.id);
+              onNotice(
+                upgraded
+                  ? `${equipment.name}をLv${nextLevel}に強化しました`
+                  : `${equipment.name}は素材またはコインが不足しています`,
+              );
+            }}
+          >
+            {upgradeable ? "強化する" : "素材不足"}
+          </button>
+        ) : null}
+      </div>
+    </article>
+  );
 }
 
 export function HomeScreen({
@@ -539,18 +924,7 @@ export function FormationScreen({
         ))}
       </section>
 
-      <section className="slot-panel">
-        <h2>SUB SLOT</h2>
-        <div className="subslot-row">
-          {SUB_SKILLS.map((skill, index) => (
-            <span key={skill}>SUB {index + 1}: {skill}</span>
-          ))}
-        </div>
-      </section>
-
-      <p className="game-toast" aria-live="polite">{notice}</p>
-
-      <div className="fixed-action-row single">
+      <div className="formation-save-row">
         <button
           className="primary-button game-cta"
           type="button"
@@ -562,6 +936,17 @@ export function FormationScreen({
           保存
         </button>
       </div>
+
+      <section className="slot-panel">
+        <h2>SUB SLOT</h2>
+        <div className="subslot-row">
+          {SUB_SKILLS.map((skill, index) => (
+            <span key={skill}>SUB {index + 1}: {skill}</span>
+          ))}
+        </div>
+      </section>
+
+      <p className="game-toast" aria-live="polite">{notice}</p>
 
       <BottomMenu
         active="formation"
@@ -583,27 +968,36 @@ export function EquipmentScreen({
   upgradeableEquipmentCount,
   onCraftEquipment,
   onEquipEquipment,
-  onUpgradeEquipment,
   onRebirthWeapon,
+  onUpgradeEquipment,
   onNavigate,
 }: EquipmentScreenProps) {
-  const [notice, setNotice] = useState("素材を集めて装備を作成できます");
+  const [notice, setNotice] = useState("作成・転生・強化を選んで装備を確認できます");
+  const [mode, setMode] = useState<EquipmentScreenMode>("craft");
+  const [selectedSlot, setSelectedSlot] = useState<EquipmentSlot>("weapon");
   const equippedCount = Object.values(equippedEquipment).filter(Boolean).length;
+  const targetEquipment = getEquipmentListForMode(mode, selectedSlot, ownedEquipment);
+  const modeTitle = `${EQUIPMENT_MODE_LABELS[mode]} / ${EQUIPMENT_SLOT_LABELS[selectedSlot]}`;
+  const isRebirthUnsupportedSlot = mode === "rebirth" && selectedSlot !== "weapon";
+  const emptyMessage =
+    mode === "upgrade"
+      ? "この部位の強化できる装備はまだありません"
+      : "表示できる装備がありません";
 
   return (
     <main className="screen menu-screen forge-screen has-bottom-menu">
       <ScreenHeader title="装備" eyebrow="FORGE" />
 
       <section className="slot-panel equipped-summary-panel">
-        <h2>EQUIPPED</h2>
+        <h2>現在装備</h2>
         <div className="equipped-slot-grid">
-          {Object.entries(EQUIPMENT_SLOT_LABELS).map(([slot, label]) => (
+          {EQUIPMENT_SLOT_ORDER.map((slot) => (
             <div className="equipped-slot" key={slot}>
-              <small>{label}</small>
+              <small>{EQUIPMENT_SLOT_LABELS[slot]}</small>
               <strong>
                 {getEquippedName(
                   equippedEquipment,
-                  slot as keyof EquippedEquipment,
+                  slot,
                   "未装備",
                 )}
               </strong>
@@ -612,17 +1006,38 @@ export function EquipmentScreen({
         </div>
       </section>
 
-      <section className="material-chip-panel equipment-stock-panel" aria-label="所持素材">
-        <span className="material-chip">
-          <i aria-hidden="true" />
-          コイン <strong>{inventory.coin}</strong>
-        </span>
-        {MATERIAL_IDS.map((materialId) => (
-          <span className="material-chip" key={materialId}>
-            <i aria-hidden="true" />
-            {MATERIAL_LABELS[materialId]} <strong>{inventory[materialId]}</strong>
-          </span>
-        ))}
+      <section className="equipment-filter-panel" aria-label="装備操作切替">
+        <div className="equipment-filter-group">
+          <span>操作</span>
+          <div className="equipment-toggle-row">
+            {EQUIPMENT_MODE_ORDER.map((nextMode) => (
+              <button
+                className={mode === nextMode ? "selected" : ""}
+                key={nextMode}
+                type="button"
+                onClick={() => setMode(nextMode)}
+              >
+                {EQUIPMENT_MODE_LABELS[nextMode]}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="equipment-filter-group">
+          <span>部位</span>
+          <div className="equipment-part-tabs">
+            {EQUIPMENT_SLOT_ORDER.map((slot) => (
+              <button
+                className={selectedSlot === slot ? "selected" : ""}
+                key={slot}
+                type="button"
+                onClick={() => setSelectedSlot(slot)}
+              >
+                {EQUIPMENT_SLOT_LABELS[slot]}
+              </button>
+            ))}
+          </div>
+        </div>
       </section>
 
       {craftableEquipmentCount > 0 ? (
@@ -633,7 +1048,6 @@ export function EquipmentScreen({
           武器転生可能な装備 {rebirthableWeaponCount}件
         </p>
       ) : null}
-
       {upgradeableEquipmentCount > 0 ? (
         <p className="craftable-summary upgradeable-summary">
           強化可能な装備 {upgradeableEquipmentCount}件
@@ -642,162 +1056,77 @@ export function EquipmentScreen({
 
       <p className="game-toast" aria-live="polite">{notice}</p>
 
-      <section className="equipment-craft-list" aria-label="作成可能な装備">
-        {EQUIPMENT_DEFINITIONS.map((equipment) => {
-          const owned = ownedEquipment[equipment.id];
-          const equipped = equippedEquipment[equipment.slot] === equipment.id;
-          const craftable = canCraftEquipment(inventory, equipment);
-          const level = getEquipmentLevel(equipmentLevels, equipment.id);
-          const nextLevel = getNextEquipmentLevel(level);
-          const upgradeCost = getEquipmentUpgradeCost(level);
-          const rebirthable = equipment.slot === "weapon"
-            ? canRebirthWeapon(inventory, ownedEquipment, equipment.id as WeaponId)
-            : false;
-          const rebirthCost = rebirthable
-            ? getWeaponRebirthCost(equipment.id as WeaponId)
-            : null;
-          const upgradeable = canUpgradeEquipment(
-            inventory,
-            ownedEquipment,
-            equipmentLevels,
-            equipment,
-          );
+      <section className="equipment-craft-list" aria-label={`${modeTitle}の対象装備`}>
+        <div className="equipment-list-header">
+          <div>
+            <small>{EQUIPMENT_MODE_LABELS[mode]}</small>
+            <h2>{modeTitle}</h2>
+          </div>
+          <span>{targetEquipment.length}件</span>
+        </div>
 
-          return (
-            <article
-              className={`equipment-craft-card ${equipped ? "equipped" : ""} ${
-                craftable && !owned ? "craftable" : ""
-              } ${upgradeable ? "upgradeable" : ""} ${rebirthable ? "rebirthable" : ""}`}
-              key={equipment.id}
-            >
-              <div className="equipment-card-main">
-                <span className="slot-icon" aria-hidden="true">
-                  {EQUIPMENT_SLOT_LABELS[equipment.slot].slice(0, 1)}
-                </span>
-                <div>
-                  <small>{EQUIPMENT_SLOT_LABELS[equipment.slot]}</small>
-                  <h2>{equipment.name}</h2>
-                  <p>{equipment.effectLabel}</p>
-                </div>
-                {craftable && !owned ? <span className="craftable-badge">作成可能</span> : null}
-                {upgradeable ? <span className="craftable-badge upgradeable-badge">強化可能</span> : null}
-                {rebirthable ? (
-                  <span className="craftable-badge rebirth-badge">転生可能</span>
-                ) : null}
-              </div>
-              <div className="equipment-level-row">
-                <span>Lv{level}</span>
-                {equipped ? <strong>装備中</strong> : null}
-              </div>
-              <div className="equipment-effect-preview">
-                <span>現在</span>
-                <strong>{getEquipmentEffectText(equipment, level)}</strong>
-                {nextLevel ? (
-                  <>
-                    <span>次</span>
-                    <strong>{getEquipmentEffectText(equipment, nextLevel)}</strong>
-                  </>
-                ) : (
-                  <>
-                    <span>到達</span>
-                    <strong>最大Lv</strong>
-                  </>
-                )}
-              </div>
-              <div className="equipment-effect-preview battle-preview">
-                <span>バトル</span>
-                <strong>{getEquipmentBattlePreview(equipment, level)}</strong>
-              </div>
-              <EquipmentCost equipment={equipment} />
-              {!owned ? (
-                <button
-                  className="primary-button game-cta"
-                  disabled={!craftable}
-                  type="button"
-                  onClick={() => {
-                    const crafted = onCraftEquipment(equipment.id);
-                    setNotice(
-                      crafted
-                        ? `${equipment.name}を作成しました`
-                        : `${equipment.name}は素材またはコインが不足しています`,
-                    );
-                  }}
-                >
-                  {craftable ? "作成" : "素材不足"}
-                </button>
-              ) : (
-                <div className="equipment-action-stack">
-                  {rebirthable && rebirthCost ? (
-                    <>
-                      <div className="upgrade-cost">
-                        再生コスト: コイン×{rebirthCost.coin}
-                        {Object.entries(rebirthCost.materials).map(([materialId, amount]) =>
-                          amount > 0
-                            ? ` / ${MATERIAL_LABELS[materialId as keyof typeof MATERIAL_LABELS]}×${amount}`
-                            : "",
-                        )}
-                      </div>
-                      <button
-                        className="secondary-button rebirth-button"
-                        disabled={!rebirthable}
-                        type="button"
-                        onClick={() => {
-                          const reborn = onRebirthWeapon(equipment.id as WeaponId);
-                          setNotice(
-                            reborn
-                              ? `${equipment.name}を転生しました`
-                              : `${equipment.name}はまだ再生できません`,
-                          );
-                        }}
-                      >
-                        武器転生
-                      </button>
-                    </>
-                  ) : null}
-                  <button
-                    className={equipped ? "secondary-button equipped-button" : "primary-button game-cta"}
-                    disabled={equipped}
-                    type="button"
-                    onClick={() => {
-                      const equippedNow = onEquipEquipment(equipment.id);
-                      setNotice(
-                        equippedNow
-                          ? `${equipment.name}を装備しました`
-                          : `${equipment.name}はまだ作成されていません`,
-                      );
-                    }}
-                  >
-                    {equipped ? "装備中" : "装備する"}
-                  </button>
-                  {upgradeCost ? (
-                    <>
-                      <div className="upgrade-cost">
-                        必要: 魔力の欠片×{upgradeCost.magicShard} / コイン×{upgradeCost.coin}
-                      </div>
-                      <button
-                        className="secondary-button upgrade-button"
-                        disabled={!upgradeable}
-                        type="button"
-                        onClick={() => {
-                          const upgraded = onUpgradeEquipment(equipment.id);
-                          setNotice(
-                            upgraded
-                              ? `${equipment.name}をLv${level + 1}に強化しました`
-                              : `${equipment.name}は素材またはコインが不足しています`,
-                          );
-                        }}
-                      >
-                        {upgradeable ? "強化する" : "強化素材不足"}
-                      </button>
-                    </>
-                  ) : (
-                    <div className="max-level-label">最大Lv</div>
-                  )}
-                </div>
-              )}
-            </article>
-          );
-        })}
+        <section className="material-chip-panel equipment-stock-panel" aria-label="所持素材">
+          <span className="material-chip">
+            <i aria-hidden="true" />
+            コイン <strong>{inventory.coin}</strong>
+          </span>
+          {MATERIAL_IDS.map((materialId) => (
+            <span className="material-chip" key={materialId}>
+              <i aria-hidden="true" />
+              {MATERIAL_LABELS[materialId]} <strong>{inventory[materialId]}</strong>
+            </span>
+          ))}
+        </section>
+
+        {isRebirthUnsupportedSlot ? (
+          <div className="equipment-empty-state">
+            この部位の転生はまだありません
+          </div>
+        ) : targetEquipment.length === 0 ? (
+          <div className="equipment-empty-state">
+            {emptyMessage}
+          </div>
+        ) : (
+          targetEquipment.map((equipment) =>
+            mode === "craft" ? (
+              <CraftEquipmentCard
+                equipment={equipment}
+                equipmentLevels={equipmentLevels}
+                equippedEquipment={equippedEquipment}
+                inventory={inventory}
+                key={equipment.id}
+                ownedEquipment={ownedEquipment}
+                onCraftEquipment={onCraftEquipment}
+                onEquipEquipment={onEquipEquipment}
+                onNotice={setNotice}
+              />
+            ) : mode === "rebirth" ? (
+              <RebirthEquipmentCard
+                equipment={equipment}
+                equipmentLevels={equipmentLevels}
+                equippedEquipment={equippedEquipment}
+                inventory={inventory}
+                key={equipment.id}
+                ownedEquipment={ownedEquipment}
+                onEquipEquipment={onEquipEquipment}
+                onNotice={setNotice}
+                onRebirthWeapon={onRebirthWeapon}
+              />
+            ) : (
+              <UpgradeEquipmentCard
+                equipment={equipment}
+                equipmentLevels={equipmentLevels}
+                equippedEquipment={equippedEquipment}
+                inventory={inventory}
+                key={equipment.id}
+                ownedEquipment={ownedEquipment}
+                onEquipEquipment={onEquipEquipment}
+                onNotice={setNotice}
+                onUpgradeEquipment={onUpgradeEquipment}
+              />
+            ),
+          )
+        )}
       </section>
 
       <p className="game-toast">装備中 {equippedCount}/4</p>
@@ -818,12 +1147,11 @@ export function SettingsScreen({
   inventory,
   ownedEquipment,
   onHome,
+  onGrantDemoMaterials,
   onNavigate,
   onResetInventory,
 }: SettingsScreenProps) {
-  const [resetNotice, setResetNotice] = useState(
-    "リセットするとコイン・素材・作成済み装備・装備Lv・装備中状態がすべて初期化されます",
-  );
+  const [resetNotice, setResetNotice] = useState("デモ確認用の操作結果をここに表示します");
 
   return (
     <main className="screen menu-screen option-screen has-bottom-menu">
@@ -866,6 +1194,22 @@ export function SettingsScreen({
           <span>装備中 {Object.values(equippedEquipment).filter(Boolean).length}</span>
           <span>Lv合計 {Object.values(equipmentLevels).reduce((total, level) => total + level, 0)}</span>
         </div>
+        <p className="demo-data-description">
+          作成・転生の確認用に素材とコインを追加します。
+        </p>
+        <button
+          className="secondary-button demo-grant-button"
+          type="button"
+          onClick={() => {
+            onGrantDemoMaterials();
+            setResetNotice("デモ用素材を付与しました");
+          }}
+        >
+          デモ用素材を付与
+        </button>
+        <p className="demo-data-description">
+          リセットするとコイン・素材・作成済み装備・装備Lv・装備中状態がすべて初期化されます。
+        </p>
         <button
           className="secondary-button"
           type="button"

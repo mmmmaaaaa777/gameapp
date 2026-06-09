@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Weapon placeholder">
+  <defs>
+    <linearGradient id="blade" x1="30" y1="14" x2="66" y2="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f5e0a6"/>
+      <stop offset="0.5" stop-color="#89acc0"/>
+      <stop offset="1" stop-color="#314d66"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="18" y1="20" x2="80" y2="76" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d7ad5a"/>
+      <stop offset="1" stop-color="#7d5928"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="10" fill="#142331"/>
+  <circle cx="48" cy="48" r="32" fill="none" stroke="#3f7190" stroke-width="2" opacity="0.55"/>
+  <path d="M57 12 68 23 39 62 31 54Z" fill="url(#blade)" stroke="#f0d07d" stroke-width="2"/>
+  <path d="M27 57 40 70" stroke="url(#gold)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M24 69 31 76" stroke="#d7ad5a" stroke-width="8" stroke-linecap="round"/>
+  <path d="M34 51 45 62" stroke="#d7ad5a" stroke-width="6" stroke-linecap="round"/>
+</svg>

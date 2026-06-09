@@ -12,30 +12,28 @@ import { ResultScreen } from "./components/ResultScreen";
 import {
   calculateEquipmentBonus,
   canCraftEquipment,
-  canUpgradeEquipment,
   consumeEquipmentCost,
-  consumeEquipmentUpgradeCost,
   createEmptyEquippedEquipment,
   createEmptyEquipmentLevels,
   createEmptyOwnedEquipment,
   equipEquipment,
   EQUIPMENT_BY_ID,
-  getEquipmentLevel,
   loadEquippedEquipment,
   loadEquipmentLevels,
   loadOwnedEquipment,
   getCraftableEquipmentIds,
   getRebirthableWeaponIds,
-  rebirthWeapon as applyRebirthWeapon,
   getUpgradeableEquipmentIds,
+  rebirthWeapon as applyRebirthWeapon,
   saveEquippedEquipment,
   saveEquipmentLevels,
   saveOwnedEquipment,
-  upgradeEquipmentLevel,
+  upgradeEquipment as applyUpgradeEquipment,
 } from "./game/equipment";
 import { createRetryBattleSelection } from "./game/difficulty";
 import {
   addRewardToInventory,
+  addDemoMaterialsToInventory,
   createEmptyInventory,
   loadPlayerInventory,
   savePlayerInventory,
@@ -66,14 +64,13 @@ export default function App() {
     difficulty,
   };
   const craftableEquipmentCount = getCraftableEquipmentIds(inventory, ownedEquipment).length;
+  const rebirthableWeaponCount = getRebirthableWeaponIds(inventory, ownedEquipment).length;
   const upgradeableEquipmentCount = getUpgradeableEquipmentIds(
     inventory,
     ownedEquipment,
     equipmentLevels,
   ).length;
-  const rebirthableWeaponCount = getRebirthableWeaponIds(inventory, ownedEquipment).length;
-  const equipmentNoticeCount =
-    craftableEquipmentCount + upgradeableEquipmentCount + rebirthableWeaponCount;
+  const equipmentNoticeCount = craftableEquipmentCount + rebirthableWeaponCount + upgradeableEquipmentCount;
   const equipmentBonus = calculateEquipmentBonus(equippedEquipment, equipmentLevels);
 
   const startBattle = () => {
@@ -106,6 +103,12 @@ export default function App() {
     setOwnedEquipment(emptyOwnedEquipment);
     setEquippedEquipment(emptyEquippedEquipment);
     setEquipmentLevels(emptyEquipmentLevels);
+  };
+
+  const grantDemoMaterials = () => {
+    const nextInventory = addDemoMaterialsToInventory(inventory);
+    savePlayerInventory(nextInventory);
+    setInventory(nextInventory);
   };
 
   const craftEquipment = (equipmentId: EquipmentId): boolean => {
@@ -147,25 +150,6 @@ export default function App() {
     return true;
   };
 
-  const upgradeOwnedEquipment = (equipmentId: EquipmentId): boolean => {
-    const equipment = EQUIPMENT_BY_ID[equipmentId];
-
-    if (!canUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipment)) {
-      return false;
-    }
-
-    const currentLevel = getEquipmentLevel(equipmentLevels, equipmentId);
-    const nextInventory = consumeEquipmentUpgradeCost(inventory, currentLevel);
-    const nextEquipmentLevels = upgradeEquipmentLevel(equipmentLevels, equipmentId);
-
-    savePlayerInventory(nextInventory);
-    saveEquipmentLevels(nextEquipmentLevels);
-    setInventory(nextInventory);
-    setEquipmentLevels(nextEquipmentLevels);
-
-    return true;
-  };
-
   const rebirthWeapon = (equipmentId: WeaponId): boolean => {
     const result = applyRebirthWeapon(inventory, ownedEquipment, equipmentLevels, equipmentId);
 
@@ -190,6 +174,21 @@ export default function App() {
     setOwnedEquipment(nextOwnedEquipment);
     setEquipmentLevels(nextEquipmentLevels);
     setEquippedEquipment(nextEquippedEquipment);
+
+    return true;
+  };
+
+  const upgradeEquipment = (equipmentId: EquipmentId): boolean => {
+    const result = applyUpgradeEquipment(inventory, ownedEquipment, equipmentLevels, equipmentId);
+
+    if (!result.result.success) {
+      return false;
+    }
+
+    savePlayerInventory(result.inventory);
+    saveEquipmentLevels(result.equipmentLevels);
+    setInventory(result.inventory);
+    setEquipmentLevels(result.equipmentLevels);
 
     return true;
   };
@@ -246,22 +245,22 @@ export default function App() {
 
   if (screen === "equipment") {
     return (
-        <EquipmentScreen
-          craftableEquipmentCount={craftableEquipmentCount}
-          equipmentLevels={equipmentLevels}
-          equipmentNoticeCount={equipmentNoticeCount}
-          equippedEquipment={equippedEquipment}
-          inventory={inventory}
+      <EquipmentScreen
+        craftableEquipmentCount={craftableEquipmentCount}
+        equipmentLevels={equipmentLevels}
+        equipmentNoticeCount={equipmentNoticeCount}
+        equippedEquipment={equippedEquipment}
+        inventory={inventory}
         ownedEquipment={ownedEquipment}
-          upgradeableEquipmentCount={upgradeableEquipmentCount}
-          rebirthableWeaponCount={rebirthableWeaponCount}
-          onCraftEquipment={craftEquipment}
-          onEquipEquipment={equipOwnedEquipment}
-          onUpgradeEquipment={upgradeOwnedEquipment}
-          onRebirthWeapon={rebirthWeapon}
-          onNavigate={(nextScreen) => setScreen(nextScreen)}
-        />
-      );
+        rebirthableWeaponCount={rebirthableWeaponCount}
+        upgradeableEquipmentCount={upgradeableEquipmentCount}
+        onCraftEquipment={craftEquipment}
+        onEquipEquipment={equipOwnedEquipment}
+        onRebirthWeapon={rebirthWeapon}
+        onUpgradeEquipment={upgradeEquipment}
+        onNavigate={(nextScreen) => setScreen(nextScreen)}
+      />
+    );
   }
 
   if (screen === "settings") {
@@ -274,6 +273,7 @@ export default function App() {
         ownedEquipment={ownedEquipment}
         onHome={goHome}
         onNavigate={(nextScreen) => setScreen(nextScreen)}
+        onGrantDemoMaterials={grantDemoMaterials}
         onResetInventory={resetInventory}
       />
     );

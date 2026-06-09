@@ -148,6 +148,7 @@ export interface EquipmentDefinition {
   id: EquipmentId;
   slot: EquipmentSlot;
   name: string;
+  imageSrc?: string;
   effectLabel: string;
   cost: EquipmentCost;
   effect: EquipmentEffect;
@@ -162,7 +163,7 @@ export type EquippedEquipment = Record<EquipmentSlot, EquipmentId | null>;
 
 export type EquipmentLevel = 1 | 2 | 3 | 4 | 5;
 
-export type EquipmentLevelMap = Record<EquipmentId, EquipmentLevel>;
+export type EquipmentLevelMap = Partial<Record<EquipmentId, EquipmentLevel>>;
 
 export interface EquipmentUpgradeCost {
   coin: number;

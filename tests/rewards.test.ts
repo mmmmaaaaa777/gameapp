@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  addDemoMaterialsToInventory,
   addRewardToInventory,
   createEmptyInventory,
+  DEMO_MATERIAL_GRANT,
   INVENTORY_STORAGE_KEY,
   loadPlayerInventory,
   savePlayerInventory,
@@ -77,6 +79,30 @@ describe("battle rewards", () => {
     expect(inventory.beastClaw).toBe(2);
     expect(inventory.magicShard).toBe(2);
   });
+  it("adds demo materials and coins for development checks", () => {
+    const inventory = addDemoMaterialsToInventory(createEmptyInventory());
+
+    expect(inventory).toEqual(DEMO_MATERIAL_GRANT);
+  });
+
+  it("adds demo materials to the existing inventory counts", () => {
+    const inventory = addDemoMaterialsToInventory({
+      ...createEmptyInventory(),
+      coin: 5,
+      beastClaw: 1,
+      fireStone: 2,
+      oldCloth: 3,
+      stonePiece: 4,
+      magicShard: 5,
+    });
+
+    expect(inventory.coin).toBe(2005);
+    expect(inventory.beastClaw).toBe(31);
+    expect(inventory.fireStone).toBe(32);
+    expect(inventory.oldCloth).toBe(33);
+    expect(inventory.stonePiece).toBe(34);
+    expect(inventory.magicShard).toBe(35);
+  });
 });
 
 describe("inventory storage", () => {
@@ -99,6 +125,19 @@ describe("inventory storage", () => {
     const storage = new MemoryStorage();
     storage.setItem(INVENTORY_STORAGE_KEY, "{broken");
 
+    expect(loadPlayerInventory(storage)).toEqual(createEmptyInventory());
+  });
+});
+
+describe("demo inventory grant storage", () => {
+  it("keeps the inventory storage shape after demo grant and reset", () => {
+    const storage = new MemoryStorage();
+    const grantedInventory = addDemoMaterialsToInventory(createEmptyInventory());
+
+    savePlayerInventory(grantedInventory, storage);
+    expect(loadPlayerInventory(storage)).toEqual(DEMO_MATERIAL_GRANT);
+
+    savePlayerInventory(createEmptyInventory(), storage);
     expect(loadPlayerInventory(storage)).toEqual(createEmptyInventory());
   });
 });
