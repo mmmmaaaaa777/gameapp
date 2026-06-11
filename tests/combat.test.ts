@@ -121,7 +121,7 @@ describe("combat logic", () => {
 
   it("Normal / Hard / Extreme でボスHPが変わる", () => {
     expect(getBossStatsForDifficulty("Normal").maxHp).toBe(3000);
-    expect(getBossStatsForDifficulty("Hard").maxHp).toBe(6500);
+    expect(getBossStatsForDifficulty("Hard").maxHp).toBe(6600);
     expect(getBossStatsForDifficulty("Extreme").maxHp).toBe(12000);
   });
 

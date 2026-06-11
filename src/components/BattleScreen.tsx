@@ -5,9 +5,7 @@ import {
   ATTACK_COOLDOWN_MS,
   ATTACK_DAMAGE,
   ATTACK_RANGE,
-  BEAM_DAMAGE,
   BEAM_INTERVAL_MS,
-  BEAM_WARNING_MS,
   BEAM_WIDTH,
   DODGE_COOLDOWN_MS,
   DODGE_DISTANCE,
@@ -22,10 +20,8 @@ import {
   PLAYER_CRITICAL_RATE,
   PLAYER_MAX_HP,
   PLAYER_SPEED_UNITS_PER_SEC,
-  SHOCKWAVE_DAMAGE,
   SHOCKWAVE_INTERVAL_MS,
   SHOCKWAVE_RANGE,
-  SHOCKWAVE_WARNING_MS,
   SKILL_BY_ID,
   UI_SYNC_INTERVAL_MS,
 } from "../game/constants";
@@ -112,6 +108,18 @@ interface BattleRuntime {
   bossHp: number;
   bossMaxHp: number;
   bossDefense: number;
+  bossBreakGauge: number;
+  bossDownDurationMs: number;
+  bossAttackPower: {
+    frontal: number;
+    charge: number;
+    area: number;
+  };
+  bossTelegraphMs: {
+    frontal: number;
+    charge: number;
+    area: number;
+  };
   bossAttribute: AttributeId;
   activeAttribute: AttributeId;
   equippedWeaponId: EquipmentId | null;
@@ -194,6 +202,10 @@ function createInitialRuntime(
     bossHp: bossStats.maxHp,
     bossMaxHp: bossStats.maxHp,
     bossDefense: bossStats.defense,
+    bossBreakGauge: bossStats.breakGauge,
+    bossDownDurationMs: bossStats.downDurationMs,
+    bossAttackPower: bossStats.attacks,
+    bossTelegraphMs: bossStats.telegraphsMs,
     bossAttribute: selection.boss.attributeId,
     activeAttribute,
     equippedWeaponId,
@@ -317,6 +329,9 @@ export function BattleScreen({
       runtime.movement = { x: 0, z: 0 };
       onComplete({
         kind,
+        activeAttribute: runtime.activeAttribute,
+        attackElement: runtime.attackElement,
+        defenseElement: runtime.defenseElement,
         stats: {
           elapsedSeconds: Math.round((runtime.elapsedMs / 1000) * 10) / 10,
           dealtDamage: runtime.dealtDamage,
@@ -542,7 +557,7 @@ export function BattleScreen({
         if (runtime.shockwaveCountdownMs <= 0) {
           runtime.shockwaveWarning = {
             ageMs: 0,
-            durationMs: SHOCKWAVE_WARNING_MS,
+            durationMs: runtime.bossTelegraphMs.area,
           };
           runtime.shockwaveCountdownMs = SHOCKWAVE_INTERVAL_MS;
           runtime.notice = "ボス攻撃予告: 衝撃波";
@@ -552,7 +567,7 @@ export function BattleScreen({
 
         if (runtime.shockwaveWarning.ageMs >= runtime.shockwaveWarning.durationMs) {
           if (distance2d(runtime.playerPosition, runtime.bossPosition) <= SHOCKWAVE_RANGE) {
-            takePlayerDamage(SHOCKWAVE_DAMAGE, "近距離衝撃波");
+            takePlayerDamage(runtime.bossAttackPower.area, "近距離衝撃波");
           }
           runtime.shockwaveWarning = null;
         }
@@ -564,7 +579,7 @@ export function BattleScreen({
         if (runtime.beamCountdownMs <= 0) {
           runtime.beamWarning = {
             ageMs: 0,
-            durationMs: BEAM_WARNING_MS,
+            durationMs: runtime.bossTelegraphMs.charge,
             direction: normalize2d({
               x: runtime.playerPosition.x - runtime.bossPosition.x,
               z: runtime.playerPosition.z - runtime.bossPosition.z,
@@ -584,7 +599,7 @@ export function BattleScreen({
               runtime.beamWarning.direction,
             ) <= BEAM_WIDTH
           ) {
-            takePlayerDamage(BEAM_DAMAGE, "直線攻撃");
+            takePlayerDamage(runtime.bossAttackPower.charge, "直線攻撃");
           }
           runtime.beamWarning = null;
         }

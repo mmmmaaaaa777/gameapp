@@ -8,7 +8,13 @@ import {
   loadPlayerInventory,
   savePlayerInventory,
 } from "../src/game/inventory";
-import { generateBattleReward } from "../src/game/rewards";
+import { BOSS_OPTIONS } from "../src/game/menu";
+import {
+  applyRewardScaling,
+  generateBattleReward,
+  getDifficultyRewardMultiplier,
+  getRewardTierMultiplier,
+} from "../src/game/rewards";
 
 class MemoryStorage {
   private values = new Map<string, string>();
@@ -29,7 +35,7 @@ function sequenceRandom(values: number[]): () => number {
 }
 
 describe("battle rewards", () => {
-  it("CLEAR報酬は指定範囲の最小値を付与できる", () => {
+  it("CLEAR reward can generate the previous standard Normal minimum", () => {
     const reward = generateBattleReward("CLEAR", () => 0);
 
     expect(reward).toEqual({
@@ -44,7 +50,7 @@ describe("battle rewards", () => {
     });
   });
 
-  it("CLEAR報酬は指定範囲の最大値を付与できる", () => {
+  it("CLEAR reward can generate the previous standard Normal maximum", () => {
     const reward = generateBattleReward("CLEAR", () => 0.999);
 
     expect(reward.coin).toBe(180);
@@ -55,7 +61,7 @@ describe("battle rewards", () => {
     expect(reward.materials.magicShard).toBe(2);
   });
 
-  it("FAILED報酬は少量コイン、ランダム素材、低確率の魔力の欠片を付与する", () => {
+  it("FAILED reward keeps the existing small coin, random material, and shard chance behavior", () => {
     const reward = generateBattleReward("FAILED", sequenceRandom([0, 0.5, 0.19]));
 
     expect(reward.coin).toBe(30);
@@ -63,7 +69,115 @@ describe("battle rewards", () => {
     expect(reward.materials.magicShard).toBe(1);
   });
 
-  it("報酬を所持データへ加算できる", () => {
+  it("standard Normal rewards remain the existing baseline", () => {
+    const reward = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: "standard",
+    });
+
+    expect(getRewardTierMultiplier("standard")).toEqual({
+      coinMultiplier: 1,
+      materialMultiplier: 1,
+    });
+    expect(getDifficultyRewardMultiplier("Normal")).toBe(1);
+    expect(reward.coin).toBe(120);
+    expect(reward.materials.beastClaw).toBe(1);
+    expect(reward.materials.magicShard).toBe(1);
+  });
+
+  it("tutorial Normal gives fewer coins than standard Normal", () => {
+    const tutorial = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: BOSS_OPTIONS[0].rewardTier,
+    });
+    const standard = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: BOSS_OPTIONS[1].rewardTier,
+    });
+
+    expect(tutorial.coin).toBeLessThan(standard.coin);
+    expect(tutorial.coin).toBe(84);
+  });
+
+  it("advanced Normal gives more coins than standard Normal", () => {
+    const standard = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: BOSS_OPTIONS[1].rewardTier,
+    });
+    const advanced = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: BOSS_OPTIONS[2].rewardTier,
+    });
+
+    expect(advanced.coin).toBeGreaterThan(standard.coin);
+    expect(advanced.coin).toBe(150);
+  });
+
+  it("difficulty reward multipliers increase rewards", () => {
+    const normal = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: "standard",
+    });
+    const hard = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Hard",
+      rewardTier: "standard",
+    });
+    const extreme = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Extreme",
+      rewardTier: "standard",
+    });
+
+    expect(hard.coin).toBeGreaterThan(normal.coin);
+    expect(extreme.coin).toBeGreaterThan(hard.coin);
+    expect(hard.coin).toBe(168);
+    expect(extreme.coin).toBe(240);
+  });
+
+  it("same reward tier gives more rewards at higher difficulty", () => {
+    const tutorialNormal = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: "tutorial",
+    });
+    const tutorialHard = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Hard",
+      rewardTier: "tutorial",
+    });
+    const advancedNormal = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Normal",
+      rewardTier: "advanced",
+    });
+    const advancedExtreme = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Extreme",
+      rewardTier: "advanced",
+    });
+
+    expect(tutorialHard.coin).toBeGreaterThan(tutorialNormal.coin);
+    expect(advancedExtreme.coin).toBeGreaterThan(advancedNormal.coin);
+  });
+
+  it("CLEAR materials keep at least one item after scaling", () => {
+    const reward = applyRewardScaling(
+      {
+        coin: 120,
+        materials: {
+          beastClaw: 1,
+          fireStone: 1,
+          oldCloth: 1,
+          stonePiece: 1,
+          magicShard: 1,
+        },
+      },
+      "CLEAR",
+      {
+        difficulty: "Normal",
+        rewardTier: "tutorial",
+      },
+    );
+
+    expect(Object.values(reward.materials).every((amount) => amount >= 1)).toBe(true);
+  });
+
+  it("adds rewards to inventory", () => {
     const inventory = addRewardToInventory(createEmptyInventory(), {
       coin: 150,
       materials: {
@@ -79,6 +193,24 @@ describe("battle rewards", () => {
     expect(inventory.beastClaw).toBe(2);
     expect(inventory.magicShard).toBe(2);
   });
+
+  it("adds scaled rewards to inventory and keeps storage shape", () => {
+    const storage = new MemoryStorage();
+    const reward = generateBattleReward("CLEAR", () => 0, {
+      difficulty: "Extreme",
+      rewardTier: "advanced",
+    });
+    const inventory = addRewardToInventory(createEmptyInventory(), reward);
+
+    expect(reward.coin).toBe(300);
+    expect(reward.materials.beastClaw).toBe(2);
+    expect(inventory.coin).toBe(300);
+    expect(inventory.beastClaw).toBe(2);
+
+    savePlayerInventory(inventory, storage);
+    expect(loadPlayerInventory(storage)).toEqual(inventory);
+  });
+
   it("adds demo materials and coins for development checks", () => {
     const inventory = addDemoMaterialsToInventory(createEmptyInventory());
 
@@ -106,7 +238,7 @@ describe("battle rewards", () => {
 });
 
 describe("inventory storage", () => {
-  it("localStorageへ保存して読み戻せる", () => {
+  it("saves inventory to localStorage-compatible storage and loads it", () => {
     const storage = new MemoryStorage();
     const inventory = {
       ...createEmptyInventory(),
@@ -121,7 +253,7 @@ describe("inventory storage", () => {
     expect(loadPlayerInventory(storage)).toEqual(inventory);
   });
 
-  it("保存値が壊れている場合は初期値へ戻す", () => {
+  it("falls back to the initial value when saved data is broken", () => {
     const storage = new MemoryStorage();
     storage.setItem(INVENTORY_STORAGE_KEY, "{broken");
 

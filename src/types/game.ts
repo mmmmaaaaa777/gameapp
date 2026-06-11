@@ -53,6 +53,9 @@ export interface BattleStats {
 export interface BattleResult {
   kind: ResultKind;
   stats: BattleStats;
+  activeAttribute: AttributeId;
+  attackElement: AttributeId;
+  defenseElement: AttributeId;
 }
 
 export type MaterialId =

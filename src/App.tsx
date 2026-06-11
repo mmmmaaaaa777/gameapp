@@ -30,6 +30,7 @@ import {
   saveOwnedEquipment,
   upgradeEquipment as applyUpgradeEquipment,
 } from "./game/equipment";
+import { createBattleBalanceSummary, type BattleBalanceSummary } from "./game/balance";
 import { createRetryBattleSelection } from "./game/difficulty";
 import {
   addRewardToInventory,
@@ -44,6 +45,7 @@ import type { AppScreen, BattleResult, BattleReward, EquipmentId } from "./types
 import type { WeaponId } from "./game/equipment";
 
 interface RewardedBattleResult {
+  balance: BattleBalanceSummary;
   battle: BattleResult;
   reward: BattleReward;
 }
@@ -287,13 +289,23 @@ export default function App() {
         selection={bossSelection}
         equippedWeaponId={equippedEquipment.weapon}
         onComplete={(nextResult) => {
-          const reward = generateBattleReward(nextResult.kind);
+          const reward = generateBattleReward(nextResult.kind, Math.random, {
+            difficulty,
+            rewardTier: selectedBoss.rewardTier,
+          });
           setInventory((currentInventory) => {
             const nextInventory = addRewardToInventory(currentInventory, reward);
             savePlayerInventory(nextInventory);
             return nextInventory;
           });
           setResult({
+            balance: createBattleBalanceSummary({
+              activeAttribute: nextResult.activeAttribute,
+              equipmentBonus,
+              equipmentLevels,
+              equippedEquipment,
+              selection: bossSelection,
+            }),
             battle: nextResult,
             reward,
           });
@@ -307,6 +319,7 @@ export default function App() {
     return (
       <ResultScreen
         bossName={selectedBoss.name}
+        balance={result.balance}
         difficulty={difficulty}
         inventory={inventory}
         result={result.battle}

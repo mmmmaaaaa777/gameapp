@@ -1,8 +1,10 @@
 import { MATERIAL_IDS, MATERIAL_LABELS } from "../game/inventory";
+import type { BattleBalanceSummary } from "../game/balance";
 import type { BossDifficulty } from "../game/menu";
 import type { BattleResult, BattleReward, PlayerInventory } from "../types/game";
 
 interface ResultScreenProps {
+  balance: BattleBalanceSummary;
   bossName?: string;
   difficulty?: BossDifficulty;
   inventory: PlayerInventory;
@@ -13,7 +15,65 @@ interface ResultScreenProps {
   onHome: () => void;
 }
 
+function getWeaponLevelText(balance: BattleBalanceSummary): string {
+  return balance.weaponLevel ? `Lv${balance.weaponLevel}` : "-";
+}
+
+function ResultBalancePanel({
+  balance,
+  result,
+}: {
+  balance: BattleBalanceSummary;
+  result: BattleResult;
+}) {
+  const rows = [
+    ["難易度", balance.difficulty],
+    ["ボス名", balance.bossName],
+    ["ボス役割", balance.bossRoleLabel],
+    ["報酬ランク", balance.rewardTier],
+    ["難易度倍率", `${balance.difficulty} x${balance.difficultyRewardMultiplier.toFixed(1)}`],
+    ["ボスHP", balance.bossHp.toLocaleString("ja-JP")],
+    ["ボス防御", balance.bossDefense.toLocaleString("ja-JP")],
+    ["装備中武器", balance.equippedWeaponName],
+    ["武器Lv", getWeaponLevelText(balance)],
+    ["攻撃属性", balance.attackAttributeLabel],
+    ["防御属性", balance.defenseAttributeLabel],
+    ["ボス属性", balance.bossAttributeLabel],
+    ["ブレイク", balance.bossBreakGauge.toLocaleString("ja-JP")],
+    ["ダウン", `${balance.bossDownDurationSeconds.toFixed(1)}秒`],
+    ["前方攻撃", balance.bossFrontalAttackPower.toLocaleString("ja-JP")],
+    ["突進", balance.bossChargeAttackPower.toLocaleString("ja-JP")],
+    ["範囲攻撃", balance.bossAreaAttackPower.toLocaleString("ja-JP")],
+    ["攻撃相性", balance.attackRelationLabel],
+    ["被弾相性", balance.defenseRelationLabel],
+    ["時間", `${result.stats.elapsedSeconds.toFixed(1)}秒`],
+    ["与ダメージ", result.stats.dealtDamage.toLocaleString("ja-JP")],
+    ["被ダメージ", result.stats.takenDamage.toLocaleString("ja-JP")],
+    ["回避成功", result.stats.dodgeSuccessCount.toLocaleString("ja-JP")],
+    ["ブレイク", result.stats.breakCount.toLocaleString("ja-JP")],
+    ["通常攻撃目安", `${balance.normalAttackDamage.toLocaleString("ja-JP")} ダメージ`],
+  ];
+
+  return (
+    <section className="balance-panel result-balance-panel" aria-label="バランス確認">
+      <div className="balance-heading">
+        <span>BALANCE</span>
+        <strong>戦闘条件と結果</strong>
+      </div>
+      <dl className="balance-grid result-balance-grid">
+        {rows.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
 export function ResultScreen({
+  balance,
   bossName,
   difficulty,
   inventory,
@@ -29,33 +89,35 @@ export function ResultScreen({
   return (
     <main className={`screen result-screen ${isClear ? "clear" : "failed"}`}>
       <section className="result-panel" aria-labelledby="result-title">
-        <p className="eyebrow">{isClear ? "討伐完了" : "戦闘不能"}</p>
+        <p className="eyebrow">{isClear ? "討伐完了" : "戦闘失敗"}</p>
         <h1 id="result-title">{result.kind}</h1>
         {bossName ? <p className="result-boss-name">対象: {bossName}</p> : null}
         {difficulty ? <p className="result-boss-name">難易度: {difficulty}</p> : null}
 
         <dl className="result-stats">
           <div>
-            <dt>{isClear ? "討伐時間" : "生存時間"}</dt>
+            <dt>{isClear ? "クリア時間" : "生存時間"}</dt>
             <dd>{result.stats.elapsedSeconds.toFixed(1)}秒</dd>
           </div>
           <div>
             <dt>与ダメージ</dt>
-            <dd>{result.stats.dealtDamage}</dd>
+            <dd>{result.stats.dealtDamage.toLocaleString("ja-JP")}</dd>
           </div>
           <div>
             <dt>被ダメージ</dt>
-            <dd>{result.stats.takenDamage}</dd>
+            <dd>{result.stats.takenDamage.toLocaleString("ja-JP")}</dd>
           </div>
           <div>
             <dt>回避成功</dt>
-            <dd>{result.stats.dodgeSuccessCount}</dd>
+            <dd>{result.stats.dodgeSuccessCount.toLocaleString("ja-JP")}</dd>
           </div>
           <div>
             <dt>ブレイク</dt>
-            <dd>{result.stats.breakCount}</dd>
+            <dd>{result.stats.breakCount.toLocaleString("ja-JP")}</dd>
           </div>
         </dl>
+
+        <ResultBalancePanel balance={balance} result={result} />
 
         <div className="result-equipment-cta">
           <button
@@ -73,12 +135,19 @@ export function ResultScreen({
             <strong>コイン +{reward.coin.toLocaleString("ja-JP")}</strong>
           </div>
           <ul className="reward-list">
-            {gainedMaterials.map((materialId) => (
-              <li key={materialId}>
-                <span>{MATERIAL_LABELS[materialId]}</span>
-                <strong>+{reward.materials[materialId]}</strong>
+            {gainedMaterials.length > 0 ? (
+              gainedMaterials.map((materialId) => (
+                <li key={materialId}>
+                  <span>{MATERIAL_LABELS[materialId]}</span>
+                  <strong>+{reward.materials[materialId]}</strong>
+                </li>
+              ))
+            ) : (
+              <li>
+                <span>素材</span>
+                <strong>なし</strong>
               </li>
-            ))}
+            )}
           </ul>
         </section>
 
@@ -91,7 +160,7 @@ export function ResultScreen({
             {MATERIAL_IDS.map((materialId) => (
               <li key={materialId}>
                 <span>{MATERIAL_LABELS[materialId]}</span>
-                <strong>{inventory[materialId]}</strong>
+                <strong>{inventory[materialId].toLocaleString("ja-JP")}</strong>
               </li>
             ))}
           </ul>

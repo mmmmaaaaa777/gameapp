@@ -1,13 +1,10 @@
-import type { AttributeId } from "../types/game";
+import { BOSS_OPTIONS } from "./bosses";
+import type { BossOption } from "./bosses";
 
 export type BossDifficulty = "Normal" | "Hard" | "Extreme";
 
-export interface BossOption {
-  id: string;
-  name: string;
-  attributeId: AttributeId;
-  description: string;
-}
+export { BOSS_OPTIONS };
+export type { BossAttackStats, BossBaseStats, BossOption, BossRewardTier, BossRole } from "./bosses";
 
 export interface BossSelection {
   boss: BossOption;
@@ -21,27 +18,6 @@ export interface MainSkillOption {
   description: string;
 }
 
-export const BOSS_OPTIONS: BossOption[] = [
-  {
-    id: "growl",
-    name: "魔獣グラウル",
-    attributeId: "dark",
-    description: "闇をまとう古代闘技場の番獣。",
-  },
-  {
-    id: "flamehorn",
-    name: "炎角の獣",
-    attributeId: "fire",
-    description: "燃える角で突進する荒ぶる魔獣。",
-  },
-  {
-    id: "crystal-warden",
-    name: "水晶の守護者",
-    attributeId: "water",
-    description: "冷たい結晶装甲を持つ守護者。",
-  },
-];
-
 export const DIFFICULTIES: BossDifficulty[] = ["Normal", "Hard", "Extreme"];
 
 export const MAIN_SKILLS: MainSkillOption[] = [
@@ -49,13 +25,13 @@ export const MAIN_SKILLS: MainSkillOption[] = [
     id: "assault",
     name: "アサルト",
     role: "近接攻撃",
-    description: "前方に踏み込み、短い隙でダメージを稼ぐ基本攻撃型。",
+    description: "前方に踏み込み、短い間隔でダメージを稼ぐ基本攻撃型。",
   },
   {
     id: "rapid",
     name: "ラピッド",
     role: "連撃",
-    description: "素早い手数で攻撃機会を増やす軽量型。",
+    description: "素早い手数で攻撃機会を増やす追撃型。",
   },
   {
     id: "break",

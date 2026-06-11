@@ -1,8 +1,7 @@
 ﻿import type { CSSProperties } from "react";
 import { useState } from "react";
 import { ATTRIBUTE_BY_ID, PLAYER_BASE_ATTACK, PLAYER_MAX_HP } from "../game/constants";
-import { getPlayerBattleStats } from "../game/combat";
-import { getBossStatsForSelection } from "../game/difficulty";
+import { createBattleBalanceSummary, type BattleBalanceSummary } from "../game/balance";
 import {
   canCraftEquipment,
   canRebirthWeapon,
@@ -390,6 +389,52 @@ function getEquipmentBattlePreview(equipment: EquipmentDefinition, level: Equipm
   }
 
   return equipment.effectLabel;
+}
+
+function getWeaponLevelText(summary: BattleBalanceSummary): string {
+  return summary.weaponLevel ? `Lv${summary.weaponLevel}` : "-";
+}
+
+function SortieBalancePanel({ summary }: { summary: BattleBalanceSummary }) {
+  const rows = [
+    ["難易度", summary.difficulty],
+    ["ボス役割", summary.bossRoleLabel],
+    ["ボスHP", summary.bossHp.toLocaleString("ja-JP")],
+    ["ボス防御", summary.bossDefense.toLocaleString("ja-JP")],
+    ["ボス属性", summary.bossAttributeLabel],
+    ["ブレイク", summary.bossBreakGauge.toLocaleString("ja-JP")],
+    ["ダウン", `${summary.bossDownDurationSeconds.toFixed(1)}秒`],
+    ["前方攻撃", summary.bossFrontalAttackPower.toLocaleString("ja-JP")],
+    ["突進", summary.bossChargeAttackPower.toLocaleString("ja-JP")],
+    ["範囲攻撃", summary.bossAreaAttackPower.toLocaleString("ja-JP")],
+    ["装備中武器", summary.equippedWeaponName],
+    ["武器Lv", getWeaponLevelText(summary)],
+    ["攻撃属性", summary.attackAttributeLabel],
+    ["防御属性", summary.defenseAttributeLabel],
+    ["攻撃相性", summary.attackRelationLabel],
+    ["被弾相性", summary.defenseRelationLabel],
+    ["攻撃力", summary.attackPower.toLocaleString("ja-JP")],
+    ["防御力", summary.defense.toLocaleString("ja-JP")],
+    ["最大HP", summary.maxHp.toLocaleString("ja-JP")],
+    ["通常攻撃", `${summary.normalAttackDamage.toLocaleString("ja-JP")} ダメージ`],
+  ];
+
+  return (
+    <section className="balance-panel sortie-balance-panel" aria-label="バランス確認">
+      <div className="balance-heading">
+        <span>BALANCE</span>
+        <strong>出撃条件</strong>
+      </div>
+      <dl className="balance-grid">
+        {rows.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
 }
 
 function CraftEquipmentCard({
@@ -794,8 +839,9 @@ export function BossSelectScreen({
             >
               <span className="boss-emblem" aria-hidden="true" />
               <span className="quest-copy">
-                <small>RAID BOSS</small>
+                <small>{boss.roleLabel}</small>
                 <strong>{boss.name}</strong>
+                <em>{boss.roleDescription}</em>
               </span>
               <AttributePill attributeId={boss.attributeId} />
             </button>
@@ -833,8 +879,12 @@ export function SortiePrepScreen({
   onBack,
   onStart,
 }: SortiePrepScreenProps) {
-  const bossStats = getBossStatsForSelection(selection);
-  const playerStats = getPlayerBattleStats(equipmentBonus);
+  const balanceSummary = createBattleBalanceSummary({
+    equipmentBonus,
+    equipmentLevels,
+    equippedEquipment,
+    selection,
+  });
 
   return (
     <main className="screen menu-screen loadout-screen">
@@ -849,17 +899,20 @@ export function SortiePrepScreen({
         <div className="target-tags">
           <AttributePill attributeId={selection.boss.attributeId} />
           <span>{selection.difficulty}</span>
-          <span>HP {bossStats.maxHp.toLocaleString("ja-JP")}</span>
-          <span>防御 {bossStats.defense}</span>
+          <span>{balanceSummary.bossRoleLabel}</span>
+          <span>HP {balanceSummary.bossHp.toLocaleString("ja-JP")}</span>
+          <span>防御 {balanceSummary.bossDefense}</span>
         </div>
       </section>
 
       <section className="battle-stat-strip" aria-label="出撃ステータス">
-        <span>攻撃 {playerStats.attackPower}</span>
-        <span>防御 {playerStats.defense}</span>
-        <span>HP {playerStats.maxHp}</span>
-        <span>移動 x{playerStats.moveSpeedMultiplier.toFixed(2)}</span>
+        <span>攻撃 {balanceSummary.attackPower}</span>
+        <span>防御 {balanceSummary.defense}</span>
+        <span>HP {balanceSummary.maxHp}</span>
+        <span>通常 {balanceSummary.normalAttackDamage}</span>
       </section>
+
+      <SortieBalancePanel summary={balanceSummary} />
 
       <section className="slot-panel">
         <h2>SKILL DECK</h2>
