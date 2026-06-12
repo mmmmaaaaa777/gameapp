@@ -1,167 +1,67 @@
 # gameapp Three.js Demo
 
-React + TypeScript + Vite + Three.js で作成した、スマホ向けファンタジーRPG風の協力ボス戦デモです。
+スマホ向けのボス戦RPGデモ。React + TypeScript + Vite + Three.js で、ホームからバトル、リザルトまでの一連の流れをクライアントだけで回している。Unity本番前の操作感確認用なので、Firebase・ログイン・課金・本物のマルチプレイみたいなサーバー側の仕組みは一切ない。
 
-ホーム、ボス選択、出撃準備、編成、装備、設定、バトル、リザルトの一連の導線を React state だけで動かしています。Firebase、DB、ログイン、課金、広告、本物のマルチプレイは入れていません。
-
-## 環境
-
-- Node.js
-- npm
-- Windows PowerShell の場合、npm は `npm.cmd` で実行すると安全です。
-
-## セットアップ
+## 動かし方
 
 ```powershell
 npm.cmd install
-```
-
-## 起動方法
-
-```powershell
 npm.cmd run dev
 ```
 
-Vite の開発サーバーが起動します。
+http://localhost:5173/ で開く。
 
-通常は以下のURLで確認できます。
+PowerShellだと `npm` が実行ポリシーで弾かれることがあるので `npm.cmd` にしている。bashなら普通に `npm` でいい。
 
-```text
-http://localhost:5173/
-```
+スマホ実機で見たいときは、PCと同じWi-Fiにつないで Vite が表示する Network のURL(`http://192.168.x.x:5173/` みたいなやつ)を開く。
 
-スマホ実機で確認する場合は、PCとスマホを同じネットワークに接続し、Viteの表示に出る Network URL またはPCのローカルIPを使ってアクセスしてください。
-
-例:
-
-```text
-http://192.168.x.x:5173/
-```
-
-## よく使うコマンド
+そのほかのコマンド:
 
 ```powershell
-npm.cmd run dev
-npm.cmd run test
-npm.cmd run lint
-npm.cmd run build
-npm.cmd audit
+npm.cmd run test    # Vitest
+npm.cmd run lint    # ESLint
+npm.cmd run build   # tsc + vite build
 ```
 
-内容:
+## 操作
 
-- `npm.cmd run dev`: 開発サーバー起動
-- `npm.cmd run test`: Vitest 実行
-- `npm.cmd run lint`: ESLint 実行
-- `npm.cmd run build`: TypeScriptチェック + Viteビルド
-- `npm.cmd audit`: 依存関係の脆弱性確認
-
-## 操作方法
-
-バトル画面では Pointer Events で操作します。
+バトルは Pointer Events で全部拾っている。
 
 - スワイプ: 移動
 - タップ: 攻撃
 - フリック: 回避
-- スキルボタン: スキル発動
-- 属性ボタン: 属性切り替え
+- 画面下のボタン: スキル発動と属性切り替え
 
-スマホ幅375pxを主な確認基準にしています。
+レイアウトは幅375pxを基準に作ってある。
 
-## 画面構成
+## 画面とファイルの対応
 
-- ホーム
-- ボス選択
-- 出撃準備
-- 編成
-- 装備
-- 設定
-- バトル
-- リザルト
+画面遷移は [src/App.tsx](src/App.tsx) の state 管理だけ。ホーム / ボス選択 / 出撃準備 / 編成 / 装備 / 設定は [MenuScreens.tsx](src/components/MenuScreens.tsx) に全部入っている(そろそろ分割したい)。
 
-画面遷移は `src/App.tsx` の React state で管理しています。
+- `src/components/BattleScreen.tsx` … バトルのReact側
+- `src/components/BattleHud.tsx` … HPバーやスキルボタン
+- `src/components/ResultScreen.tsx` … リザルト
+- `src/three/createBattleScene.ts` … Three.jsシーン本体。FBX読み込み、ボス、カメラ、入力の反映
+- `src/three/effects.ts` … 属性エフェクト
+- `src/game/` … 属性・スキル定義、戦闘計算、装備、報酬まわりのロジック(ここはテストあり)
+- `src/styles.css` … UI全部。色やサイズは `:root` のCSS変数にまとめてある
 
-## 主要ファイル
+## 3Dモデル
 
-- `src/App.tsx`: 画面遷移と全体state
-- `src/components/MenuScreens.tsx`: ホーム、ボス選択、出撃準備、編成、装備、設定
-- `src/components/BattleScreen.tsx`: バトル画面のReact側
-- `src/components/BattleHud.tsx`: バトルHUD
-- `src/components/ResultScreen.tsx`: リザルト画面
-- `src/three/createBattleScene.ts`: Three.jsシーン、FBXモデル、ボス、カメラ、操作反映
-- `src/three/effects.ts`: 属性エフェクト
-- `src/game/constants.ts`: 属性、スキルなどの定義
-- `src/game/menu.ts`: メニュー画面用の仮データ
-- `src/styles.css`: 画面全体のUI/CSS
+`public/models/characterMedium.fbx` と `public/models/animations/` 下の idle / run / jump を使う。読み込みに失敗したら簡易人型と既存モーションにフォールバックするので、モデルがなくても一応動く。attack と dodge のFBXは使っていない。
 
-## 3Dモデルとアニメーション
+## 縛り(意図的なもの)
 
-以下のFBXを使用します。
+- Three.js は直接使う。`@react-three/fiber` は入れない
+- 外部の画像・音・モデルを足さない(エフェクトやUI質感は全部CSSとコード生成)
+- データはクライアントの一時state。リロードで消えるのは仕様
+- バトルエリアは `touch-action: none;` を維持する。これを外すとスマホでスクロールと攻撃が喧嘩する
 
-```text
-public/models/characterMedium.fbx
-public/models/animations/idle.fbx
-public/models/animations/run.fbx
-public/models/animations/jump.fbx
-```
+## 変更したら
 
-モデルやアニメーションが読み込めない場合は、簡易人型や既存モーションにフォールバックします。
+`test` / `lint` / `build` を回した上で、375px幅で一通り画面を見る。特に横スクロールが出ていないか、コンソールにエラーが出ていないか、ホームに戻る導線と再挑戦がちゃんと動くか。
 
-`attack.fbx` と `dodge.fbx` は参照しません。
+## ハマりどころ
 
-## 実装上の方針
-
-- Three.jsは直接利用します。
-- `@react-three/fiber` は使いません。
-- 外部画像、外部音声、外部3Dモデルの追加はしません。
-- Firebase、ログイン、DB、課金、広告、本物のマルチプレイは追加しません。
-- バトルやメニューのデータはクライアント内の一時stateで扱います。
-- Canvasまたはバトルエリアはスマホ操作のため `touch-action: none;` を維持します。
-
-## 検証メモ
-
-変更後は最低限以下を実行してください。
-
-```powershell
-npm.cmd run test
-npm.cmd run lint
-npm.cmd run build
-npm.cmd audit
-```
-
-375px幅で確認したい項目:
-
-- ホーム画面
-- ボス選択画面
-- 出撃準備画面
-- 編成画面
-- 装備画面
-- 設定画面
-- バトル画面
-- リザルト画面
-- ホームへ戻る導線
-- 同じボスに再挑戦
-- 横スクロールなし
-- コンソールエラーなし
-
-## トラブルシュート
-
-### PowerShellでnpmが実行できない
-
-`npm` ではなく `npm.cmd` を使ってください。
-
-```powershell
-npm.cmd run dev
-```
-
-### 日本語がPowerShell上で文字化けする
-
-ブラウザ表示が正常なら、PowerShell側の文字コード表示だけが原因のことがあります。ファイル内容を確認する場合はUTF-8を指定してください。
-
-```powershell
-Get-Content README.md -Encoding UTF8
-```
-
-### Viteのbuildで500kB超チャンク警告が出る
-
-Three.jsやFBX関連を含むため、現状では警告が出ます。ビルドが成功していれば実行自体は可能です。
+- PowerShellで日本語が化けるのは大体表示側の問題。`Get-Content README.md -Encoding UTF8` で読めば中身は無事
+- build時に500kB超のチャンク警告が出るが、Three.jsとFBXローダーを含んでいる以上仕方ないので放置している
