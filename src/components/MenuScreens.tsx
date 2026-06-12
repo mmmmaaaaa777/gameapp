@@ -22,6 +22,8 @@ import { MATERIAL_IDS, MATERIAL_LABELS } from "../game/inventory";
 import {
   BOSS_OPTIONS,
   DIFFICULTIES,
+  DIFFICULTY_LABELS,
+  getDifficultyLabel,
   MAIN_SKILLS,
   SUB_SKILLS,
   type BossDifficulty,
@@ -109,11 +111,43 @@ interface SettingsScreenProps {
 }
 
 const NAV_ITEMS = [
-  ["home", "ホーム", "⌂"],
-  ["formation", "編成", "✦"],
-  ["equipment", "装備", "◆"],
-  ["settings", "設定", "⚙"],
+  ["home", "ホーム", "home"],
+  ["formation", "編成", "formation"],
+  ["equipment", "装備", "equipment"],
+  ["settings", "設定", "settings"],
 ] as const;
+
+type NavIconName = (typeof NAV_ITEMS)[number][2];
+
+/* Inline SVG icons: text glyphs (⌂✦◆⚙) render differently across devices,
+   currentColor keeps the existing per-state coloring. */
+function NavIcon({ name }: { name: NavIconName }) {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      width="15"
+      height="15"
+      viewBox="0 0 16 16"
+    >
+      {name === "home" ? (
+        <path d="M8 2 2.4 7.2h1.7v6.2h3.1v-3.6h1.6v3.6h3.1V7.2h1.7Z" fill="currentColor" />
+      ) : null}
+      {name === "formation" ? (
+        <path d="M8 1.2 9.8 6.2 14.8 8 9.8 9.8 8 14.8 6.2 9.8 1.2 8 6.2 6.2Z" fill="currentColor" />
+      ) : null}
+      {name === "equipment" ? (
+        <path d="M8 1.6 14.4 8 8 14.4 1.6 8Z" fill="currentColor" />
+      ) : null}
+      {name === "settings" ? (
+        <g fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round">
+          <circle cx="8" cy="8" r="2.5" />
+          <path d="M8 1.4v2.1M8 12.5v2.1M1.4 8h2.1M12.5 8h2.1M3.3 3.3l1.5 1.5M11.2 11.2l1.5 1.5M12.7 3.3l-1.5 1.5M4.8 11.2l-1.5 1.5" />
+        </g>
+      ) : null}
+    </svg>
+  );
+}
 
 const EQUIPMENT_SLOT_ORDER: EquipmentSlot[] = ["weapon", "head", "body", "feet"];
 
@@ -165,7 +199,9 @@ function ScreenHeader({
       </div>
       {onHome ? (
         <button className="icon-home-button" type="button" onClick={onHome}>
-          <span aria-hidden="true">⌂</span>
+          <span aria-hidden="true">
+            <NavIcon name="home" />
+          </span>
           ホーム
         </button>
       ) : null}
@@ -191,7 +227,9 @@ function BottomMenu({
           type="button"
           onClick={() => onNavigate(screen)}
         >
-          <span aria-hidden="true">{icon}</span>
+          <span aria-hidden="true">
+            <NavIcon name={icon} />
+          </span>
           <strong>{label}</strong>
           {screen === "equipment" && equipmentNoticeCount > 0 ? (
             <em className="nav-notice" aria-label={`${equipmentNoticeCount}件の装備更新あり`}>
@@ -397,7 +435,7 @@ function getWeaponLevelText(summary: BattleBalanceSummary): string {
 
 function SortieBalancePanel({ summary }: { summary: BattleBalanceSummary }) {
   const rows = [
-    ["難易度", summary.difficulty],
+    ["難易度", getDifficultyLabel(summary.difficulty)],
     ["ボス役割", summary.bossRoleLabel],
     ["ボスHP", summary.bossHp.toLocaleString("ja-JP")],
     ["ボス防御", summary.bossDefense.toLocaleString("ja-JP")],
@@ -420,11 +458,11 @@ function SortieBalancePanel({ summary }: { summary: BattleBalanceSummary }) {
   ];
 
   return (
-    <section className="balance-panel sortie-balance-panel" aria-label="バランス確認">
-      <div className="balance-heading">
+    <details className="balance-panel sortie-balance-panel">
+      <summary className="balance-heading" aria-label="バランス確認を開閉">
         <span>BALANCE</span>
         <strong>出撃条件</strong>
-      </div>
+      </summary>
       <dl className="balance-grid">
         {rows.map(([label, value]) => (
           <div key={label}>
@@ -433,7 +471,7 @@ function SortieBalancePanel({ summary }: { summary: BattleBalanceSummary }) {
           </div>
         ))}
       </dl>
-    </section>
+    </details>
   );
 }
 
@@ -837,7 +875,14 @@ export function BossSelectScreen({
               type="button"
               onClick={() => onSelectBoss(boss)}
             >
-              <span className="boss-emblem" aria-hidden="true" />
+              <span
+                className="boss-emblem"
+                style={{
+                  "--attribute-color": ATTRIBUTE_BY_ID[boss.attributeId].cssColor,
+                  "--attribute-accent": ATTRIBUTE_BY_ID[boss.attributeId].cssAccent,
+                } as CSSProperties}
+                aria-hidden="true"
+              />
               <span className="quest-copy">
                 <small>{boss.roleLabel}</small>
                 <strong>{boss.name}</strong>
@@ -858,7 +903,7 @@ export function BossSelectScreen({
               type="button"
               onClick={() => onSelectDifficulty(difficulty)}
             >
-              {difficulty}
+              {DIFFICULTY_LABELS[difficulty]}
             </button>
           ))}
         </div>
@@ -891,14 +936,21 @@ export function SortiePrepScreen({
       <ScreenHeader title="出撃準備" eyebrow="LOADOUT" />
 
       <section className="target-plate">
-        <span className="boss-emblem large" aria-hidden="true" />
+        <span
+          className="boss-emblem large"
+          style={{
+            "--attribute-color": ATTRIBUTE_BY_ID[selection.boss.attributeId].cssColor,
+            "--attribute-accent": ATTRIBUTE_BY_ID[selection.boss.attributeId].cssAccent,
+          } as CSSProperties}
+          aria-hidden="true"
+        />
         <div>
           <small>TARGET</small>
           <h2>{selection.boss.name}</h2>
         </div>
         <div className="target-tags">
           <AttributePill attributeId={selection.boss.attributeId} />
-          <span>{selection.difficulty}</span>
+          <span>{DIFFICULTY_LABELS[selection.difficulty]}</span>
           <span>{balanceSummary.bossRoleLabel}</span>
           <span>HP {balanceSummary.bossHp.toLocaleString("ja-JP")}</span>
           <span>防御 {balanceSummary.bossDefense}</span>
@@ -970,7 +1022,9 @@ export function FormationScreen({
               setNotice(`${skill.name}を選択中`);
             }}
           >
-            <span aria-hidden="true">✦</span>
+            <span aria-hidden="true">
+              <NavIcon name="formation" />
+            </span>
             <strong>{skill.name}</strong>
             <small>{skill.role}</small>
           </button>

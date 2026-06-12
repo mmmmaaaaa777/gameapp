@@ -20,6 +20,16 @@ export interface MainSkillOption {
 
 export const DIFFICULTIES: BossDifficulty[] = ["Normal", "Hard", "Extreme"];
 
+export const DIFFICULTY_LABELS: Record<BossDifficulty, string> = {
+  Normal: "ノーマル",
+  Hard: "ハード",
+  Extreme: "エクストリーム",
+};
+
+export function getDifficultyLabel(difficulty: string): string {
+  return (DIFFICULTY_LABELS as Record<string, string>)[difficulty] ?? difficulty;
+}
+
 export const MAIN_SKILLS: MainSkillOption[] = [
   {
     id: "assault",

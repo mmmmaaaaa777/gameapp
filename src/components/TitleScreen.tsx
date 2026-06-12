@@ -10,7 +10,7 @@ export function TitleScreen({ onStart }: TitleScreenProps) {
         <h1 id="app-title">gameapp Three.jsデモ版</h1>
         <p className="subtitle">Unity本番前の操作感・雰囲気確認用デモ</p>
         <button className="primary-button start-button" type="button" onClick={onStart}>
-          START
+          スタート
         </button>
       </section>
 

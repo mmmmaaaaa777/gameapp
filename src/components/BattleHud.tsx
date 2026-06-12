@@ -121,7 +121,7 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
                 <span className="skill-short">{skill.shortLabel}</span>
                 <span className="skill-label">{skill.label}</span>
                 <span className="skill-meta">
-                  {disabled ? formatCooldown(cooldown) : `${snapshot.skillDamagePreview[skill.id]} dmg`}
+                  {disabled ? formatCooldown(cooldown) : `威力 ${snapshot.skillDamagePreview[skill.id]}`}
                 </span>
               </button>
             );
@@ -159,7 +159,7 @@ export function BattleHud({ snapshot, onSkill, onAttribute }: BattleHudProps) {
       </div>
 
       <p className="operation-hint">
-        スワイプで移動 / タップ攻撃 {snapshot.normalAttackDamage} dmg / フリックで回避
+        スワイプで移動 / タップ攻撃 威力 {snapshot.normalAttackDamage} / フリックで回避
       </p>
     </div>
   );

@@ -1,6 +1,6 @@
 import { MATERIAL_IDS, MATERIAL_LABELS } from "../game/inventory";
 import type { BattleBalanceSummary } from "../game/balance";
-import type { BossDifficulty } from "../game/menu";
+import { DIFFICULTY_LABELS, getDifficultyLabel, type BossDifficulty } from "../game/menu";
 import type { BattleResult, BattleReward, PlayerInventory } from "../types/game";
 
 interface ResultScreenProps {
@@ -27,11 +27,11 @@ function ResultBalancePanel({
   result: BattleResult;
 }) {
   const rows = [
-    ["難易度", balance.difficulty],
+    ["難易度", getDifficultyLabel(balance.difficulty)],
     ["ボス名", balance.bossName],
     ["ボス役割", balance.bossRoleLabel],
     ["報酬ランク", balance.rewardTier],
-    ["難易度倍率", `${balance.difficulty} x${balance.difficultyRewardMultiplier.toFixed(1)}`],
+    ["難易度倍率", `${getDifficultyLabel(balance.difficulty)} x${balance.difficultyRewardMultiplier.toFixed(1)}`],
     ["ボスHP", balance.bossHp.toLocaleString("ja-JP")],
     ["ボス防御", balance.bossDefense.toLocaleString("ja-JP")],
     ["装備中武器", balance.equippedWeaponName],
@@ -55,11 +55,11 @@ function ResultBalancePanel({
   ];
 
   return (
-    <section className="balance-panel result-balance-panel" aria-label="バランス確認">
-      <div className="balance-heading">
+    <details className="balance-panel result-balance-panel">
+      <summary className="balance-heading" aria-label="バランス確認を開閉">
         <span>BALANCE</span>
         <strong>戦闘条件と結果</strong>
-      </div>
+      </summary>
       <dl className="balance-grid result-balance-grid">
         {rows.map(([label, value]) => (
           <div key={label}>
@@ -68,7 +68,7 @@ function ResultBalancePanel({
           </div>
         ))}
       </dl>
-    </section>
+    </details>
   );
 }
 
@@ -89,10 +89,12 @@ export function ResultScreen({
   return (
     <main className={`screen result-screen ${isClear ? "clear" : "failed"}`}>
       <section className="result-panel" aria-labelledby="result-title">
-        <p className="eyebrow">{isClear ? "討伐完了" : "戦闘失敗"}</p>
-        <h1 id="result-title">{result.kind}</h1>
+        <p className="eyebrow">{result.kind}</p>
+        <h1 id="result-title">{isClear ? "討伐完了" : "戦闘失敗"}</h1>
         {bossName ? <p className="result-boss-name">対象: {bossName}</p> : null}
-        {difficulty ? <p className="result-boss-name">難易度: {difficulty}</p> : null}
+        {difficulty ? (
+          <p className="result-boss-name">難易度: {DIFFICULTY_LABELS[difficulty]}</p>
+        ) : null}
 
         <dl className="result-stats">
           <div>
