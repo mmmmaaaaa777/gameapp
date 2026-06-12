@@ -2888,7 +2888,7 @@ details.balance-panel[open] summary.balance-heading::after {
 
 .result-screen::before {
   position: absolute;
-  inset: auto -18% -16% -18%;
+  inset: auto 0 -16%;
   height: 46dvh;
   pointer-events: none;
   content: "";
@@ -2899,6 +2899,7 @@ details.balance-panel[open] summary.balance-heading::after {
   filter: blur(0.2px);
   opacity: 0.78;
   transform: perspective(320px) rotateX(62deg);
+  transform-origin: center bottom;
 }
 
 .result-panel {

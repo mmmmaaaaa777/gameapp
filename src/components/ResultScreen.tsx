@@ -39,7 +39,7 @@ function ResultBalancePanel({
     ["攻撃属性", balance.attackAttributeLabel],
     ["防御属性", balance.defenseAttributeLabel],
     ["ボス属性", balance.bossAttributeLabel],
-    ["ブレイク", balance.bossBreakGauge.toLocaleString("ja-JP")],
+    ["ボスブレイク", balance.bossBreakGauge.toLocaleString("ja-JP")],
     ["ダウン", `${balance.bossDownDurationSeconds.toFixed(1)}秒`],
     ["前方攻撃", balance.bossFrontalAttackPower.toLocaleString("ja-JP")],
     ["突進", balance.bossChargeAttackPower.toLocaleString("ja-JP")],
@@ -50,7 +50,7 @@ function ResultBalancePanel({
     ["与ダメージ", result.stats.dealtDamage.toLocaleString("ja-JP")],
     ["被ダメージ", result.stats.takenDamage.toLocaleString("ja-JP")],
     ["回避成功", result.stats.dodgeSuccessCount.toLocaleString("ja-JP")],
-    ["ブレイク", result.stats.breakCount.toLocaleString("ja-JP")],
+    ["ブレイク回数", result.stats.breakCount.toLocaleString("ja-JP")],
     ["通常攻撃目安", `${balance.normalAttackDamage.toLocaleString("ja-JP")} ダメージ`],
   ];
 
@@ -61,8 +61,8 @@ function ResultBalancePanel({
         <strong>戦闘条件と結果</strong>
       </summary>
       <dl className="balance-grid result-balance-grid">
-        {rows.map(([label, value]) => (
-          <div key={label}>
+        {rows.map(([label, value], index) => (
+          <div key={`${label}-${index}`}>
             <dt>{label}</dt>
             <dd>{value}</dd>
           </div>
