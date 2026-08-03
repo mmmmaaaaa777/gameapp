@@ -1,67 +1,141 @@
-# gameapp Three.js Demo
+# Mobile Boss Battle RPG Demo
 
-スマホ向けのボス戦RPGデモ。React + TypeScript + Vite + Three.js で、ホームからバトル、リザルトまでの一連の流れをクライアントだけで回している。Unity本番前の操作感確認用なので、Firebase・ログイン・課金・本物のマルチプレイみたいなサーバー側の仕組みは一切ない。
+スマートフォン操作に特化した、ボス戦中心の3DアクションRPGデモです。
 
-## 動かし方
+React・TypeScript・Vite・Three.jsを使用し、ホーム画面、ボス選択、編成、装備、バトル、リザルトまでの一連のゲームフローをクライアント側だけで実装しています。
+
+Unityなどで本制作へ進む前に、スマートフォンでの操作感、画面構成、戦闘ロジックを検証するためのプロトタイプとして開発しました。
+
+## 主な機能
+
+- ホームからバトル、リザルトまでの画面遷移
+- スワイプ移動、タップ攻撃、フリック回避
+- スキル発動と属性切り替え
+- ボス戦、HP管理、戦闘結果、報酬処理
+- 装備・編成・設定画面
+- FBXモデルとアニメーションの読み込み
+- モデル読み込み失敗時のフォールバック表示
+- 戦闘計算やゲームロジックの自動テスト
+- 幅375pxを基準としたスマートフォン向けUI
+
+## 使用技術
+
+| 分類 | 技術 |
+| --- | --- |
+| フロントエンド | React 19 / TypeScript |
+| 3D | Three.js |
+| 開発環境 | Vite |
+| テスト | Vitest |
+| 静的解析 | ESLint |
+| スタイリング | CSS |
+
+## セットアップ
+
+### PowerShell
 
 ```powershell
 npm.cmd install
 npm.cmd run dev
 ```
 
-http://localhost:5173/ で開く。
+### bash
 
-PowerShellだと `npm` が実行ポリシーで弾かれることがあるので `npm.cmd` にしている。bashなら普通に `npm` でいい。
-
-スマホ実機で見たいときは、PCと同じWi-Fiにつないで Vite が表示する Network のURL(`http://192.168.x.x:5173/` みたいなやつ)を開く。
-
-そのほかのコマンド:
-
-```powershell
-npm.cmd run test    # Vitest
-npm.cmd run lint    # ESLint
-npm.cmd run build   # tsc + vite build
+```bash
+npm install
+npm run dev
 ```
 
-## 操作
+起動後、次のURLを開きます。
 
-バトルは Pointer Events で全部拾っている。
+```text
+http://localhost:5173/
+```
 
-- スワイプ: 移動
-- タップ: 攻撃
-- フリック: 回避
-- 画面下のボタン: スキル発動と属性切り替え
+同じWi-Fiに接続したスマートフォンから確認する場合は、Viteが表示するNetwork URLを開いてください。
 
-レイアウトは幅375pxを基準に作ってある。
+## 操作方法
 
-## 画面とファイルの対応
+| 操作 | 動作 |
+| --- | --- |
+| スワイプ | キャラクター移動 |
+| タップ | 通常攻撃 |
+| フリック | 回避 |
+| 画面下部のボタン | スキル発動・属性切り替え |
 
-画面遷移は [src/App.tsx](src/App.tsx) の state 管理だけ。ホーム / ボス選択 / 出撃準備 / 編成 / 装備 / 設定は [MenuScreens.tsx](src/components/MenuScreens.tsx) に全部入っている(そろそろ分割したい)。
+バトル画面ではPointer Eventsを使用しています。
 
-- `src/components/BattleScreen.tsx` … バトルのReact側
-- `src/components/BattleHud.tsx` … HPバーやスキルボタン
-- `src/components/ResultScreen.tsx` … リザルト
-- `src/three/createBattleScene.ts` … Three.jsシーン本体。FBX読み込み、ボス、カメラ、入力の反映
-- `src/three/effects.ts` … 属性エフェクト
-- `src/game/` … 属性・スキル定義、戦闘計算、装備、報酬まわりのロジック(ここはテストあり)
-- `src/styles.css` … UI全部。色やサイズは `:root` のCSS変数にまとめてある
+## コマンド
 
-## 3Dモデル
+```bash
+npm run dev
+npm run test
+npm run lint
+npm run build
+```
 
-`public/models/characterMedium.fbx` と `public/models/animations/` 下の idle / run / jump を使う。読み込みに失敗したら簡易人型と既存モーションにフォールバックするので、モデルがなくても一応動く。attack と dodge のFBXは使っていない。
+## ディレクトリ構成
 
-## 縛り(意図的なもの)
+```text
+src/
+├─ components/
+│  ├─ BattleScreen.tsx
+│  ├─ BattleHud.tsx
+│  ├─ ResultScreen.tsx
+│  └─ MenuScreens.tsx
+├─ game/
+│  └─ 戦闘計算・属性・スキル・装備・報酬ロジック
+├─ three/
+│  ├─ createBattleScene.ts
+│  └─ effects.ts
+├─ App.tsx
+└─ styles.css
+```
 
-- Three.js は直接使う。`@react-three/fiber` は入れない
-- 外部の画像・音・モデルを足さない(エフェクトやUI質感は全部CSSとコード生成)
-- データはクライアントの一時state。リロードで消えるのは仕様
-- バトルエリアは `touch-action: none;` を維持する。これを外すとスマホでスクロールと攻撃が喧嘩する
+## 実装上の方針
 
-## 変更したら
+- Three.jsを直接使用し、`@react-three/fiber`には依存しない
+- 外部の画像・音声・追加モデルに依存せず、UIやエフェクトをコードとCSSで構築する
+- サーバーやデータベースを持たないクライアント完結型とする
+- データは一時的なstateとして保持し、リロード時に初期化する
+- スマートフォン操作を優先し、バトル領域では`touch-action: none`を維持する
 
-`test` / `lint` / `build` を回した上で、375px幅で一通り画面を見る。特に横スクロールが出ていないか、コンソールにエラーが出ていないか、ホームに戻る導線と再挑戦がちゃんと動くか。
+## 現在の制限
 
-## ハマりどころ
+このリポジトリは操作感とゲームフローを検証するためのデモです。次の機能は含まれていません。
 
-- PowerShellで日本語が化けるのは大体表示側の問題。`Get-Content README.md -Encoding UTF8` で読めば中身は無事
-- build時に500kB超のチャンク警告が出るが、Three.jsとFBXローダーを含んでいる以上仕方ないので放置している
+- ログイン・ユーザー管理
+- Firebaseや独自APIとの連携
+- データベースへの保存
+- 課金
+- 実際のマルチプレイ
+- 本番用のサウンド・アセット管理
+
+## 品質確認
+
+変更後は次を実行します。
+
+```bash
+npm run test
+npm run lint
+npm run build
+```
+
+あわせて、幅375pxの表示で次を確認します。
+
+- 横スクロールが発生していないこと
+- コンソールエラーがないこと
+- ホームへ戻れること
+- バトルを再挑戦できること
+- タッチ操作と画面スクロールが競合しないこと
+
+## 今後の改善候補
+
+- 各メニュー画面のコンポーネント分割
+- 3Dアセットとチャンクの最適化
+- デモ動画・スクリーンショットの追加
+- CIによるtest・lint・buildの自動実行
+- 公開デモ環境の用意
+
+## License
+
+ライセンスは未設定です。コードやアセットを再利用する場合は、事前にリポジトリ所有者へ確認してください。
