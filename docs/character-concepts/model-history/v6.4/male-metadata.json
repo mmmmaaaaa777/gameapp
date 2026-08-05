@@ -1,0 +1,38 @@
+{
+  "revision": "v6.4",
+  "status": "rejected",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.4/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.4/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.4/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.4/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.4/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.4/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit04.mhclo",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 54,
+    "vertices": 35342,
+    "triangles": 65924,
+    "bones": 53,
+    "uv_meshes": 54,
+    "generated_parts": 48,
+    "reference_projection": false
+  },
+  "note": "男性の肩境界・前合わせ・裾・靴底は改善したが、半袖と麻袖の間に肌が露出するため不採用"
+}

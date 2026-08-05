@@ -1,0 +1,53 @@
+{
+  "revision": "v4.4",
+  "status": "candidate",
+  "title": "裾・腰色補正",
+  "summary": "裾の色潰れと女性腰の肌色誤投影を修正。正面と斜めを確認。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T06:06:48.308Z",
+    "2026-08-04T06:10:16.997Z"
+  ],
+  "images": [
+    {
+      "file": "female-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+      "sha256": "b913ccee6b9c"
+    },
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+      "sha256": "9be8336b89e0"
+    },
+    {
+      "file": "female-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-right-side.png",
+      "sha256": "88086b14d107"
+    },
+    {
+      "file": "female-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+      "sha256": "fae4722d8f91"
+    },
+    {
+      "file": "male-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+      "sha256": "6b204805df75"
+    },
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+      "sha256": "00f2908e734a"
+    },
+    {
+      "file": "male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-right-side.png",
+      "sha256": "b7f44f35e8f4"
+    },
+    {
+      "file": "male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+      "sha256": "d0fed2b5bcc5"
+    }
+  ]
+}

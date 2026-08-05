@@ -1,0 +1,38 @@
+{
+  "revision": "v6.5",
+  "status": "rejected",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.5/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.5/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.5/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.5/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.5/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.5/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit04.mhclo",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 52,
+    "vertices": 35476,
+    "triangles": 66188,
+    "bones": 53,
+    "uv_meshes": 52,
+    "generated_parts": 46,
+    "reference_projection": false
+  },
+  "note": "追加上袖を廃止して改善したが、麻袖上端が半袖の外に残るため不採用"
+}

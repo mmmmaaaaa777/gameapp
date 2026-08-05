@@ -24,3 +24,5 @@ verification-selected-states/
 verification-v3.1.1-equipment-ux/
 verification-v3.2-equipment-upgrade/
 *.tsbuildinfo
+__pycache__/
+*.py[cod]

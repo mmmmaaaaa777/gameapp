@@ -1,11 +1,13 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { ATTRIBUTE_BY_ID, FIELD_RADIUS } from "../game/constants";
 import type { AttributeId, SceneSnapshot, Vec3XZ } from "../types/game";
 import { disposeObject3D } from "./dispose";
 import { createAttackFlash, createAttributeEffect, type BattleEffect } from "./effects";
 
-const PLAYER_FBX_URL = "/models/characterMedium.fbx";
+const PLAYER_MODEL_URL = "/models/characters/initial-male-v6.glb";
+const PLAYER_VISUAL_HEIGHT = 1.82;
 const PLAYER_ANIMATION_URLS = {
   idle: "/models/animations/idle.fbx",
   run: "/models/animations/run.fbx",
@@ -43,12 +45,12 @@ interface PlayerModel {
   backCoreMaterial: THREE.MeshBasicMaterial;
   dodgeMaterial: THREE.MeshBasicMaterial;
   footstepMaterial: THREE.MeshBasicMaterial;
-  fbxModel: THREE.Group | null;
+  characterModel: THREE.Group | null;
   fbxMixer: THREE.AnimationMixer | null;
   fbxActions: Partial<Record<PlayerAnimationKey, THREE.AnimationAction>>;
   fbxActiveAction: PlayerAnimationKey | null;
-  fbxBaseScale: number;
-  fbxBasePosition: THREE.Vector3;
+  characterBaseScale: number;
+  characterBasePosition: THREE.Vector3;
   torso: THREE.Mesh;
   head: THREE.Mesh;
   leftArm: THREE.Mesh;
@@ -138,10 +140,14 @@ function getClipBindableTargetCount(clip: THREE.AnimationClip, targetNames: Set<
 }
 
 function isUsablePlayerAnimationClip(clip: THREE.AnimationClip, targetNames: Set<string>): boolean {
+  const trackTargets = new Set(clip.tracks.map((track) => getAnimationTrackTargetName(track.name)));
+  const bindableTargetCount = getClipBindableTargetCount(clip, targetNames);
+  const requiredTargetCount = Math.min(8, Math.ceil(trackTargets.size * 0.5));
+
   return (
     clip.tracks.length > 0
     && clip.duration >= MIN_PLAYER_ANIMATION_DURATION_SECONDS
-    && getClipBindableTargetCount(clip, targetNames) > 0
+    && bindableTargetCount >= requiredTargetCount
   );
 }
 
@@ -175,7 +181,7 @@ function fitModelToPlayer(model: THREE.Group): void {
   const largestAxis = Math.max(size.x, size.y, size.z);
 
   if (largestAxis > 0.001) {
-    model.scale.setScalar(1.65 / largestAxis);
+    model.scale.setScalar(PLAYER_VISUAL_HEIGHT / largestAxis);
   }
 
   model.rotation.y = Math.PI;
@@ -188,7 +194,7 @@ function fitModelToPlayer(model: THREE.Group): void {
   model.position.y -= fittedBox.min.y;
 }
 
-function prepareFbxPlayer(model: THREE.Group): void {
+function preparePlayerModel(model: THREE.Group, maxAnisotropy: number): void {
   fitModelToPlayer(model);
 
   model.traverse((child) => {
@@ -199,21 +205,28 @@ function prepareFbxPlayer(model: THREE.Group): void {
     }
 
     mesh.frustumCulled = false;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
 
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     materials.forEach((material) => {
-      if (!material) {
+      if (!(material instanceof THREE.MeshStandardMaterial)) {
         return;
       }
 
-      material.dispose();
-    });
-
-    mesh.material = new THREE.MeshStandardMaterial({
-      color: 0x3fb5a0,
-      roughness: 0.48,
-      metalness: 0.08,
-      emissive: 0x082722,
+      const textures = [
+        material.map,
+        material.normalMap,
+        material.roughnessMap,
+        material.metalnessMap,
+        material.aoMap,
+      ];
+      textures.forEach((texture) => {
+        if (texture) {
+          texture.anisotropy = Math.min(maxAnisotropy, 8);
+          texture.needsUpdate = true;
+        }
+      });
     });
   });
 }
@@ -500,6 +513,19 @@ async function loadFbxAnimationClip(key: PlayerAnimationKey, model: THREE.Group)
 }
 
 async function loadFbxPlayerAnimations(model: THREE.Group): Promise<LoadedPlayerAnimationState> {
+  const targetNames = collectAnimationTargetNames(model);
+  const hasV6GameRig = ["pelvis", "spine_01", "upperarm_l", "thigh_l", "head"].every(
+    (name) => targetNames.has(name),
+  );
+
+  // The bundled FBX clips use a different Mixamo-style skeleton.  Binding
+  // only their shared Root track moves the v6 rig out of the arena while the
+  // remaining tracks fail.  Keep the clean rest pose and synthetic movement
+  // until those clips have been explicitly retargeted to the MPFB bone names.
+  if (hasV6GameRig) {
+    return { mixer: null, actions: {} };
+  }
+
   const clips = await Promise.all(
     PLAYER_ANIMATION_KEYS.map(async (key) => ({
       key,
@@ -571,18 +597,20 @@ function playFbxPlayerAnimation(player: PlayerModel, key: PlayerAnimationKey, fa
   player.fbxActiveAction = key;
 }
 
-async function loadFbxPlayer(
+async function loadGlbPlayer(
   player: PlayerModel,
+  maxAnisotropy: number,
   onLoaded: (model: THREE.Group, animations: LoadedPlayerAnimationState) => void,
 ): Promise<void> {
-  if (!(await assetExists(PLAYER_FBX_URL))) {
+  if (!(await assetExists(PLAYER_MODEL_URL))) {
     player.fallbackGroup.visible = true;
     return;
   }
 
   try {
-    const model = await new FBXLoader().loadAsync(PLAYER_FBX_URL);
-    prepareFbxPlayer(model);
+    const asset = await new GLTFLoader().loadAsync(PLAYER_MODEL_URL);
+    const model = asset.scene;
+    preparePlayerModel(model, maxAnisotropy);
     const animations = await loadFbxPlayerAnimations(model);
     onLoaded(model, animations);
   } catch {
@@ -629,6 +657,10 @@ function makePlayer(): PlayerModel {
     opacity: 0,
     depthWrite: false,
   });
+  const modelRearLight = new THREE.PointLight(0xc4efff, 5.4, 6.5, 1.8);
+  const modelFrontLight = new THREE.PointLight(0xffe6c2, 2.8, 5.4, 1.8);
+  modelRearLight.position.set(-0.9, 2.6, 1.75);
+  modelFrontLight.position.set(1.15, 2.25, -1.25);
 
   const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.43, 0.92, 18), bodyMaterial);
   const chest = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.36, 0.5), bodyMaterial);
@@ -721,6 +753,8 @@ function makePlayer(): PlayerModel {
 
   group.add(
     fallbackGroup,
+    modelRearLight,
+    modelFrontLight,
     headingMarker,
     backCore,
     backHalo,
@@ -739,12 +773,12 @@ function makePlayer(): PlayerModel {
     backCoreMaterial,
     dodgeMaterial,
     footstepMaterial,
-    fbxModel: null,
+    characterModel: null,
     fbxMixer: null,
     fbxActions: {},
     fbxActiveAction: null,
-    fbxBaseScale: 1,
-    fbxBasePosition: new THREE.Vector3(),
+    characterBaseScale: 1,
+    characterBasePosition: new THREE.Vector3(),
     torso,
     head,
     leftArm,
@@ -874,13 +908,13 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
   scene.fog = new THREE.Fog(0x141018, 10, 27);
   scene.add(makeSkyDome());
 
-  const camera = new THREE.PerspectiveCamera(58, 1, 0.1, 80);
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 80);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.domElement.className = "battle-canvas";
   mount.appendChild(renderer.domElement);
 
-  const ambient = new THREE.HemisphereLight(0xd8ecff, 0x241610, 0.96);
+  const ambient = new THREE.HemisphereLight(0xd8ecff, 0x241610, 1.18);
   const key = new THREE.DirectionalLight(0xfff4dc, 1.48);
   const rim = new THREE.DirectionalLight(0x6dd8ff, 0.74);
   const bossAuraLight = new THREE.PointLight(0xff5d5d, 1.8, 11, 1.7);
@@ -897,7 +931,7 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
   scene.add(player.group, boss.group);
   let disposed = false;
 
-  void loadFbxPlayer(player, (model, animations) => {
+  void loadGlbPlayer(player, renderer.capabilities.getMaxAnisotropy(), (model, animations) => {
     if (disposed) {
       animations.mixer?.stopAllAction();
       animations.mixer?.uncacheRoot(model);
@@ -905,13 +939,15 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
       return;
     }
 
-    player.fbxModel = model;
+    player.characterModel = model;
     player.fbxMixer = animations.mixer;
     player.fbxActions = animations.actions;
     player.fbxActiveAction = null;
-    player.fbxBaseScale = model.scale.x;
-    player.fbxBasePosition.copy(model.position);
+    player.characterBaseScale = model.scale.x;
+    player.characterBasePosition.copy(model.position);
     player.fallbackGroup.visible = false;
+    player.backCore.visible = false;
+    player.backHalo.visible = false;
     player.group.add(model);
 
     if (player.fbxActions.idle) {
@@ -993,7 +1029,7 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
       player.rightArm.rotation.z = -0.22 - attackPulse * 0.26;
       player.leftLeg.rotation.x = walkSwing;
       player.rightLeg.rotation.x = -walkSwing;
-      if (player.fbxModel) {
+      if (player.characterModel) {
         const selectedAnimation = selectFbxPlayerAnimation(player, snapshot);
         if (selectedAnimation) {
           playFbxPlayerAnimation(player, selectedAnimation);
@@ -1006,17 +1042,17 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
         const movePulse = Math.sin(elapsed * 11);
         const runBob = Math.sin(elapsed * 8) * (usesSyntheticRun ? 0.065 : 0.035) * snapshot.playerMoveIntensity;
         const dodgeLift = snapshot.isDodging ? 0.12 + Math.sin(elapsed * 24) * 0.035 : 0;
-        player.fbxModel.position.set(
-          player.fbxBasePosition.x,
-          player.fbxBasePosition.y + runBob + dodgeLift,
-          player.fbxBasePosition.z - attackPulse * 0.14,
+        player.characterModel.position.set(
+          player.characterBasePosition.x,
+          player.characterBasePosition.y + runBob + dodgeLift,
+          player.characterBasePosition.z - attackPulse * 0.14,
         );
-        player.fbxModel.rotation.x = (
+        player.characterModel.rotation.x = (
           -attackPulse * 0.14
           + (snapshot.isDodging ? -0.08 : 0)
           - (usesSyntheticRun ? 0.1 * snapshot.playerMoveIntensity : 0)
         );
-        player.fbxModel.scale.setScalar(player.fbxBaseScale * (1 + attackPulse * 0.035));
+        player.characterModel.scale.setScalar(player.characterBaseScale * (1 + attackPulse * 0.035));
         player.leftStepRing.visible = usesSyntheticRun;
         player.rightStepRing.visible = usesSyntheticRun;
         player.footstepMaterial.opacity = usesSyntheticRun ? 0.12 + Math.abs(movePulse) * 0.16 : 0;
@@ -1091,14 +1127,14 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
 
       targetCamera.set(
         snapshot.playerPosition.x,
-        5.7,
-        snapshot.playerPosition.z + 7.15,
+        4.55,
+        snapshot.playerPosition.z + 6.2,
       );
       camera.position.lerp(targetCamera, 0.09);
       lookTarget.set(
-        snapshot.playerPosition.x * 0.35 + snapshot.bossPosition.x * 0.65,
-        1.22,
-        snapshot.playerPosition.z * 0.35 + snapshot.bossPosition.z * 0.65,
+        snapshot.playerPosition.x * 0.58 + snapshot.bossPosition.x * 0.42,
+        1.02,
+        snapshot.playerPosition.z * 0.58 + snapshot.bossPosition.z * 0.42,
       );
       camera.lookAt(lookTarget);
       renderer.render(scene, camera);
@@ -1118,9 +1154,9 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
     },
     dispose() {
       disposed = true;
-      if (player.fbxModel && player.fbxMixer) {
+      if (player.characterModel && player.fbxMixer) {
         player.fbxMixer.stopAllAction();
-        player.fbxMixer.uncacheRoot(player.fbxModel);
+        player.fbxMixer.uncacheRoot(player.characterModel);
       }
       effects.forEach((effect) => effect.dispose());
       effects.splice(0, effects.length);

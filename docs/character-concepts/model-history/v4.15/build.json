@@ -1,0 +1,37 @@
+{
+  "revision": "v4.15",
+  "status": "rejected",
+  "note": "手領域の上限をAポーズの実位置まで広げ、手首の青緑ブロックと黒い指先を補正",
+  "generatedAt": "2026-08-04T07:40:18.484510+00:00",
+  "pipeline": "scripts\\build_reference_projected_characters_v4.py",
+  "characters": [
+    {
+      "character": "male",
+      "blend": "art-source\\characters\\history\\v4.15\\initial-male-v4.blend",
+      "glb": "public\\models\\characters\\history\\v4.15\\initial-male-v4.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v4.15\\initial-male-v4-front.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-male-v4-right-side.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-male-v4-back.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-male-v4-three-quarter.png"
+      ],
+      "vertices": 152210,
+      "triangles": 304416,
+      "bones": 53
+    },
+    {
+      "character": "female",
+      "blend": "art-source\\characters\\history\\v4.15\\initial-female-v4.blend",
+      "glb": "public\\models\\characters\\history\\v4.15\\initial-female-v4.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v4.15\\initial-female-v4-front.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-female-v4-right-side.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-female-v4-back.png",
+        "docs\\character-concepts\\model-history\\v4.15\\initial-female-v4-three-quarter.png"
+      ],
+      "vertices": 139263,
+      "triangles": 278526,
+      "bones": 53
+    }
+  ]
+}

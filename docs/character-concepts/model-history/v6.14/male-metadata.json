@@ -1,0 +1,40 @@
+{
+  "revision": "v6.14",
+  "status": "rejected",
+  "rejection_reason": "GLB再読込証拠レンダーで、参照ポーズ中に5本以上のウェイトがglTFの4本上限へ自動切替され、顔・手・袖が崩れたため不採用",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.14/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.14/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.14/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.14/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.14/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.14/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit02.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 52,
+    "vertices": 35452,
+    "triangles": 66208,
+    "bones": 53,
+    "uv_meshes": 52,
+    "generated_parts": 46,
+    "reference_projection": false
+  },
+  "note": "四方向合格形状を維持し、MPFBの編集用ボーン表示IcosphereをGLB依存物から完全除去"
+}

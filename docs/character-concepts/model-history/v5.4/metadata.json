@@ -1,0 +1,31 @@
+{
+  "revision": "v5.4",
+  "status": "rejected",
+  "title": "再構成側の手面を全削除し、MPFB手を幾何学的な上下端で下向き接続。顔面・耳だけを残し頭頂・後頭・首面を除外。",
+  "summary": "再構成側の手面を全削除し、MPFB手を幾何学的な上下端で下向き接続。顔面・耳だけを残し頭頂・後頭・首面を除外。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "abecbfa92e5e"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "8ec05fe74e18"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "0f38b5d747a5"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "7506663126b5"
+    }
+  ],
+  "build": "build.json"
+}

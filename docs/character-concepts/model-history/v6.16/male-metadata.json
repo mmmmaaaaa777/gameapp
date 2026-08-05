@@ -1,0 +1,42 @@
+{
+  "revision": "v6.16",
+  "status": "rejected",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.16/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.16/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.16/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.16/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.16/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.16/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit02.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 52,
+    "vertices": 35452,
+    "triangles": 66208,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 9191,
+    "uv_meshes": 52,
+    "generated_parts": 46,
+    "reference_projection": false
+  },
+  "note": "MPFB皮膚Alphaを不透明化し、顔内部露出を除去。眉・まつ毛のみ単一画像Alphaへ接続",
+  "rejection_reason": "男性単体の透過修正は合格したが、男女共通の隠面削除前で制作ペアとして未採用"
+}

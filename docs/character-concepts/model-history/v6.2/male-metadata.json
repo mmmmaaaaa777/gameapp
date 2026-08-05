@@ -1,0 +1,38 @@
+{
+  "revision": "v6.2",
+  "status": "rejected",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.2/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.2/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.2/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.2/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.2/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.2/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit04.mhclo",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 53,
+    "vertices": 36598,
+    "triangles": 68236,
+    "bones": 53,
+    "uv_meshes": 53,
+    "generated_parts": 47,
+    "reference_projection": false
+  },
+  "note": "実メッシュ化は成立したが、肩の二重袖が鋸歯状、追加髪束が針状、前合わせが側面で浮くため不採用"
+}

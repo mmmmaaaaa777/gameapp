@@ -1,0 +1,53 @@
+{
+  "revision": "v4.15",
+  "status": "rejected",
+  "title": "手領域の上限をAポーズの実位置まで広げ、手首の青緑ブロックと黒い指先を補正",
+  "summary": "手領域の上限をAポーズの実位置まで広げ、手首の青緑ブロックと黒い指先を補正",
+  "recoveredFrom": null,
+  "reviewTimestamps": [
+    "2026-08-04T07:40:18.484510+00:00"
+  ],
+  "images": [
+    {
+      "file": "initial-female-v4-back.png",
+      "sourcePath": "initial-female-v4-back.png",
+      "sha256": "b90363da9384"
+    },
+    {
+      "file": "initial-female-v4-front.png",
+      "sourcePath": "initial-female-v4-front.png",
+      "sha256": "ff5d21540909"
+    },
+    {
+      "file": "initial-female-v4-right-side.png",
+      "sourcePath": "initial-female-v4-right-side.png",
+      "sha256": "1b3e4554ab3b"
+    },
+    {
+      "file": "initial-female-v4-three-quarter.png",
+      "sourcePath": "initial-female-v4-three-quarter.png",
+      "sha256": "1c2886d721ab"
+    },
+    {
+      "file": "initial-male-v4-back.png",
+      "sourcePath": "initial-male-v4-back.png",
+      "sha256": "f47cfa1aea30"
+    },
+    {
+      "file": "initial-male-v4-front.png",
+      "sourcePath": "initial-male-v4-front.png",
+      "sha256": "1767b334823e"
+    },
+    {
+      "file": "initial-male-v4-right-side.png",
+      "sourcePath": "initial-male-v4-right-side.png",
+      "sha256": "f013a9a62d77"
+    },
+    {
+      "file": "initial-male-v4-three-quarter.png",
+      "sourcePath": "initial-male-v4-three-quarter.png",
+      "sha256": "7ae39461f7e0"
+    }
+  ],
+  "build": "build.json"
+}

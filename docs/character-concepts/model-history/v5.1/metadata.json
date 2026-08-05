@@ -1,0 +1,31 @@
+{
+  "revision": "v5.1",
+  "status": "rejected",
+  "title": "v5.0の生成眼球を廃止。MPFBのUV付き頭部・手・眼・眉・睫毛を再構成衣装と統合し、腕材質帯を再設計。",
+  "summary": "v5.0の生成眼球を廃止。MPFBのUV付き頭部・手・眼・眉・睫毛を再構成衣装と統合し、腕材質帯を再設計。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "6d0865a8eb2b"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "7dcafb04f9ff"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "23bd8f639207"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "1759ac41c48d"
+    }
+  ],
+  "build": "build.json"
+}

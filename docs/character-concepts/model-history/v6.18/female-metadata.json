@@ -1,0 +1,42 @@
+{
+  "revision": "v6.18",
+  "status": "rejected",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.18/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.18/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.18/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.18/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.18/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.18/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 47,
+    "vertices": 26019,
+    "triangles": 46784,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 2200,
+    "uv_meshes": 47,
+    "generated_parts": 41,
+    "reference_projection": false
+  },
+  "note": "v6.17の衣服クリアランスに加え、頭・首・手以外の完全に衣服内へ隠れる体表面を削除。胸部の微小な肌抜けとポーズ時の貫通を根本除去",
+  "rejection_reason": "隠面削除は合格したが、裾パネル側面の接続とプレビュー画角を追加調整するため未採用"
+}

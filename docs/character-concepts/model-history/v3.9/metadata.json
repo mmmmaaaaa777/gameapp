@@ -1,0 +1,22 @@
+{
+  "revision": "v3.9",
+  "status": "kept",
+  "title": "女性背面被覆の修正",
+  "summary": "正面裾幅を保ちながら背面の腰・臀部露出を修正した編集可能版。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T06:05:01.379Z"
+  ],
+  "images": [
+    {
+      "file": "female-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+      "sha256": "8099cd92ea08"
+    },
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+      "sha256": "4b5c2e3d202d"
+    }
+  ]
+}

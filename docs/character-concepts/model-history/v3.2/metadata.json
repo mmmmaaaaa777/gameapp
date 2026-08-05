@@ -1,0 +1,27 @@
+{
+  "revision": "v3.2",
+  "status": "candidate",
+  "title": "男性シルエット再設計",
+  "summary": "頭頂、前髪、裾パネル、白飛び、箱型つま先を修正。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T03:51:12.687Z"
+  ],
+  "images": [
+    {
+      "file": "male-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+      "sha256": "1e23b0784220"
+    },
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+      "sha256": "14b1c343204b"
+    },
+    {
+      "file": "male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+      "sha256": "d68f56856212"
+    }
+  ]
+}

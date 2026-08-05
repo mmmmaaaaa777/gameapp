@@ -1,0 +1,22 @@
+{
+  "revision": "v2.3",
+  "status": "diagnostic",
+  "title": "右側面 QA",
+  "summary": "頭身、襟、前合わせ、ブーツ、手を右側面から検査。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T02:10:57.903Z"
+  ],
+  "images": [
+    {
+      "file": "female-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-right-side.png",
+      "sha256": "c8e0013a2fab"
+    },
+    {
+      "file": "male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-right-side.png",
+      "sha256": "19015158b8a3"
+    }
+  ]
+}

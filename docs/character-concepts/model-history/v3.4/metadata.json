@@ -1,0 +1,22 @@
+{
+  "revision": "v3.4",
+  "status": "candidate",
+  "title": "男性立ち姿と首回り",
+  "summary": "レスト姿勢を保った腕下げ、襟開口、肌色、髪、留め具を調整。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T04:04:54.579Z"
+  ],
+  "images": [
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+      "sha256": "8c98f14ee101"
+    },
+    {
+      "file": "male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+      "sha256": "a734b583eab2"
+    }
+  ]
+}

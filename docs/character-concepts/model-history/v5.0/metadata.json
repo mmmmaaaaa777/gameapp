@@ -1,0 +1,31 @@
+{
+  "revision": "v5.0",
+  "status": "rejected",
+  "title": "投影・頂点色を廃止。骨領域別PBR材質と別メッシュの顔・衣装ディテールを検証する初回診断版。",
+  "summary": "投影・頂点色を廃止。骨領域別PBR材質と別メッシュの顔・衣装ディテールを検証する初回診断版。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "8d15bb3d4d75"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "788d9c5544aa"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "6ac590d40626"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "0fff1937b37a"
+    }
+  ],
+  "build": "build.json"
+}

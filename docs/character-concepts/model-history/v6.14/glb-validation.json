@@ -1,0 +1,78 @@
+{
+  "validator": "scripts/validate_clean_character_glb.py",
+  "status": "passed",
+  "characters": {
+    "male": {
+      "file": "C:/Users/t_maruyama/Documents/gameapp/public/models/characters/history/v6.14/initial-male-v6.glb",
+      "bytes": 13517424,
+      "meshes": 52,
+      "vertices": 96841,
+      "triangles": 143992,
+      "materials": 15,
+      "embedded_images": 13,
+      "image_texture_nodes": 20,
+      "external_images": 0,
+      "armatures": 1,
+      "bones": 53,
+      "max_joint_influences": 4,
+      "uv_meshes": 52,
+      "blender_import_helpers_excluded": [
+        "Icosphere"
+      ],
+      "bounds_m": {
+        "min": [
+          -0.591875,
+          -0.375336,
+          -0.017274
+        ],
+        "max": [
+          0.591875,
+          0.127289,
+          1.798802
+        ],
+        "size": [
+          1.18375,
+          0.502625,
+          1.816075
+        ]
+      },
+      "proof_render": "C:/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-history/v6.14/initial-male-v6-glb-proof.png"
+    },
+    "female": {
+      "file": "C:/Users/t_maruyama/Documents/gameapp/public/models/characters/history/v6.14/initial-female-v6.glb",
+      "bytes": 13841168,
+      "meshes": 47,
+      "vertices": 96396,
+      "triangles": 142494,
+      "materials": 15,
+      "embedded_images": 13,
+      "image_texture_nodes": 20,
+      "external_images": 0,
+      "armatures": 1,
+      "bones": 53,
+      "max_joint_influences": 4,
+      "uv_meshes": 47,
+      "blender_import_helpers_excluded": [
+        "Icosphere"
+      ],
+      "bounds_m": {
+        "min": [
+          -0.50444,
+          -0.312545,
+          -0.012044
+        ],
+        "max": [
+          0.50444,
+          0.111912,
+          1.692151
+        ],
+        "size": [
+          1.00888,
+          0.424457,
+          1.704195
+        ]
+      },
+      "proof_render": "C:/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-history/v6.14/initial-female-v6-glb-proof.png"
+    }
+  }
+}

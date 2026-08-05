@@ -1,0 +1,41 @@
+{
+  "revision": "v5.4",
+  "pipeline": "v5-clean-semantic-materials",
+  "status": "rejected",
+  "note": "再構成側の手面を全削除し、MPFB手を幾何学的な上下端で下向き接続。顔面・耳だけを残し頭頂・後頭・首面を除外。",
+  "image_projection": false,
+  "vertex_colors": false,
+  "characters": [
+    {
+      "character": "male",
+      "blend": "art-source\\characters\\history\\v5.4\\initial-male-v5.blend",
+      "glb": "public\\models\\characters\\history\\v5.4\\initial-male-v5.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v5.4\\initial-male-v5-front.png",
+        "docs\\character-concepts\\model-history\\v5.4\\initial-male-v5-right-side.png",
+        "docs\\character-concepts\\model-history\\v5.4\\initial-male-v5-back.png",
+        "docs\\character-concepts\\model-history\\v5.4\\initial-male-v5-three-quarter.png"
+      ],
+      "vertices": 152210,
+      "triangles": 298685,
+      "bones": 53,
+      "surface_material_face_counts": {
+        "skin": 11660,
+        "teal": 105688,
+        "teal_dark": 0,
+        "linen": 9518,
+        "charcoal": 104658,
+        "leather": 20380,
+        "leather_dark": 35882,
+        "bronze": 768,
+        "hair": 13850,
+        "hair_highlight": 2012
+      },
+      "modeled_detail_objects": 5,
+      "authored_skin_faces": 6978,
+      "authored_face_objects": 5,
+      "uv": "GameUV",
+      "vertex_colors": 0
+    }
+  ]
+}

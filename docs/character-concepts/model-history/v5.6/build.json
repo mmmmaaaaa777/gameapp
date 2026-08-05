@@ -1,0 +1,41 @@
+{
+  "revision": "v5.6",
+  "pipeline": "v5-clean-semantic-materials",
+  "status": "rejected",
+  "note": "眼球以外の移植顔パーツを除外。手甲・靴口を材質帯で復元し、前裾縁と帯金具を別メッシュ追加。",
+  "image_projection": false,
+  "vertex_colors": false,
+  "characters": [
+    {
+      "character": "male",
+      "blend": "art-source\\characters\\history\\v5.6\\initial-male-v5.blend",
+      "glb": "public\\models\\characters\\history\\v5.6\\initial-male-v5.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v5.6\\initial-male-v5-front.png",
+        "docs\\character-concepts\\model-history\\v5.6\\initial-male-v5-right-side.png",
+        "docs\\character-concepts\\model-history\\v5.6\\initial-male-v5-back.png",
+        "docs\\character-concepts\\model-history\\v5.6\\initial-male-v5-three-quarter.png"
+      ],
+      "vertices": 152210,
+      "triangles": 298730,
+      "bones": 53,
+      "surface_material_face_counts": {
+        "skin": 29000,
+        "teal": 98634,
+        "teal_dark": 0,
+        "linen": 9518,
+        "charcoal": 92466,
+        "leather": 18422,
+        "leather_dark": 38230,
+        "bronze": 2284,
+        "hair": 13850,
+        "hair_highlight": 2012
+      },
+      "modeled_detail_objects": 8,
+      "authored_skin_faces": 3415,
+      "authored_face_objects": 1,
+      "uv": "GameUV",
+      "vertex_colors": 0
+    }
+  ]
+}

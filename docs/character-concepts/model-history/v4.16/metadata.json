@@ -1,0 +1,53 @@
+{
+  "revision": "v4.16",
+  "status": "rejected",
+  "title": "遠位の手指に残る暗色投影を肌色へ補正し、黒い指先を除去",
+  "summary": "遠位の手指に残る暗色投影を肌色へ補正し、黒い指先を除去",
+  "recoveredFrom": null,
+  "reviewTimestamps": [
+    "2026-08-04T07:44:54.704190+00:00"
+  ],
+  "images": [
+    {
+      "file": "initial-female-v4-back.png",
+      "sourcePath": "initial-female-v4-back.png",
+      "sha256": "b6f4cd33e42d"
+    },
+    {
+      "file": "initial-female-v4-front.png",
+      "sourcePath": "initial-female-v4-front.png",
+      "sha256": "6c9e428853a8"
+    },
+    {
+      "file": "initial-female-v4-right-side.png",
+      "sourcePath": "initial-female-v4-right-side.png",
+      "sha256": "af498ae50daf"
+    },
+    {
+      "file": "initial-female-v4-three-quarter.png",
+      "sourcePath": "initial-female-v4-three-quarter.png",
+      "sha256": "6858ece2466e"
+    },
+    {
+      "file": "initial-male-v4-back.png",
+      "sourcePath": "initial-male-v4-back.png",
+      "sha256": "15deda4dfb30"
+    },
+    {
+      "file": "initial-male-v4-front.png",
+      "sourcePath": "initial-male-v4-front.png",
+      "sha256": "42022b5afeb9"
+    },
+    {
+      "file": "initial-male-v4-right-side.png",
+      "sourcePath": "initial-male-v4-right-side.png",
+      "sha256": "73cf1b17ce9e"
+    },
+    {
+      "file": "initial-male-v4-three-quarter.png",
+      "sourcePath": "initial-male-v4-three-quarter.png",
+      "sha256": "85fc044a088e"
+    }
+  ],
+  "build": "build.json"
+}

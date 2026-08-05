@@ -1,0 +1,38 @@
+{
+  "revision": "v6.5",
+  "status": "rejected",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.5/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.5/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.5/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.5/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.5/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.5/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 46,
+    "vertices": 35561,
+    "triangles": 65584,
+    "bones": 53,
+    "uv_meshes": 46,
+    "generated_parts": 40,
+    "reference_projection": false
+  },
+  "note": "麻袖は単純化できたが、前髪を広範囲に変形して側頭部が翼状に裂けたため不採用"
+}

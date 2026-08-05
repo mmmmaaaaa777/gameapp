@@ -1,0 +1,42 @@
+{
+  "revision": "v6.15",
+  "status": "rejected",
+  "rejection_reason": "4ジョイント化は合格したが、皮膚Alphaの誤解釈と肩部の二重袖Z-fightingがGLB証拠画像に残ったため不採用",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.15/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.15/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.15/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.15/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.15/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.15/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 47,
+    "vertices": 35587,
+    "triangles": 65598,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 9442,
+    "uv_meshes": 47,
+    "generated_parts": 41,
+    "reference_projection": false
+  },
+  "note": "承認Aポーズをバインド姿勢へ焼き込み、全頂点を上位4ジョイントへ明示正規化してglTF再読込変形を一致"
+}

@@ -1,0 +1,32 @@
+{
+  "revision": "v2.4",
+  "status": "superseded",
+  "title": "v2 最終多方向確認",
+  "summary": "v2 の正面・右側面を男女同条件で比較した最終確認。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T02:13:50.400Z"
+  ],
+  "images": [
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-front.png",
+      "sha256": "a27e42a685c0"
+    },
+    {
+      "file": "female-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-right-side.png",
+      "sha256": "b1ec6c6fe37c"
+    },
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-front.png",
+      "sha256": "192af4efd107"
+    },
+    {
+      "file": "male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-right-side.png",
+      "sha256": "72dbae266b2c"
+    }
+  ]
+}

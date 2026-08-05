@@ -1,0 +1,1304 @@
+{
+  "generatedAt": "2026-08-04T08:51:34.417Z",
+  "revisions": [
+    {
+      "revision": "v1.0",
+      "status": "superseded",
+      "title": "初期軽量モデル",
+      "summary": "単純形状で構成した最初の男女モデル。リグとゲーム読込の成立を優先。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T00:58:35.266Z"
+      ],
+      "images": [
+        {
+          "file": "female-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-model-preview.png",
+          "sha256": "55d5f8a9467b"
+        },
+        {
+          "file": "male-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-model-preview.png",
+          "sha256": "231c84c0a925"
+        }
+      ]
+    },
+    {
+      "revision": "v2.0",
+      "status": "rejected",
+      "title": "v2 初回造形",
+      "summary": "顔・指・衣装・髪を高密度化した初回。断面リングのねじれが残る。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T01:56:41.812Z"
+      ],
+      "images": [
+        {
+          "file": "female-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-v2-model-preview.png",
+          "sha256": "6c592ef5d37c"
+        },
+        {
+          "file": "male-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-v2-model-preview.png",
+          "sha256": "4a87b58d2d3e"
+        }
+      ]
+    },
+    {
+      "revision": "v2.1",
+      "status": "rejected",
+      "title": "断面リング修正",
+      "summary": "袖とズボンのねじれを修正した途中確認。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T02:02:49.019Z"
+      ],
+      "images": [
+        {
+          "file": "female-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-v2-model-preview.png",
+          "sha256": "efd5f99265a6"
+        },
+        {
+          "file": "male-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-v2-model-preview.png",
+          "sha256": "3dd260c29456"
+        }
+      ]
+    },
+    {
+      "revision": "v2.2",
+      "status": "candidate",
+      "title": "脚・髪・衣装接続修正",
+      "summary": "脚の肌抜けを解消し、ズボンを足首まで連続化。髪型も再調整。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T02:05:39.361Z"
+      ],
+      "images": [
+        {
+          "file": "female-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-v2-model-preview.png",
+          "sha256": "054e23bcaf36"
+        },
+        {
+          "file": "male-preview.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-v2-model-preview.png",
+          "sha256": "8a13cfd9c7ab"
+        }
+      ]
+    },
+    {
+      "revision": "v2.3",
+      "status": "diagnostic",
+      "title": "右側面 QA",
+      "summary": "頭身、襟、前合わせ、ブーツ、手を右側面から検査。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T02:10:57.903Z"
+      ],
+      "images": [
+        {
+          "file": "female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-right-side.png",
+          "sha256": "c8e0013a2fab"
+        },
+        {
+          "file": "male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-right-side.png",
+          "sha256": "19015158b8a3"
+        }
+      ]
+    },
+    {
+      "revision": "v2.4",
+      "status": "superseded",
+      "title": "v2 最終多方向確認",
+      "summary": "v2 の正面・右側面を男女同条件で比較した最終確認。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T02:13:50.400Z"
+      ],
+      "images": [
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-front.png",
+          "sha256": "a27e42a685c0"
+        },
+        {
+          "file": "female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-female-v2-right-side.png",
+          "sha256": "b1ec6c6fe37c"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-front.png",
+          "sha256": "192af4efd107"
+        },
+        {
+          "file": "male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v2/initial-male-v2-right-side.png",
+          "sha256": "72dbae266b2c"
+        }
+      ]
+    },
+    {
+      "revision": "v3.0",
+      "status": "rejected",
+      "title": "MPFB 高密度版の初回",
+      "summary": "MPFB 人体と別メッシュ衣装の初回。髪・縁取り・脚にスパイク変形あり。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T03:28:32.090Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+          "sha256": "1f70c3cdd82c"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+          "sha256": "4466b8bc0ccf"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+          "sha256": "be28fcb3e181"
+        }
+      ]
+    },
+    {
+      "revision": "v3.1",
+      "status": "candidate",
+      "title": "スパイク修正",
+      "summary": "厚み付けとモディファイア確定範囲を修正し、髪・襟・ブーツ・素材を再構築。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T03:44:45.488Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+          "sha256": "69ba99e0af72"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+          "sha256": "6dab79539c1c"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+          "sha256": "3a0ca0109bc9"
+        }
+      ]
+    },
+    {
+      "revision": "v3.2",
+      "status": "candidate",
+      "title": "男性シルエット再設計",
+      "summary": "頭頂、前髪、裾パネル、白飛び、箱型つま先を修正。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T03:51:12.687Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+          "sha256": "1e23b0784220"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+          "sha256": "14b1c343204b"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+          "sha256": "d68f56856212"
+        }
+      ]
+    },
+    {
+      "revision": "v3.3",
+      "status": "candidate",
+      "title": "衣装の断面中心補正",
+      "summary": "首・胸・腰の実断面へ襟、前立て、帯、裾を密着。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T04:00:24.478Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+          "sha256": "a7040347692d"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+          "sha256": "6330d379bbea"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+          "sha256": "b78cdf86e356"
+        }
+      ]
+    },
+    {
+      "revision": "v3.4",
+      "status": "candidate",
+      "title": "男性立ち姿と首回り",
+      "summary": "レスト姿勢を保った腕下げ、襟開口、肌色、髪、留め具を調整。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T04:04:54.579Z"
+      ],
+      "images": [
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+          "sha256": "8c98f14ee101"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+          "sha256": "a734b583eab2"
+        }
+      ]
+    },
+    {
+      "revision": "v3.5",
+      "status": "rejected",
+      "title": "女性高密度版の初回",
+      "summary": "衣装は成立したが、直線的なボブと広い肩幅が課題。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T04:11:23.909Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+          "sha256": "39712d73f77c"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+          "sha256": "1926eee565ba"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-three-quarter.png",
+          "sha256": "9f6ed44eac02"
+        }
+      ]
+    },
+    {
+      "revision": "v3.6",
+      "status": "candidate",
+      "title": "女性ボブと体型調整",
+      "summary": "ボブの面密度、毛先幅、分け目、頭身、肩、腕、脚を再調整。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T04:22:31.536Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+          "sha256": "dc9db3e6da7c"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+          "sha256": "bcd8f559e63c"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-three-quarter.png",
+          "sha256": "a8bd9f8ee325"
+        }
+      ]
+    },
+    {
+      "revision": "v3.7",
+      "status": "candidate",
+      "title": "女性シルエット部品再設計",
+      "summary": "髪、裾区画、肩幅、腰帯、ブーツの輪郭を作り直し。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T04:29:53.609Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+          "sha256": "98cec3de9593"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+          "sha256": "310aafddfbcd"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-three-quarter.png",
+          "sha256": "89fe68b55ea6"
+        }
+      ]
+    },
+    {
+      "revision": "v3.8",
+      "status": "candidate",
+      "title": "女性衣装の監査修正",
+      "summary": "腰位置、裾の回り込み、襟高、顎丈ボブを再調整。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T05:56:02.264Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+          "sha256": "572dc774031b"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+          "sha256": "49e330169ebf"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-three-quarter.png",
+          "sha256": "cc9968c697ac"
+        }
+      ]
+    },
+    {
+      "revision": "v3.9",
+      "status": "kept",
+      "title": "女性背面被覆の修正",
+      "summary": "正面裾幅を保ちながら背面の腰・臀部露出を修正した編集可能版。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:05:01.379Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+          "sha256": "8099cd92ea08"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+          "sha256": "4b5c2e3d202d"
+        }
+      ]
+    },
+    {
+      "revision": "v4.0",
+      "status": "rejected",
+      "title": "三方向投影の初回",
+      "summary": "Hunyuan 形状へ三面図を投影した初回。方向境界と二重写りが残る。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T05:25:47.333Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "ae0af2c9a77b"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "31e0e399b1a6"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "b9fc27cd1abb"
+        }
+      ]
+    },
+    {
+      "revision": "v4.1",
+      "status": "candidate",
+      "title": "輪郭追従投影",
+      "summary": "高さ別輪郭補正と衣類領域ごとの色制約を追加。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T05:38:08.655Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "888f3590312f"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "e089144e9126"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "7e2d4c834ae5"
+        }
+      ]
+    },
+    {
+      "revision": "v4.2",
+      "status": "candidate",
+      "title": "男女共通投影処理",
+      "summary": "脚の白斑、脇の袖写り、輪郭と衣装色を男女共通処理で修正。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T05:46:19.815Z"
+      ],
+      "images": [
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "d58d21f11b46"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "a2666fdd0931"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+          "sha256": "d7e0e252120d"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "adffef67911e"
+        }
+      ]
+    },
+    {
+      "revision": "v4.3",
+      "status": "diagnostic",
+      "title": "v3/v4 横並び監査",
+      "summary": "編集可能な v3 と高忠実度 v4 の斜め表示を比較。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T05:59:01.445Z"
+      ],
+      "images": [
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "e09da00c5218"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "a5b8bec08c79"
+        }
+      ]
+    },
+    {
+      "revision": "v4.4",
+      "status": "candidate",
+      "title": "裾・腰色補正",
+      "summary": "裾の色潰れと女性腰の肌色誤投影を修正。正面と斜めを確認。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:06:48.308Z",
+        "2026-08-04T06:10:16.997Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "b913ccee6b9c"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "9be8336b89e0"
+        },
+        {
+          "file": "female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-right-side.png",
+          "sha256": "88086b14d107"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "fae4722d8f91"
+        },
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+          "sha256": "6b204805df75"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+          "sha256": "00f2908e734a"
+        },
+        {
+          "file": "male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-right-side.png",
+          "sha256": "b7f44f35e8f4"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "d0fed2b5bcc5"
+        }
+      ]
+    },
+    {
+      "revision": "v4.5",
+      "status": "rejected",
+      "title": "背景差分拡張テスト",
+      "summary": "輪郭の白いハローを人物として拾ったため不採用。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:19:21.551Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "f1e3532a7810"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "dc5f76ea5bdb"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "1aea292a7a22"
+        },
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+          "sha256": "ef8c756c1e11"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+          "sha256": "959d7cd8bf17"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "5cc9426156a3"
+        }
+      ]
+    },
+    {
+      "revision": "v4.6",
+      "status": "candidate",
+      "title": "背景除去ロールバック",
+      "summary": "厳しい背景除去へ戻し、腕の投影元切替だけを残した男性版。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:26:22.883Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+          "sha256": "d2ec7bcd85df"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+          "sha256": "73bda03bf9a9"
+        },
+        {
+          "file": "male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-right-side.png",
+          "sha256": "f7484b1c09f2"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "b55f1bf929cd"
+        }
+      ]
+    },
+    {
+      "revision": "v4.7",
+      "status": "diagnostic",
+      "title": "腕全体の前後投影診断",
+      "summary": "腕全体を前後画像へ寄せた比較用診断。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:29:20.322Z"
+      ],
+      "images": [
+        {
+          "file": "armglobal/male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armglobal-diagnostic/preview/initial-male-v4-back.png",
+          "sha256": "e11a67976683"
+        },
+        {
+          "file": "armglobal/male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armglobal-diagnostic/preview/initial-male-v4-front.png",
+          "sha256": "f80d9ebe5b53"
+        },
+        {
+          "file": "armglobal/male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armglobal-diagnostic/preview/initial-male-v4-right-side.png",
+          "sha256": "d59be295051a"
+        },
+        {
+          "file": "armglobal/male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armglobal-diagnostic/preview/initial-male-v4-three-quarter.png",
+          "sha256": "ebe6c806673d"
+        }
+      ]
+    },
+    {
+      "revision": "v4.8",
+      "status": "diagnostic",
+      "title": "腕部位別・袖クランプ比較",
+      "summary": "腕の部位別投影と横画像内の袖領域制限を比較。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:37:39.675Z"
+      ],
+      "images": [
+        {
+          "file": "armcomponent/male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-front.png",
+          "sha256": "f9e5abea9fd9"
+        },
+        {
+          "file": "armcomponent/male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-right-side.png",
+          "sha256": "b5a5f2df6373"
+        },
+        {
+          "file": "armcomponent/male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-three-quarter.png",
+          "sha256": "3d82d6a62966"
+        },
+        {
+          "file": "sleeveclamp/male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-front.png",
+          "sha256": "3046e8cd1897"
+        },
+        {
+          "file": "sleeveclamp/male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-right-side.png",
+          "sha256": "87a238090671"
+        },
+        {
+          "file": "sleeveclamp/male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-three-quarter.png",
+          "sha256": "77d62a0476ff"
+        }
+      ]
+    },
+    {
+      "revision": "v4.9",
+      "status": "diagnostic",
+      "title": "女性の腕部位別投影",
+      "summary": "男性で試した腕部位別方式を女性へ適用して確認。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:40:05.810Z"
+      ],
+      "images": [
+        {
+          "file": "armcomponent-female/female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-female-diagnostic/preview/initial-female-v4-back.png",
+          "sha256": "80b4d31337f6"
+        },
+        {
+          "file": "armcomponent-female/female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-female-diagnostic/preview/initial-female-v4-front.png",
+          "sha256": "53143141c50d"
+        },
+        {
+          "file": "armcomponent-female/female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-female-diagnostic/preview/initial-female-v4-right-side.png",
+          "sha256": "d2cd7ee3676b"
+        },
+        {
+          "file": "armcomponent-female/female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-female-diagnostic/preview/initial-female-v4-three-quarter.png",
+          "sha256": "97af4ebdb44e"
+        }
+      ]
+    },
+    {
+      "revision": "v4.10",
+      "status": "diagnostic",
+      "title": "髪の背景漏れ診断",
+      "summary": "後頭部と側面の明るい背景漏れを確認した男性診断。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:47:34.741Z"
+      ],
+      "images": [
+        {
+          "file": "hairleak/male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-hairleak-diagnostic/preview/initial-male-v4-back.png",
+          "sha256": "92c894a3cac3"
+        },
+        {
+          "file": "hairleak/male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-hairleak-diagnostic/preview/initial-male-v4-right-side.png",
+          "sha256": "190977553aa1"
+        }
+      ]
+    },
+    {
+      "revision": "v4.11",
+      "status": "candidate",
+      "title": "男性の袖領域分離版",
+      "summary": "上腕・前腕の袖だけを横画像の実腕領域へ割り当てた男性版。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:52:33.093Z"
+      ],
+      "images": [
+        {
+          "file": "male-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+          "sha256": "866e985e62ea"
+        },
+        {
+          "file": "male-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+          "sha256": "b1fbbfc013cc"
+        },
+        {
+          "file": "male-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-right-side.png",
+          "sha256": "5c8d91df8c37"
+        },
+        {
+          "file": "male-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+          "sha256": "e6bb4eba039b"
+        }
+      ]
+    },
+    {
+      "revision": "v4.12",
+      "status": "rejected",
+      "title": "女性の固定幅袖補助投影",
+      "summary": "女性に大きな矩形境界が出たため補助投影を不採用。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T06:55:01.521Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "9898bd6e4f65"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "f423a852fe94"
+        },
+        {
+          "file": "female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-right-side.png",
+          "sha256": "a6a4dabc51ea"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "4784a3b9e39f"
+        }
+      ]
+    },
+    {
+      "revision": "v4.13",
+      "status": "superseded",
+      "title": "女性の袖領域分離版",
+      "summary": "固定幅補助投影を撤回し、横画像の袖領域分離だけを残した版。",
+      "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+      "reviewTimestamps": [
+        "2026-08-04T07:00:32.443Z"
+      ],
+      "images": [
+        {
+          "file": "female-back.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+          "sha256": "32a0a560e787"
+        },
+        {
+          "file": "female-front.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+          "sha256": "7455128e78e6"
+        },
+        {
+          "file": "female-right-side.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-right-side.png",
+          "sha256": "67dae4dd5bd6"
+        },
+        {
+          "file": "female-three-quarter.png",
+          "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+          "sha256": "9f464b555482"
+        }
+      ]
+    },
+    {
+      "revision": "v4.14",
+      "status": "rejected",
+      "title": "手首と指を裾・ズボン色補正から除外し、女性の額を正面投影へ復元",
+      "summary": "手首と指を裾・ズボン色補正から除外し、女性の額を正面投影へ復元",
+      "recoveredFrom": null,
+      "reviewTimestamps": [
+        "2026-08-04T07:34:52.239729+00:00"
+      ],
+      "images": [
+        {
+          "file": "initial-female-v4-back.png",
+          "sourcePath": "initial-female-v4-back.png",
+          "sha256": "f62190eed068"
+        },
+        {
+          "file": "initial-female-v4-front.png",
+          "sourcePath": "initial-female-v4-front.png",
+          "sha256": "c3fc8a1a0577"
+        },
+        {
+          "file": "initial-female-v4-right-side.png",
+          "sourcePath": "initial-female-v4-right-side.png",
+          "sha256": "0d10bfc46d3b"
+        },
+        {
+          "file": "initial-female-v4-three-quarter.png",
+          "sourcePath": "initial-female-v4-three-quarter.png",
+          "sha256": "bfceb9ba5392"
+        },
+        {
+          "file": "initial-male-v4-back.png",
+          "sourcePath": "initial-male-v4-back.png",
+          "sha256": "25104efae9bf"
+        },
+        {
+          "file": "initial-male-v4-front.png",
+          "sourcePath": "initial-male-v4-front.png",
+          "sha256": "2c642979a04d"
+        },
+        {
+          "file": "initial-male-v4-right-side.png",
+          "sourcePath": "initial-male-v4-right-side.png",
+          "sha256": "ac7a31842e39"
+        },
+        {
+          "file": "initial-male-v4-three-quarter.png",
+          "sourcePath": "initial-male-v4-three-quarter.png",
+          "sha256": "43ddfa822239"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v4.15",
+      "status": "rejected",
+      "title": "手領域の上限をAポーズの実位置まで広げ、手首の青緑ブロックと黒い指先を補正",
+      "summary": "手領域の上限をAポーズの実位置まで広げ、手首の青緑ブロックと黒い指先を補正",
+      "recoveredFrom": null,
+      "reviewTimestamps": [
+        "2026-08-04T07:40:18.484510+00:00"
+      ],
+      "images": [
+        {
+          "file": "initial-female-v4-back.png",
+          "sourcePath": "initial-female-v4-back.png",
+          "sha256": "b90363da9384"
+        },
+        {
+          "file": "initial-female-v4-front.png",
+          "sourcePath": "initial-female-v4-front.png",
+          "sha256": "ff5d21540909"
+        },
+        {
+          "file": "initial-female-v4-right-side.png",
+          "sourcePath": "initial-female-v4-right-side.png",
+          "sha256": "1b3e4554ab3b"
+        },
+        {
+          "file": "initial-female-v4-three-quarter.png",
+          "sourcePath": "initial-female-v4-three-quarter.png",
+          "sha256": "1c2886d721ab"
+        },
+        {
+          "file": "initial-male-v4-back.png",
+          "sourcePath": "initial-male-v4-back.png",
+          "sha256": "f47cfa1aea30"
+        },
+        {
+          "file": "initial-male-v4-front.png",
+          "sourcePath": "initial-male-v4-front.png",
+          "sha256": "1767b334823e"
+        },
+        {
+          "file": "initial-male-v4-right-side.png",
+          "sourcePath": "initial-male-v4-right-side.png",
+          "sha256": "f013a9a62d77"
+        },
+        {
+          "file": "initial-male-v4-three-quarter.png",
+          "sourcePath": "initial-male-v4-three-quarter.png",
+          "sha256": "7ae39461f7e0"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v4.16",
+      "status": "rejected",
+      "title": "遠位の手指に残る暗色投影を肌色へ補正し、黒い指先を除去",
+      "summary": "遠位の手指に残る暗色投影を肌色へ補正し、黒い指先を除去",
+      "recoveredFrom": null,
+      "reviewTimestamps": [
+        "2026-08-04T07:44:54.704190+00:00"
+      ],
+      "images": [
+        {
+          "file": "initial-female-v4-back.png",
+          "sourcePath": "initial-female-v4-back.png",
+          "sha256": "b6f4cd33e42d"
+        },
+        {
+          "file": "initial-female-v4-front.png",
+          "sourcePath": "initial-female-v4-front.png",
+          "sha256": "6c9e428853a8"
+        },
+        {
+          "file": "initial-female-v4-right-side.png",
+          "sourcePath": "initial-female-v4-right-side.png",
+          "sha256": "af498ae50daf"
+        },
+        {
+          "file": "initial-female-v4-three-quarter.png",
+          "sourcePath": "initial-female-v4-three-quarter.png",
+          "sha256": "6858ece2466e"
+        },
+        {
+          "file": "initial-male-v4-back.png",
+          "sourcePath": "initial-male-v4-back.png",
+          "sha256": "15deda4dfb30"
+        },
+        {
+          "file": "initial-male-v4-front.png",
+          "sourcePath": "initial-male-v4-front.png",
+          "sha256": "42022b5afeb9"
+        },
+        {
+          "file": "initial-male-v4-right-side.png",
+          "sourcePath": "initial-male-v4-right-side.png",
+          "sha256": "73cf1b17ce9e"
+        },
+        {
+          "file": "initial-male-v4-three-quarter.png",
+          "sourcePath": "initial-male-v4-three-quarter.png",
+          "sha256": "85fc044a088e"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.0",
+      "status": "rejected",
+      "title": "投影・頂点色を廃止。骨領域別PBR材質と別メッシュの顔・衣装ディテールを検証する初回診断版。",
+      "summary": "投影・頂点色を廃止。骨領域別PBR材質と別メッシュの顔・衣装ディテールを検証する初回診断版。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "8d15bb3d4d75"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "788d9c5544aa"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "6ac590d40626"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "0fff1937b37a"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.1",
+      "status": "rejected",
+      "title": "v5.0の生成眼球を廃止。MPFBのUV付き頭部・手・眼・眉・睫毛を再構成衣装と統合し、腕材質帯を再設計。",
+      "summary": "v5.0の生成眼球を廃止。MPFBのUV付き頭部・手・眼・眉・睫毛を再構成衣装と統合し、腕材質帯を再設計。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "6d0865a8eb2b"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "7dcafb04f9ff"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "23bd8f639207"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "1759ac41c48d"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.2",
+      "status": "rejected",
+      "title": "bmesh面削除へ修正し、衣装面数下限を追加。MPFB頭部・手と再構成衣装のハイブリッドを再検証。",
+      "summary": "bmesh面削除へ修正し、衣装面数下限を追加。MPFB頭部・手と再構成衣装のハイブリッドを再検証。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "982ade7f8ef5"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "4b81976ca5bf"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "a5e7a23d3b32"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "87d8a25415b1"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.3",
+      "status": "rejected",
+      "title": "MPFB頭部を再構成頭部内へ三軸フィットし、左右の手を手首—指先方向で回転・拡縮して衣装へ接続。",
+      "summary": "MPFB頭部を再構成頭部内へ三軸フィットし、左右の手を手首—指先方向で回転・拡縮して衣装へ接続。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "c3288576290d"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "eb330f77142f"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "4588df6c4b94"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "657c6515f4cc"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.4",
+      "status": "rejected",
+      "title": "再構成側の手面を全削除し、MPFB手を幾何学的な上下端で下向き接続。顔面・耳だけを残し頭頂・後頭・首面を除外。",
+      "summary": "再構成側の手面を全削除し、MPFB手を幾何学的な上下端で下向き接続。顔面・耳だけを残し頭頂・後頭・首面を除外。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "abecbfa92e5e"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "8ec05fe74e18"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "0f38b5d747a5"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "7506663126b5"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.5",
+      "status": "rejected",
+      "title": "MPFB手の移植を廃止。再構成手を衣装と連続したまま肌PBR化し、MPFBは顔面・眼・眉・睫毛だけを使用。",
+      "summary": "MPFB手の移植を廃止。再構成手を衣装と連続したまま肌PBR化し、MPFBは顔面・眼・眉・睫毛だけを使用。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "73146483fca7"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "6fda3a39e634"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "88830cf41add"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "29b211b169e3"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.6",
+      "status": "rejected",
+      "title": "眼球以外の移植顔パーツを除外。手甲・靴口を材質帯で復元し、前裾縁と帯金具を別メッシュ追加。",
+      "summary": "眼球以外の移植顔パーツを除外。手甲・靴口を材質帯で復元し、前裾縁と帯金具を別メッシュ追加。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "3d0ac9b0d82b"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "3ed2aee602aa"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "3dcb5988288b"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "67c14d1415fe"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.7",
+      "status": "rejected",
+      "title": "浮いた前裾線を削除。靴口金属帯を細線化し、男性の側頭・後頭髪境界を上げて顎周辺を顔面へ戻す。",
+      "summary": "浮いた前裾線を削除。靴口金属帯を細線化し、男性の側頭・後頭髪境界を上げて顎周辺を顔面へ戻す。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "f162b68df726"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "e3cdc283246c"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "729faabd3f35"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "4d2750a45ebf"
+        }
+      ],
+      "build": "build.json"
+    },
+    {
+      "revision": "v5.8",
+      "status": "rejected",
+      "title": "顔面移植を廃止し一体再構成頭部へ復帰。極薄・小型の眼球と虹彩のみ別メッシュ化して背面透けと首切断面を除去。",
+      "summary": "顔面移植を廃止し一体再構成頭部へ復帰。極薄・小型の眼球と虹彩のみ別メッシュ化して背面透けと首切断面を除去。",
+      "recoveredFrom": null,
+      "reviewTimestamps": [],
+      "images": [
+        {
+          "file": "initial-male-v5-back.png",
+          "sourcePath": "initial-male-v5-back.png",
+          "sha256": "56dba62aeac8"
+        },
+        {
+          "file": "initial-male-v5-front.png",
+          "sourcePath": "initial-male-v5-front.png",
+          "sha256": "406bb66b98fd"
+        },
+        {
+          "file": "initial-male-v5-right-side.png",
+          "sourcePath": "initial-male-v5-right-side.png",
+          "sha256": "20a90f83800c"
+        },
+        {
+          "file": "initial-male-v5-three-quarter.png",
+          "sourcePath": "initial-male-v5-three-quarter.png",
+          "sha256": "a2dae5526fee"
+        }
+      ],
+      "build": "build.json"
+    }
+  ]
+}

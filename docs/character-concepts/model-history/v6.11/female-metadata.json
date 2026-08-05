@@ -1,0 +1,40 @@
+{
+  "revision": "v6.11",
+  "status": "rejected",
+  "rejection_reason": "長袖形状は復元したが、立ち襟の採寸に肩を含む断面を使ったため首から離れた横棒状に見え、不採用",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.11/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.11/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.11/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.11/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.11/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.11/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 47,
+    "vertices": 35587,
+    "triangles": 65598,
+    "bones": 53,
+    "uv_meshes": 47,
+    "generated_parts": 41,
+    "reference_projection": false
+  },
+  "note": "男性は連続衣装を腕位置で材質分割、女性は専用長袖トポロジーを接続。襟を一体型の立ち襟へ変更"
+}

@@ -1,0 +1,38 @@
+{
+  "revision": "v6.4",
+  "status": "rejected",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.4/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.4/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.4/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.4/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.4/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.4/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 50,
+    "vertices": 35617,
+    "triangles": 65552,
+    "bones": 53,
+    "uv_meshes": 50,
+    "generated_parts": 44,
+    "reference_projection": false
+  },
+  "note": "女性の全身構造は成立したが、片目を覆う前髪と筒状・鋸歯状の追加上袖が参照品質に届かないため不採用"
+}

@@ -1,0 +1,41 @@
+{
+  "revision": "v5.3",
+  "pipeline": "v5-clean-semantic-materials",
+  "status": "rejected",
+  "note": "MPFB頭部を再構成頭部内へ三軸フィットし、左右の手を手首—指先方向で回転・拡縮して衣装へ接続。",
+  "image_projection": false,
+  "vertex_colors": false,
+  "characters": [
+    {
+      "character": "male",
+      "blend": "art-source\\characters\\history\\v5.3\\initial-male-v5.blend",
+      "glb": "public\\models\\characters\\history\\v5.3\\initial-male-v5.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v5.3\\initial-male-v5-front.png",
+        "docs\\character-concepts\\model-history\\v5.3\\initial-male-v5-right-side.png",
+        "docs\\character-concepts\\model-history\\v5.3\\initial-male-v5-back.png",
+        "docs\\character-concepts\\model-history\\v5.3\\initial-male-v5-three-quarter.png"
+      ],
+      "vertices": 152210,
+      "triangles": 298730,
+      "bones": 53,
+      "surface_material_face_counts": {
+        "skin": 11660,
+        "teal": 105688,
+        "teal_dark": 0,
+        "linen": 9518,
+        "charcoal": 104658,
+        "leather": 20380,
+        "leather_dark": 35882,
+        "bronze": 768,
+        "hair": 13850,
+        "hair_highlight": 2012
+      },
+      "modeled_detail_objects": 5,
+      "authored_skin_faces": 8988,
+      "authored_face_objects": 5,
+      "uv": "GameUV",
+      "vertex_colors": 0
+    }
+  ]
+}

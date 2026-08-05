@@ -1,0 +1,31 @@
+{
+  "revision": "v5.6",
+  "status": "rejected",
+  "title": "眼球以外の移植顔パーツを除外。手甲・靴口を材質帯で復元し、前裾縁と帯金具を別メッシュ追加。",
+  "summary": "眼球以外の移植顔パーツを除外。手甲・靴口を材質帯で復元し、前裾縁と帯金具を別メッシュ追加。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "3d0ac9b0d82b"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "3ed2aee602aa"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "3dcb5988288b"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "67c14d1415fe"
+    }
+  ],
+  "build": "build.json"
+}

@@ -1,0 +1,31 @@
+{
+  "revision": "v5.8",
+  "status": "rejected",
+  "title": "顔面移植を廃止し一体再構成頭部へ復帰。極薄・小型の眼球と虹彩のみ別メッシュ化して背面透けと首切断面を除去。",
+  "summary": "顔面移植を廃止し一体再構成頭部へ復帰。極薄・小型の眼球と虹彩のみ別メッシュ化して背面透けと首切断面を除去。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "56dba62aeac8"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "406bb66b98fd"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "20a90f83800c"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "a2dae5526fee"
+    }
+  ],
+  "build": "build.json"
+}

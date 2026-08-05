@@ -1,0 +1,27 @@
+{
+  "revision": "v3.5",
+  "status": "rejected",
+  "title": "女性高密度版の初回",
+  "summary": "衣装は成立したが、直線的なボブと広い肩幅が課題。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T04:11:23.909Z"
+  ],
+  "images": [
+    {
+      "file": "female-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-back.png",
+      "sha256": "39712d73f77c"
+    },
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-front.png",
+      "sha256": "1926eee565ba"
+    },
+    {
+      "file": "female-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-female-v3-three-quarter.png",
+      "sha256": "9f6ed44eac02"
+    }
+  ]
+}

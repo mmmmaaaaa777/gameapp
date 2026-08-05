@@ -1,0 +1,31 @@
+{
+  "revision": "v5.7",
+  "status": "rejected",
+  "title": "浮いた前裾線を削除。靴口金属帯を細線化し、男性の側頭・後頭髪境界を上げて顎周辺を顔面へ戻す。",
+  "summary": "浮いた前裾線を削除。靴口金属帯を細線化し、男性の側頭・後頭髪境界を上げて顎周辺を顔面へ戻す。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "f162b68df726"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "e3cdc283246c"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "729faabd3f35"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "4d2750a45ebf"
+    }
+  ],
+  "build": "build.json"
+}

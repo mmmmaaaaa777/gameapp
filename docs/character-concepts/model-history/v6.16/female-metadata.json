@@ -1,0 +1,42 @@
+{
+  "revision": "v6.16",
+  "status": "rejected",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.16/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.16/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.16/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.16/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.16/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.16/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 47,
+    "vertices": 35413,
+    "triangles": 65262,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 9441,
+    "uv_meshes": 47,
+    "generated_parts": 41,
+    "reference_projection": false
+  },
+  "note": "MPFB皮膚Alphaを不透明化して顔内部露出を除去。眉・まつ毛のみ単一画像Alphaへ接続。袖開始位置を下げ肩の重複面を除去",
+  "rejection_reason": "胸部に左右対称の微小な肌抜けを四方向レンダーで確認"
+}

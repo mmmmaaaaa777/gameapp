@@ -1,0 +1,31 @@
+{
+  "revision": "v5.3",
+  "status": "rejected",
+  "title": "MPFB頭部を再構成頭部内へ三軸フィットし、左右の手を手首—指先方向で回転・拡縮して衣装へ接続。",
+  "summary": "MPFB頭部を再構成頭部内へ三軸フィットし、左右の手を手首—指先方向で回転・拡縮して衣装へ接続。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "c3288576290d"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "eb330f77142f"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "4588df6c4b94"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "657c6515f4cc"
+    }
+  ],
+  "build": "build.json"
+}

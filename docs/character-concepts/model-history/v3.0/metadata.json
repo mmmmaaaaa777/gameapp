@@ -1,0 +1,27 @@
+{
+  "revision": "v3.0",
+  "status": "rejected",
+  "title": "MPFB 高密度版の初回",
+  "summary": "MPFB 人体と別メッシュ衣装の初回。髪・縁取り・脚にスパイク変形あり。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T03:28:32.090Z"
+  ],
+  "images": [
+    {
+      "file": "male-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-back.png",
+      "sha256": "1f70c3cdd82c"
+    },
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-front.png",
+      "sha256": "4466b8bc0ccf"
+    },
+    {
+      "file": "male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v3/initial-male-v3-three-quarter.png",
+      "sha256": "be28fcb3e181"
+    }
+  ]
+}

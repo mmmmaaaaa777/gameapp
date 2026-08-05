@@ -1,0 +1,32 @@
+{
+  "revision": "v4.11",
+  "status": "candidate",
+  "title": "男性の袖領域分離版",
+  "summary": "上腕・前腕の袖だけを横画像の実腕領域へ割り当てた男性版。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T06:52:33.093Z"
+  ],
+  "images": [
+    {
+      "file": "male-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-back.png",
+      "sha256": "866e985e62ea"
+    },
+    {
+      "file": "male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-front.png",
+      "sha256": "b1fbbfc013cc"
+    },
+    {
+      "file": "male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-right-side.png",
+      "sha256": "5c8d91df8c37"
+    },
+    {
+      "file": "male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-male-v4-three-quarter.png",
+      "sha256": "e6bb4eba039b"
+    }
+  ]
+}

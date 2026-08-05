@@ -1,0 +1,22 @@
+{
+  "revision": "v1.0",
+  "status": "superseded",
+  "title": "初期軽量モデル",
+  "summary": "単純形状で構成した最初の男女モデル。リグとゲーム読込の成立を優先。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T00:58:35.266Z"
+  ],
+  "images": [
+    {
+      "file": "female-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-model-preview.png",
+      "sha256": "55d5f8a9467b"
+    },
+    {
+      "file": "male-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-model-preview.png",
+      "sha256": "231c84c0a925"
+    }
+  ]
+}

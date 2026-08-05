@@ -1,0 +1,42 @@
+{
+  "revision": "v4.8",
+  "status": "diagnostic",
+  "title": "腕部位別・袖クランプ比較",
+  "summary": "腕の部位別投影と横画像内の袖領域制限を比較。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T06:37:39.675Z"
+  ],
+  "images": [
+    {
+      "file": "armcomponent/male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-front.png",
+      "sha256": "f9e5abea9fd9"
+    },
+    {
+      "file": "armcomponent/male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-right-side.png",
+      "sha256": "b5a5f2df6373"
+    },
+    {
+      "file": "armcomponent/male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-armcomponent-diagnostic/preview/initial-male-v4-three-quarter.png",
+      "sha256": "3d82d6a62966"
+    },
+    {
+      "file": "sleeveclamp/male-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-front.png",
+      "sha256": "3046e8cd1897"
+    },
+    {
+      "file": "sleeveclamp/male-right-side.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-right-side.png",
+      "sha256": "87a238090671"
+    },
+    {
+      "file": "sleeveclamp/male-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/AppData/Local/Temp/v4-sleeveclamp-diagnostic/preview/initial-male-v4-three-quarter.png",
+      "sha256": "77d62a0476ff"
+    }
+  ]
+}

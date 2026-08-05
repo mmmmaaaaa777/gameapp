@@ -1,0 +1,38 @@
+{
+  "revision": "v6.7",
+  "status": "rejected",
+  "character": "female",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v6.7/initial-female-v6.blend",
+  "glb": "public/models/characters/history/v6.7/initial-female-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.7/initial-female-v6-front.png",
+    "docs/character-concepts/model-history/v6.7/initial-female-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.7/initial-female-v6-back.png",
+    "docs/character-concepts/model-history/v6.7/initial-female-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-female-base.blend",
+    "clothing_topology": "female_casualsuit01.mhclo",
+    "hair_topology": "bob02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 45,
+    "vertices": 36276,
+    "triangles": 66964,
+    "bones": 53,
+    "uv_meshes": 45,
+    "generated_parts": 39,
+    "reference_projection": false
+  },
+  "note": "長袖トポロジー抽出は成立したが、女性体型に男性用長袖を使用したため肩が盛り上がり、色境界も粗いため不採用"
+}

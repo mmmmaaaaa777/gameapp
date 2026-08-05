@@ -1,0 +1,27 @@
+{
+  "revision": "v4.1",
+  "status": "candidate",
+  "title": "輪郭追従投影",
+  "summary": "高さ別輪郭補正と衣類領域ごとの色制約を追加。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T05:38:08.655Z"
+  ],
+  "images": [
+    {
+      "file": "female-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+      "sha256": "888f3590312f"
+    },
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+      "sha256": "e089144e9126"
+    },
+    {
+      "file": "female-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+      "sha256": "7e2d4c834ae5"
+    }
+  ]
+}

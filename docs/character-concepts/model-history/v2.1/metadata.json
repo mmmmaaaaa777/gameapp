@@ -1,0 +1,22 @@
+{
+  "revision": "v2.1",
+  "status": "rejected",
+  "title": "断面リング修正",
+  "summary": "袖とズボンのねじれを修正した途中確認。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T02:02:49.019Z"
+  ],
+  "images": [
+    {
+      "file": "female-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-v2-model-preview.png",
+      "sha256": "efd5f99265a6"
+    },
+    {
+      "file": "male-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-v2-model-preview.png",
+      "sha256": "3dd260c29456"
+    }
+  ]
+}

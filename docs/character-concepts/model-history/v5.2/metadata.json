@@ -1,0 +1,31 @@
+{
+  "revision": "v5.2",
+  "status": "rejected",
+  "title": "bmesh面削除へ修正し、衣装面数下限を追加。MPFB頭部・手と再構成衣装のハイブリッドを再検証。",
+  "summary": "bmesh面削除へ修正し、衣装面数下限を追加。MPFB頭部・手と再構成衣装のハイブリッドを再検証。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "982ade7f8ef5"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "4b81976ca5bf"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "a5e7a23d3b32"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "87d8a25415b1"
+    }
+  ],
+  "build": "build.json"
+}

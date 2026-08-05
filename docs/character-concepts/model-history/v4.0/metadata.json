@@ -1,0 +1,27 @@
+{
+  "revision": "v4.0",
+  "status": "rejected",
+  "title": "三方向投影の初回",
+  "summary": "Hunyuan 形状へ三面図を投影した初回。方向境界と二重写りが残る。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T05:25:47.333Z"
+  ],
+  "images": [
+    {
+      "file": "female-back.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-back.png",
+      "sha256": "ae0af2c9a77b"
+    },
+    {
+      "file": "female-front.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-front.png",
+      "sha256": "31e0e399b1a6"
+    },
+    {
+      "file": "female-three-quarter.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/v4/initial-female-v4-three-quarter.png",
+      "sha256": "b9fc27cd1abb"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "revision": "v6.11",
+  "status": "rejected",
+  "rejection_reason": "袖形状は連続したが、細い切替帯から材質境界の三角が見え、立ち襟も首径より大きく浮いていたため不採用",
+  "character": "male",
+  "pipeline": "clean modelled MPFB topology; no reference projection",
+  "reference": "docs/character-concepts/initial-male-turnaround.png",
+  "blend": "art-source/characters/history/v6.11/initial-male-v6.blend",
+  "glb": "public/models/characters/history/v6.11/initial-male-v6.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v6.11/initial-male-v6-front.png",
+    "docs/character-concepts/model-history/v6.11/initial-male-v6-right-side.png",
+    "docs/character-concepts/model-history/v6.11/initial-male-v6-back.png",
+    "docs/character-concepts/model-history/v6.11/initial-male-v6-three-quarter.png"
+  ],
+  "materials": [
+    "embedded tileable fabric",
+    "embedded tileable linen",
+    "embedded tileable leather",
+    "embedded tileable hair",
+    "PBR bronze"
+  ],
+  "source_assets": {
+    "body": "initial-male-base.blend",
+    "clothing_topology": "male_casualsuit02.mhclo",
+    "sleeve_topology": "continuous with clothing topology",
+    "hair_topology": "short02.mhclo",
+    "footwear_topology": "shoes02.mhclo"
+  },
+  "stats": {
+    "meshes": 52,
+    "vertices": 35452,
+    "triangles": 66208,
+    "bones": 53,
+    "uv_meshes": 52,
+    "generated_parts": 46,
+    "reference_projection": false
+  },
+  "note": "男性は連続衣装を腕位置で材質分割、女性は専用長袖トポロジーを接続。襟を一体型の立ち襟へ変更"
+}

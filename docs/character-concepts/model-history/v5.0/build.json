@@ -1,0 +1,39 @@
+{
+  "revision": "v5.0",
+  "pipeline": "v5-clean-semantic-materials",
+  "status": "rejected",
+  "note": "投影・頂点色を廃止。骨領域別PBR材質と別メッシュの顔・衣装ディテールを検証する初回診断版。",
+  "image_projection": false,
+  "vertex_colors": false,
+  "characters": [
+    {
+      "character": "male",
+      "blend": "art-source\\characters\\history\\v5.0\\initial-male-v5.blend",
+      "glb": "public\\models\\characters\\history\\v5.0\\initial-male-v5.glb",
+      "previews": [
+        "docs\\character-concepts\\model-history\\v5.0\\initial-male-v5-front.png",
+        "docs\\character-concepts\\model-history\\v5.0\\initial-male-v5-right-side.png",
+        "docs\\character-concepts\\model-history\\v5.0\\initial-male-v5-back.png",
+        "docs\\character-concepts\\model-history\\v5.0\\initial-male-v5-three-quarter.png"
+      ],
+      "vertices": 152210,
+      "triangles": 304416,
+      "bones": 53,
+      "surface_material_face_counts": {
+        "skin": 5686,
+        "teal": 105826,
+        "teal_dark": 0,
+        "linen": 12730,
+        "charcoal": 104658,
+        "leather": 20380,
+        "leather_dark": 38570,
+        "bronze": 704,
+        "hair": 13850,
+        "hair_highlight": 2012
+      },
+      "modeled_detail_objects": 10,
+      "uv": "GameUV",
+      "vertex_colors": 0
+    }
+  ]
+}

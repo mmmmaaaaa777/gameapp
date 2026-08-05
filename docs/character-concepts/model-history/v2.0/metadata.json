@@ -1,0 +1,22 @@
+{
+  "revision": "v2.0",
+  "status": "rejected",
+  "title": "v2 初回造形",
+  "summary": "顔・指・衣装・髪を高密度化した初回。断面リングのねじれが残る。",
+  "recoveredFrom": "/home/t_maruyama/.codex/sessions/2026/08/04/rollout-2026-08-04T09-06-50-019fca18-2d5a-7f80-9ff5-37c89cb5f4f4.jsonl",
+  "reviewTimestamps": [
+    "2026-08-04T01:56:41.812Z"
+  ],
+  "images": [
+    {
+      "file": "female-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-female-v2-model-preview.png",
+      "sha256": "6c592ef5d37c"
+    },
+    {
+      "file": "male-preview.png",
+      "sourcePath": "/mnt/c/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-previews/initial-male-v2-model-preview.png",
+      "sha256": "4a87b58d2d3e"
+    }
+  ]
+}

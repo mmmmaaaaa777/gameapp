@@ -1,0 +1,31 @@
+{
+  "revision": "v5.5",
+  "status": "rejected",
+  "title": "MPFB手の移植を廃止。再構成手を衣装と連続したまま肌PBR化し、MPFBは顔面・眼・眉・睫毛だけを使用。",
+  "summary": "MPFB手の移植を廃止。再構成手を衣装と連続したまま肌PBR化し、MPFBは顔面・眼・眉・睫毛だけを使用。",
+  "recoveredFrom": null,
+  "reviewTimestamps": [],
+  "images": [
+    {
+      "file": "initial-male-v5-back.png",
+      "sourcePath": "initial-male-v5-back.png",
+      "sha256": "73146483fca7"
+    },
+    {
+      "file": "initial-male-v5-front.png",
+      "sourcePath": "initial-male-v5-front.png",
+      "sha256": "6fda3a39e634"
+    },
+    {
+      "file": "initial-male-v5-right-side.png",
+      "sourcePath": "initial-male-v5-right-side.png",
+      "sha256": "88830cf41add"
+    },
+    {
+      "file": "initial-male-v5-three-quarter.png",
+      "sourcePath": "initial-male-v5-three-quarter.png",
+      "sha256": "29b211b169e3"
+    }
+  ],
+  "build": "build.json"
+}
