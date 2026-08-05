@@ -1,0 +1,52 @@
+{
+  "revision": "v7.14",
+  "status": "accepted",
+  "acceptance_standard": "市販ゲームに登場して違和感のない完成キャラクター",
+  "character": "female",
+  "pipeline": "modelled MPFB topology plus authored mesh detail; no image projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v7.14/initial-female-v7.blend",
+  "glb": "public/models/characters/history/v7.14/initial-female-v7.glb",
+  "previews": [
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-front.png",
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-three-quarter.png",
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-right-side.png",
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-back.png",
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-face-closeup.png",
+    "docs/character-concepts/model-history/v7.14/initial-female-v7-costume-closeup.png"
+  ],
+  "required_clips": [
+    "Idle",
+    "Run",
+    "Attack",
+    "Dodge"
+  ],
+  "quality_gates": [
+    "recognisable eyes and facial features at gameplay distance",
+    "opaque mesh hair with no projected cards or alpha artefacts",
+    "tailored costume silhouette and physical seams",
+    "opaque skin and costume materials",
+    "four embedded skeletal gameplay clips",
+    "fresh GLB re-import and in-game verification required before approval"
+  ],
+  "stats": {
+    "meshes": 43,
+    "vertices": 26966,
+    "triangles": 48284,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 2184,
+    "uv_meshes": 43,
+    "generated_parts": 49,
+    "reference_projection": false,
+    "animation_clips": [
+      "Attack",
+      "Dodge",
+      "Idle",
+      "Run"
+    ],
+    "hair_lock_meshes": 0,
+    "acceptance_standard": "commercial-game-character"
+  },
+  "note": "GLB再読込で一致する単純不透明PBR髪材質へ固定。空シーン再読込とPC/375pxゲーム表示を通過。"
+}

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:5173/",
+  "desktop_viewport": [1280, 720],
+  "mobile_viewport": [375, 812],
+  "battle_stage": true,
+  "canvas_count": 1,
+  "model_request": {
+    "url": "/models/characters/initial-male-v7.glb",
+    "status": 200,
+    "bytes": 12898564
+  },
+  "input_paths_exercised": ["attack", "run", "dodge"],
+  "runtime_exceptions": 0,
+  "console_errors": 0,
+  "error_overlay": false,
+  "screenshots": [
+    "docs/character-concepts/model-history/v7.14/gameplay-model-desktop.png",
+    "docs/character-concepts/model-history/v7.14/gameplay-model-375.png"
+  ]
+}

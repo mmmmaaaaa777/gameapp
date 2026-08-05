@@ -1,0 +1,45 @@
+{
+  "revision": "v7.5",
+  "status": "review-candidate",
+  "acceptance_standard": "市販ゲームに登場して違和感のない完成キャラクター",
+  "character": "female",
+  "pipeline": "modelled MPFB topology plus authored mesh detail; no image projection",
+  "reference": "docs/character-concepts/initial-female-turnaround.png",
+  "blend": "art-source/characters/history/v7.5/initial-female-v7.blend",
+  "glb": "public/models/characters/history/v7.5/initial-female-v7.glb",
+  "previews": [],
+  "required_clips": [
+    "Idle",
+    "Run",
+    "Attack",
+    "Dodge"
+  ],
+  "quality_gates": [
+    "recognisable eyes and facial features at gameplay distance",
+    "layered mesh hair with no projected cards",
+    "tailored costume silhouette and physical seams",
+    "opaque skin and costume materials",
+    "four embedded skeletal gameplay clips",
+    "fresh GLB re-import and in-game verification required before approval"
+  ],
+  "stats": {
+    "meshes": 46,
+    "vertices": 28709,
+    "triangles": 51778,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "pruned_to_four_joint_vertices": 2534,
+    "uv_meshes": 46,
+    "generated_parts": 51,
+    "reference_projection": false,
+    "animation_clips": [
+      "Attack",
+      "Dodge",
+      "Idle",
+      "Run"
+    ],
+    "hair_lock_meshes": 0,
+    "acceptance_standard": "commercial-game-character"
+  },
+  "note": "市販ゲーム品質を合格基準に、顔・髪・衣装・材質・動作を再構築"
+}

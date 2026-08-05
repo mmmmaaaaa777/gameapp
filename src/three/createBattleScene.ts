@@ -1,19 +1,13 @@
 import * as THREE from "three";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { ATTRIBUTE_BY_ID, FIELD_RADIUS } from "../game/constants";
 import type { AttributeId, SceneSnapshot, Vec3XZ } from "../types/game";
 import { disposeObject3D } from "./dispose";
 import { createAttackFlash, createAttributeEffect, type BattleEffect } from "./effects";
 
-const PLAYER_MODEL_URL = "/models/characters/initial-male-v6.glb";
+const PLAYER_MODEL_URL = "/models/characters/initial-male-v7.glb";
 const PLAYER_VISUAL_HEIGHT = 1.82;
-const PLAYER_ANIMATION_URLS = {
-  idle: "/models/animations/idle.fbx",
-  run: "/models/animations/run.fbx",
-  jump: "/models/animations/jump.fbx",
-} as const;
-const PLAYER_ANIMATION_KEYS = ["idle", "run", "jump"] as const;
+const PLAYER_ANIMATION_KEYS = ["idle", "run", "attack", "dodge"] as const;
 const MIN_PLAYER_ANIMATION_DURATION_SECONDS = 0.12;
 
 type PlayerAnimationKey = (typeof PLAYER_ANIMATION_KEYS)[number];
@@ -46,9 +40,9 @@ interface PlayerModel {
   dodgeMaterial: THREE.MeshBasicMaterial;
   footstepMaterial: THREE.MeshBasicMaterial;
   characterModel: THREE.Group | null;
-  fbxMixer: THREE.AnimationMixer | null;
-  fbxActions: Partial<Record<PlayerAnimationKey, THREE.AnimationAction>>;
-  fbxActiveAction: PlayerAnimationKey | null;
+  animationMixer: THREE.AnimationMixer | null;
+  animationActions: Partial<Record<PlayerAnimationKey, THREE.AnimationAction>>;
+  activeAnimation: PlayerAnimationKey | null;
   characterBaseScale: number;
   characterBasePosition: THREE.Vector3;
   torso: THREE.Mesh;
@@ -495,43 +489,14 @@ function makeArena(): ArenaModel {
   return { group, runeGroup, pulseMaterial };
 }
 
-async function loadFbxAnimationClip(key: PlayerAnimationKey, model: THREE.Group): Promise<THREE.AnimationClip | null> {
-  const url = PLAYER_ANIMATION_URLS[key];
-
-  if (!(await assetExists(url))) {
-    return null;
-  }
-
-  try {
-    const asset = await new FBXLoader().loadAsync(url);
-    const clip = selectPlayerAnimationClip(key, asset.animations, model);
-    disposeObject3D(asset);
-    return clip;
-  } catch {
-    return null;
-  }
-}
-
-async function loadFbxPlayerAnimations(model: THREE.Group): Promise<LoadedPlayerAnimationState> {
-  const targetNames = collectAnimationTargetNames(model);
-  const hasV6GameRig = ["pelvis", "spine_01", "upperarm_l", "thigh_l", "head"].every(
-    (name) => targetNames.has(name),
-  );
-
-  // The bundled FBX clips use a different Mixamo-style skeleton.  Binding
-  // only their shared Root track moves the v6 rig out of the arena while the
-  // remaining tracks fail.  Keep the clean rest pose and synthetic movement
-  // until those clips have been explicitly retargeted to the MPFB bone names.
-  if (hasV6GameRig) {
-    return { mixer: null, actions: {} };
-  }
-
-  const clips = await Promise.all(
-    PLAYER_ANIMATION_KEYS.map(async (key) => ({
-      key,
-      clip: await loadFbxAnimationClip(key, model),
-    })),
-  );
+function loadEmbeddedPlayerAnimations(
+  model: THREE.Group,
+  sourceClips: THREE.AnimationClip[],
+): LoadedPlayerAnimationState {
+  const clips = PLAYER_ANIMATION_KEYS.map((key) => ({
+    key,
+    clip: selectPlayerAnimationClip(key, sourceClips, model),
+  }));
   const loadedClips = clips.filter(
     (entry): entry is { key: PlayerAnimationKey; clip: THREE.AnimationClip } => entry.clip !== null,
   );
@@ -548,7 +513,7 @@ async function loadFbxPlayerAnimations(model: THREE.Group): Promise<LoadedPlayer
     action.enabled = true;
     action.setEffectiveWeight(1);
 
-    if (key === "jump") {
+    if (key === "attack" || key === "dodge") {
       action.setLoop(THREE.LoopOnce, 1);
       action.clampWhenFinished = true;
     } else {
@@ -563,26 +528,30 @@ async function loadFbxPlayerAnimations(model: THREE.Group): Promise<LoadedPlayer
   return { mixer, actions };
 }
 
-function selectFbxPlayerAnimation(player: PlayerModel, snapshot: SceneSnapshot): PlayerAnimationKey | null {
-  if (snapshot.isDodging && player.fbxActions.jump) {
-    return "jump";
+function selectPlayerAnimation(player: PlayerModel, snapshot: SceneSnapshot): PlayerAnimationKey | null {
+  if (snapshot.isDodging && player.animationActions.dodge) {
+    return "dodge";
   }
 
-  if (snapshot.playerMoveIntensity > 0.08 && player.fbxActions.run) {
+  if (snapshot.playerAttackPulse > 0.08 && player.animationActions.attack) {
+    return "attack";
+  }
+
+  if (snapshot.playerMoveIntensity > 0.08 && player.animationActions.run) {
     return "run";
   }
 
-  return player.fbxActions.idle ? "idle" : null;
+  return player.animationActions.idle ? "idle" : null;
 }
 
-function playFbxPlayerAnimation(player: PlayerModel, key: PlayerAnimationKey, fadeDuration = 0.14): void {
-  const nextAction = player.fbxActions[key];
+function playPlayerAnimation(player: PlayerModel, key: PlayerAnimationKey, fadeDuration = 0.14): void {
+  const nextAction = player.animationActions[key];
 
-  if (!nextAction || player.fbxActiveAction === key) {
+  if (!nextAction || player.activeAnimation === key) {
     return;
   }
 
-  const previousAction = player.fbxActiveAction ? player.fbxActions[player.fbxActiveAction] : undefined;
+  const previousAction = player.activeAnimation ? player.animationActions[player.activeAnimation] : undefined;
   nextAction.enabled = true;
   nextAction.setEffectiveWeight(1);
   nextAction.reset();
@@ -594,7 +563,7 @@ function playFbxPlayerAnimation(player: PlayerModel, key: PlayerAnimationKey, fa
     nextAction.fadeIn(fadeDuration);
   }
 
-  player.fbxActiveAction = key;
+  player.activeAnimation = key;
 }
 
 async function loadGlbPlayer(
@@ -611,7 +580,7 @@ async function loadGlbPlayer(
     const asset = await new GLTFLoader().loadAsync(PLAYER_MODEL_URL);
     const model = asset.scene;
     preparePlayerModel(model, maxAnisotropy);
-    const animations = await loadFbxPlayerAnimations(model);
+    const animations = loadEmbeddedPlayerAnimations(model, asset.animations);
     onLoaded(model, animations);
   } catch {
     player.fallbackGroup.visible = true;
@@ -774,9 +743,9 @@ function makePlayer(): PlayerModel {
     dodgeMaterial,
     footstepMaterial,
     characterModel: null,
-    fbxMixer: null,
-    fbxActions: {},
-    fbxActiveAction: null,
+    animationMixer: null,
+    animationActions: {},
+    activeAnimation: null,
     characterBaseScale: 1,
     characterBasePosition: new THREE.Vector3(),
     torso,
@@ -940,9 +909,9 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
     }
 
     player.characterModel = model;
-    player.fbxMixer = animations.mixer;
-    player.fbxActions = animations.actions;
-    player.fbxActiveAction = null;
+    player.animationMixer = animations.mixer;
+    player.animationActions = animations.actions;
+    player.activeAnimation = null;
     player.characterBaseScale = model.scale.x;
     player.characterBasePosition.copy(model.position);
     player.fallbackGroup.visible = false;
@@ -950,8 +919,8 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
     player.backHalo.visible = false;
     player.group.add(model);
 
-    if (player.fbxActions.idle) {
-      playFbxPlayerAnimation(player, "idle", 0);
+    if (player.animationActions.idle) {
+      playPlayerAnimation(player, "idle", 0);
     }
   });
 
@@ -1030,15 +999,15 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
       player.leftLeg.rotation.x = walkSwing;
       player.rightLeg.rotation.x = -walkSwing;
       if (player.characterModel) {
-        const selectedAnimation = selectFbxPlayerAnimation(player, snapshot);
+        const selectedAnimation = selectPlayerAnimation(player, snapshot);
         if (selectedAnimation) {
-          playFbxPlayerAnimation(player, selectedAnimation);
+          playPlayerAnimation(player, selectedAnimation);
         }
 
-        player.fbxMixer?.update(deltaMs / 1000);
+        player.animationMixer?.update(deltaMs / 1000);
 
         const isMoving = snapshot.playerMoveIntensity > 0.08;
-        const usesSyntheticRun = isMoving && !snapshot.isDodging && !player.fbxActions.run;
+        const usesSyntheticRun = isMoving && !snapshot.isDodging && !player.animationActions.run;
         const movePulse = Math.sin(elapsed * 11);
         const runBob = Math.sin(elapsed * 8) * (usesSyntheticRun ? 0.065 : 0.035) * snapshot.playerMoveIntensity;
         const dodgeLift = snapshot.isDodging ? 0.12 + Math.sin(elapsed * 24) * 0.035 : 0;
@@ -1154,9 +1123,9 @@ export function createBattleScene(mount: HTMLElement): BattleScene {
     },
     dispose() {
       disposed = true;
-      if (player.characterModel && player.fbxMixer) {
-        player.fbxMixer.stopAllAction();
-        player.fbxMixer.uncacheRoot(player.characterModel);
+      if (player.characterModel && player.animationMixer) {
+        player.animationMixer.stopAllAction();
+        player.animationMixer.uncacheRoot(player.characterModel);
       }
       effects.forEach((effect) => effect.dispose());
       effects.splice(0, effects.length);

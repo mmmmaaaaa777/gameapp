@@ -112,6 +112,14 @@ def validate_import(path: Path) -> dict[str, object]:
     if image_nodes == 0:
         raise RuntimeError(f"No embedded material textures found in {path}")
 
+    required_actions = {"Idle", "Run", "Attack", "Dodge"}
+    imported_actions = {action.name for action in bpy.data.actions}
+    missing_actions = required_actions - imported_actions
+    if missing_actions:
+        raise RuntimeError(
+            f"Missing embedded gameplay actions in {path}: {sorted(missing_actions)}"
+        )
+
     bounds = [
         obj.matrix_world @ Vector(corner)
         for obj in meshes
@@ -144,6 +152,7 @@ def validate_import(path: Path) -> dict[str, object]:
         "embedded_images": len([image for image in bpy.data.images if image.type != "RENDER_RESULT"]),
         "image_texture_nodes": image_nodes,
         "external_images": 0,
+        "animation_clips": sorted(imported_actions),
         "armatures": 1,
         "bones": len(game_bones),
         "authored_root_bone": "Root" in armature.data.bones,
@@ -233,7 +242,7 @@ def main() -> None:
     for key, value in (("male", args.male), ("female", args.female)):
         path = Path(value).resolve()
         result = validate_import(path)
-        proof_path = render_dir / f"initial-{key}-v6-glb-proof.png"
+        proof_path = render_dir / f"{path.stem}-glb-proof.png"
         render_proof(proof_path)
         result["proof_render"] = proof_path.as_posix()
         results["characters"][key] = result

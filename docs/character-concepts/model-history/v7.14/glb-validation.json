@@ -1,0 +1,92 @@
+{
+  "validator": "scripts/validate_clean_character_glb.py",
+  "status": "passed",
+  "characters": {
+    "male": {
+      "file": "C:/Users/t_maruyama/Documents/gameapp/public/models/characters/initial-male-v7.glb",
+      "bytes": 12898564,
+      "meshes": 44,
+      "vertices": 97814,
+      "triangles": 137204,
+      "materials": 17,
+      "embedded_images": 10,
+      "image_texture_nodes": 16,
+      "external_images": 0,
+      "animation_clips": [
+        "Attack",
+        "Dodge",
+        "Idle",
+        "Run"
+      ],
+      "armatures": 1,
+      "bones": 53,
+      "authored_root_bone": true,
+      "max_joint_influences": 4,
+      "uv_meshes": 44,
+      "blender_import_helpers_excluded": [
+        "Icosphere"
+      ],
+      "bounds_m": {
+        "min": [
+          -0.591875,
+          -0.375336,
+          -0.017273
+        ],
+        "max": [
+          0.591875,
+          0.127289,
+          1.798802
+        ],
+        "size": [
+          1.18375,
+          0.502625,
+          1.816075
+        ]
+      },
+      "proof_render": "C:/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-history/v7.14/glb-proof/initial-male-v7-glb-proof.png"
+    },
+    "female": {
+      "file": "C:/Users/t_maruyama/Documents/gameapp/public/models/characters/initial-female-v7.glb",
+      "bytes": 13340172,
+      "meshes": 43,
+      "vertices": 99996,
+      "triangles": 139218,
+      "materials": 17,
+      "embedded_images": 10,
+      "image_texture_nodes": 16,
+      "external_images": 0,
+      "animation_clips": [
+        "Attack",
+        "Dodge",
+        "Idle",
+        "Run"
+      ],
+      "armatures": 1,
+      "bones": 53,
+      "authored_root_bone": true,
+      "max_joint_influences": 4,
+      "uv_meshes": 43,
+      "blender_import_helpers_excluded": [
+        "Icosphere"
+      ],
+      "bounds_m": {
+        "min": [
+          -0.50444,
+          -0.312545,
+          -0.012044
+        ],
+        "max": [
+          0.50444,
+          0.139551,
+          1.691687
+        ],
+        "size": [
+          1.00888,
+          0.452096,
+          1.703731
+        ]
+      },
+      "proof_render": "C:/Users/t_maruyama/Documents/gameapp/docs/character-concepts/model-history/v7.14/glb-proof/initial-female-v7-glb-proof.png"
+    }
+  }
+}

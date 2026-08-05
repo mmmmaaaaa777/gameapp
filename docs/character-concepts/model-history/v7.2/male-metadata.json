@@ -1,0 +1,52 @@
+{
+  "revision": "v7.2",
+  "status": "review-candidate",
+  "acceptance_standard": "市販ゲームに登場して違和感のない完成キャラクター",
+  "character": "male",
+  "pipeline": "sculpted costume geometry + MPFB anatomical surfaces + 53-bone rig",
+  "image_projection": false,
+  "generated_texture": false,
+  "blend": "art-source/characters/history/v7.2/initial-male-v7.blend",
+  "glb": "public/models/characters/history/v7.2/initial-male-v7.glb",
+  "previews": [],
+  "stats": {
+    "meshes": 8,
+    "vertices": 87322,
+    "triangles": 104999,
+    "bones": 53,
+    "max_joint_influences": 4,
+    "animation_clips": [
+      "Attack",
+      "Dodge",
+      "Idle",
+      "Run"
+    ],
+    "reference_projection": false,
+    "vertex_colors": false,
+    "authored_face_parts": [
+      "initial-male-base.Eyes",
+      "initial-male-base.Eyebrows",
+      "initial-male-base.Eyelashes",
+      "initial-male-base.Teeth",
+      "initial-male-base.Tongue"
+    ],
+    "hair": "V6_Hair_short04",
+    "semantic_material_face_counts_before_decimate": {
+      "skin": 41404,
+      "teal": 85810,
+      "teal_dark": 0,
+      "linen": 11588,
+      "charcoal": 90564,
+      "leather": 15926,
+      "leather_dark": 40142,
+      "bronze": 1648,
+      "hair": 13142,
+      "hair_highlight": 2768
+    },
+    "removed_generated_faces": {
+      "head": 31352,
+      "hands": 5967
+    }
+  },
+  "note": "高密度衣装スカルプと正常なMPFB頭部・目・手を統合"
+}
